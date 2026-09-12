@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      body { font-family: "Inter", sans-serif; }
+      code, pre, .monospace { font-family: "JetBrains Mono", monospace; }
+    </style>
+  </head>
+  <body>
+    <!--
+      Master assembly root. Mount scene compositions here in spec order, e.g.:
+
+      <div data-composition-id="scene-01" data-composition-src="composition/scene-01.html"
+           data-start="0" data-duration="10" data-track-index="1"></div>
+
+      Scene files live in composition/ — one HTML per scene (CONCEPT §4).
+      The style tokens for this video come from the pipeline style spec
+      (versions pinned in build.log); don't hardcode palettes per scene.
+    -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1920" data-height="1080"></div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      // Master timeline: scene mounting + inter-scene transitions go here.
+      // Per-scene timelines live inside each composition file.
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

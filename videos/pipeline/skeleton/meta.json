@@ -1,0 +1,5 @@
+{
+  "id": "skeleton",
+  "name": "skeleton",
+  "note": "update id/name to the video slug when copying via pipeline/new_video.sh"
+}

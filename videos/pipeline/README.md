@@ -6,12 +6,30 @@ anything in here — its build log names the pipeline version (git SHA) it used
 
 ```
 pipeline/
+├── skeleton/   # committed HyperFrames project skeleton — new videos are COPIES of this
 ├── tools/      # deterministic QA / assembly utilities (see below)
 ├── templates/  # spec + storyboard + change-request + timeline-manifest templates
 ├── style/      # style-spec.md — palette, type, motion rules (versioned, semver)   [pending]
-├── render.sh   # render script: video dir in → output + checksum                  [pending]
+├── render.sh   # only hyperframes entry point: pins version, skips vendor skills, logs to build.log
+├── new_video.sh# create videos/<slug>/ from skeleton/ + spec template
 └── tts/        # TTS glue (ElevenLabs v3) + pinned voice/model/settings           [pending]
 ```
+
+## Working with HyperFrames
+
+- **A HyperFrames "project" is just a directory** (root = `index.html`). No node_modules,
+  no lockfile, no daemon. Every command (`render`, `lint`, `check`, `preview`) takes the
+  project dir as an argument.
+- **Scaffold once, copy per video.** The skeleton in `skeleton/` was authored once
+  (equivalent of `hyperframes init`); every new video is
+  `pipeline/new_video.sh <slug>`. **Never run `npx hyperframes init` inside this repo**
+  — it emits vendor router docs (AGENTS.md/CLAUDE.md) that claim authority over agent
+  behavior, and it triggers a vendor-skill install. **Never run `npx hyperframes skills
+  update`** either. All invocations go through `render.sh`, which pins the framework
+  version (`HF_VERSION`) and sets `HYPERFRAMES_SKIP_SKILLS=1`.
+- **Renders are not committed** (gitignored `<video>/renders/`); proof frames are the
+  committed QA artifact. A CI re-render of the committed dir must reproduce the
+  published pixels.
 
 ## tools/
 
