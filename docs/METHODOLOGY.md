@@ -1,6 +1,6 @@
 # Methodology
 
-**v1.0 — 2026-09-12.** Initial version. Preregs sealed on or after this
+**v1.1 — 2026-09-12.** Preregs sealed on or after this
 date play under this contract.
 
 `CONCEPT.md` is the *why*: brand, product, integrity rules. This document is
@@ -38,6 +38,7 @@ docs/METHODOLOGY.md`); the table below is the human summary.
 | Version | Date | Summary |
 |---|---|---|
 | v1.0 | 2026-09-12 | Initial: data policy, execution convention, cost model v1, metric definitions, default split, menu selection, null-baseline interface, config hash + run log, verdict mechanics |
+| v1.1 | 2026-09-12 | Standard per-decade attribution table required in every results doc (§4.1); decades soft context by default, pre-registerable as criteria |
 
 ---
 
@@ -244,8 +245,43 @@ liquidity statement (none in current scope; any prereg introducing a less
 liquid instrument must state the constraint explicitly).
 
 **Required in every results doc.** Both eras: index-era (the verdict era)
-and investable-era (sensitivity, per §1.4). For each pre-registered
+and investable-era (sensitivity, per §1.4); the per-decade table (§4.1);
+and, for each pre-registered
 criterion: the threshold, the observed value, pass/fail.
+
+### 4.1 Per-decade attribution (required)
+
+The three assets have never shared a regime — 1970s stagflation, the 80s
+bond bull market, 2000s equity stagnation, the 2022 triple drawdown — and
+aggregate OOS numbers hide *which* regime produced the result. So every
+results doc carries a per-decade table, emitted by the engine and
+reproduced verbatim.
+
+- **Rows:** calendar decades spanning the prereg's usable window. For the
+  current three-asset scope (window from 1970) the standard rows are the
+  1970s through the 2020s.
+- **Partial decades** — the first or last row, or any window truncation —
+  are labeled with their month count: `2020s (78 months)`.
+- **Table A — strategy:** CAGR, volatility, Sharpe, max drawdown per
+  decade, on the net nav.
+- **Table B — asset reference:** CAGR per asset per decade, under the
+  same cost model and fee drag. This is the regime read: which assets
+  worked and which died in each row, and the backdrop the strategy's
+  numbers sit against.
+- **Decades are context, not judgment.** Decade-level performance is soft
+  by default. A prereg may preregister decade-level criteria at seal (e.g.
+  "max drawdown in any full decade ≤ Y%"); they enter the criteria table
+  as hard or soft, and the scoreboard labels that bar "extended."
+- **Partial decades never qualify as criteria.** A 78-month window is not
+  a decade, and a criterion on it would overfit an arbitrary slice.
+- **No regime detection.** Calendar decades are fixed — arbitrary, but
+  preregistered and identical for everyone. Data-driven regime
+  segmentation is a *strategy* (its own prereg), not a method.
+- The investable-era sensitivity analysis (§1.4) stays aggregate: it is a
+  proxy-validity check, not a regime study.
+- The per-decade tables do not go on the scoreboard (one headline line
+  per PR there); full decade detail lives in the results doc and the
+  verdict video.
 
 ---
 
@@ -284,7 +320,11 @@ Every prereg declares K — the number of candidate configurations evaluated
 before the selection rule (K = 1 for a single configured strategy). The
 null baseline (§5.5) is the published reference for what fraction of
 random strategies passes the bar; the scoreboard tracks cumulative
-confirmation rates against it as the archive grows.
+confirmation rates against it as the archive grows. The null baseline is
+always defined against the *default* criteria set: a prereg with
+extended criteria (e.g. decade-level hard criteria, §4.1) is judged under
+its own bar and its confirmations are labeled as such, not
+rate-comparable with the default bar.
 
 ### 5.5 Null baseline
 
