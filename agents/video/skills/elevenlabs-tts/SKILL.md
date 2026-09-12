@@ -33,6 +33,14 @@ Use when a video needs its committed narration wav generated or regenerated, whe
 2. If missing/invalid: point the owner to https://elevenlabs.io/app/settings/api-keys (create key → copy once → write the key line into `~/.config/elevenlabs/api_key`, chmod 600, and keep the `~/.bashrc` export for interactive shells). Ask them to confirm when saved, then re-validate. Never paste keys into chat; never write keys into repo files.
 3. **Budget check:** the `/v1/user` `character_count`/`character_limit` tell remaining monthly characters. Rough: ~1,600 chars ≈ 1 min of narration at speed 1.0. A 4-min video ≈ 6.5k chars; re-synthesis during beat iteration costs again. If the tier is low (free), warn before batch auditioning. The Creator tier also constrains output formats (no `wav_44100` — see the pin table).
 
+## Channel Voices (duo — owner decision 2026-09-12)
+
+The channel runs **two voices**: `Helen` (`XB0fDUnXU5powFXDhCwa`, professional, en-british) is the default narrator and carries the pilot video (`meta-preregistration-rules`) alone; `Zane` (`L6s7ahP9mHOb2S1Qynng`, "Cool & Energetic British Friend", professional) is the second voice, reserved for later use. The pin records this in its `duo` block. Practical notes:
+
+- `voiceover.py` synthesizes the whole script with the default `voice_id` — **per-beat voice switching is not implemented**. When a script first needs both voices, add a `[voice: zane]` beat tag (parse: heading line `## beat-NN [voice: zane]`), per-beat `voice_id` override, and a build-log field listing which voice spoke which beat — that is a `docs(pipeline)`-sized change, logged.
+- Zane is energetic by profile; the channel's delivery is flat and calm — listen to his first real beat before leaning on him, and prefer a `stability` bump / `speed` trim over a different voice if he's peppy.
+- Audition files for both (plus four premades) are in `videos/meta-preregistration-rules/audio/auditions/` (gitignored; regenerable from the pin).
+
 ## Voice Pin (`tts/voice_pin.json`)
 
 | Field | Meaning |

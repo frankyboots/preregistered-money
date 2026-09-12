@@ -18,7 +18,7 @@ Use this skill after the narration timeline is stable.
 
 ## Delivery Model (this repo)
 
-Standing decision (VIDEO_CONCEPT §11): captions are **soft SRT**, auto-generated from the committed voiceover wav (`videos/<slug>/audio/voiceover.wav`), committed in the video dir, and uploaded with the video — not burned in. The generation step (whisper model/version or equivalent, pinned in the pipeline, settings recorded in the build log) lives in `videos/pipeline/`. If the standing decision changes to burn-in, use ASS via `ffmpeg -vf subtitles=` and keep the style conservative (see the timing rules below, which apply to both).
+Standing decision (VIDEO_CONCEPT §11): captions are **soft SRT**, auto-generated from the committed voiceover wav (`videos/<slug>/audio/voiceover.wav`), committed in the video dir, and uploaded with the video — not burned in. The generation step is pinned: Scribe v2 word timings via `videos/pipeline/tts/transcribe.py` (see `elevenlabs-transcribe`) — it emits both `audio/timing/words.json` and `audio/timing/captions.srt` in one run; the keyterms in `voice_pin.json` bias the ASR toward channel vocabulary. If the standing decision changes to burn-in, use ASS via `ffmpeg -vf subtitles=` and keep the style conservative (see the timing rules below, which apply to both).
 
 ## Caption Source Rules
 

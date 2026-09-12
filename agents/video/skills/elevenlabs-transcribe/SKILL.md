@@ -29,9 +29,9 @@ Use after the committed narration wav exists: to get word-level timestamps (the 
 
 | File | Use |
 |---|---|
-| `words.json` | verbatim word-level transcript: `[{text, start, end}]` + wav sha256 + model + request id. **The scene specs cite cue timestamps from here** — "element appears on the narration word that names it" (style spec §5.1) means: find that word in `words.json`, its `start` is the reveal cue. |
+| `words.json` | verbatim word-level transcript: `[{text, start, end}]` + wav sha256 + model + `transcription_id`. **The scene specs cite cue timestamps from here** — "element appears on the narration word that names it" (style spec §5.1) means: find that word in `words.json`, its `start` is the reveal cue. |
 | `captions.srt` | soft captions: one line per phrase chunk (splits on punctuation, pauses ≥0.45s, or 8 words). Consumed by the `captions` skill at publish; committed in the video dir, uploaded soft — never burned in. |
-| `transcribe-summary.json` | build-log record: sdk version, model, keyterms, request-id, duration, word/caption counts, wav sha256. |
+| `transcribe-summary.json` | build-log record: transport version, model, keyterms, `transcription_id`, duration, word/caption counts, wav sha256. Note: the STT endpoint does not set a `request-id` header — `transcription_id` is the audit identifier (it appears in all three files). |
 
 ## Keyterms (the channel-vocabulary bias)
 
@@ -47,7 +47,7 @@ Use after the committed narration wav exists: to get word-level timestamps (the 
 ## Rules
 
 - Transcription runs once per committed wav. A new wav (regeneration) → new `words.json` + SRT → affected scene specs retimed → re-QA. Never mix timings across wavs.
-- Scribe is not bit-reproducible across runs; the committed `words.json` (with request-id) is the record for that wav. A re-run on the same wav can shift word boundaries by milliseconds — regenerate the SRT too and note it in the build log if it changed.
+- Scribe is not bit-reproducible across runs; the committed `words.json` (with its `transcription_id`) is the record for that wav. A re-run on the same wav can shift word boundaries by milliseconds — regenerate the SRT too and note it in the build log if it changed.
 - If `words.json` word count is wildly off vs the script (e.g. Scribe dropped words): check the wav first (listen), then re-run; persistent drops → raise `keyterms` or flag for a re-synthesis with clearer wording.
 
 ## Provenance
