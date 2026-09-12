@@ -1,10 +1,16 @@
 # Hermes skill runtime state (usage tracking)
 agents/research/skills/.usage.json
 agents/research/skills/.usage.json.lock
+agents/video/skills/.usage.json
+agents/video/skills/.usage.json.lock
+agents/video/skills/.hub/
+agents/video/skills/.curator_ledger.jsonl
 
 # Vendored Hermes bundled skills — version-pinned by .bundled_manifest,
 # re-syncable from the Hermes install
 agents/research/skills/autonomous-ai-agents/
+agents/video/skills/autonomous-ai-agents/
 
 # Machine-local agent runtime config (localhost provider endpoint, display)
 agents/research/config.yaml
+agents/video/config.yaml
