@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # Vendored from https://github.com/saranambiar/hyperframes-video-agent-skills (Apache-2.0)
-# Unmodified except this header.
+# Licensed under Apache-2.0 (see LICENSE). If you modify this file,
+# add a change note here per Apache-2.0 §4(b).
+# Changed 2026-09-12: header rewritten for in-repo change policy.
 """Probe media files with ffprobe and print useful video/audio metadata."""
 
 from __future__ import annotations

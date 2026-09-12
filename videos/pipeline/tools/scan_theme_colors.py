@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # Vendored from https://github.com/saranambiar/hyperframes-video-agent-skills (Apache-2.0)
-# Unmodified except this header.
+# Licensed under Apache-2.0 (see LICENSE). If you modify this file,
+# add a change note here per Apache-2.0 §4(b).
+# Changed 2026-09-12: header rewritten for in-repo change policy.
 """Scan text source files for color values outside an allowed token list."""
 
 from __future__ import annotations

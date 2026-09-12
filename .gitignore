@@ -25,3 +25,6 @@ videos/*/snapshots/
 # The contract is research/data/: manifests, checksums.txt, verify.py.
 data/*
 !data/README.md
+
+# Python bytecode from pipeline tool runs
+__pycache__/

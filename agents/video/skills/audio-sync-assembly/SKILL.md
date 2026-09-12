@@ -165,4 +165,4 @@ Report:
 
 ## Provenance
 
-Adapted from https://github.com/saranambiar/hyperframes-video-agent-skills (Apache-2.0, community project — not an official HyperFrames or HeyGen repository). Music-bed sections removed per the channel's standing "music: none" decision (VIDEO_CONCEPT §7).
+Adapted from https://github.com/saranambiar/hyperframes-video-agent-skills (Apache-2.0, community project — not an official HyperFrames or HeyGen repository). Music-bed sections removed per the channel's standing "music: none" decision (VIDEO_CONCEPT §7). Edit this skill freely as the workflow evolves; keep this provenance section.

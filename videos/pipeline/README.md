@@ -36,13 +36,20 @@ All stdlib-only Python; require `ffmpeg`/`ffprobe` on PATH.
 
 ## Provenance
 
-`tools/` and `templates/` are vendored from
+`tools/` and `templates/` are derived from
 [hyperframes-video-agent-skills](https://github.com/saranambiar/hyperframes-video-agent-skills)
-(Apache-2.0, community project — not an official HyperFrames or HeyGen repository),
-copied unmodified (attribution header added per file). The production *judgment* layer
-built on these tools lives in the video agent's skills: `end-to-end-video-playbook`,
-`hyperframes-scene-builder`, `audio-sync-assembly`, `captions`, `render-qa-and-surgical-changes`,
-`motion-design-systems`, `scene-continuity-and-transitions`, `video-intake-and-storyboard`.
+(Apache-2.0, community project — not an official HyperFrames or HeyGen repository).
+The full Apache-2.0 license text is in `LICENSE`; each vendored file carries a
+provenance header. **Change policy:** the curator and the agent are expected to
+edit these files freely — that is the point of a working pipeline. The only
+obligation is Apache-2.0 §4(b): when you modify a vendored file, note the change
+in its header (one line, what and why). Git history carries the rest; do not
+track upstream commits per file. The production *judgment* layer built on these
+tools lives in the video agent's skills: `end-to-end-video-playbook`,
+`hyperframes-scene-builder`, `audio-sync-assembly`, `captions`,
+`render-qa-and-surgical-changes`, `motion-design-systems`,
+`scene-continuity-and-transitions`, `video-intake-and-storyboard` — each carries
+a Provenance section and may be edited freely the same way.
 
 The music-bed caption tooling from the source repo was intentionally not vendored:
 standing decision is no music (VIDEO_CONCEPT §7), and captions ship as soft SRT

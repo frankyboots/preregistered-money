@@ -146,4 +146,4 @@ Otherwise make the smallest safe change and verify it.
 
 ## Provenance
 
-Adapted from https://github.com/saranambiar/hyperframes-video-agent-skills (Apache-2.0, community project — not an official HyperFrames or HeyGen repository). Product-footage checks removed (faceless channel); determinism check added per VIDEO_CONCEPT §9.
+Adapted from https://github.com/saranambiar/hyperframes-video-agent-skills (Apache-2.0, community project — not an official HyperFrames or HeyGen repository). Product-footage checks removed (faceless channel); determinism check added per VIDEO_CONCEPT §9. Edit this skill freely as the workflow evolves; keep this provenance section.

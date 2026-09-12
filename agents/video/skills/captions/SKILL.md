@@ -88,4 +88,4 @@ Return:
 
 ## Provenance
 
-Adapted from the caption half of `captions-and-music-bed` in https://github.com/saranambiar/hyperframes-video-agent-skills (Apache-2.0, community project — not an official HyperFrames or HeyGen repository). Music-bed sections removed per the channel's standing "music: none" decision (VIDEO_CONCEPT §7); ASS burn-in template deferred until the delivery decision changes.
+Adapted from the caption half of `captions-and-music-bed` in https://github.com/saranambiar/hyperframes-video-agent-skills (Apache-2.0, community project — not an official HyperFrames or HeyGen repository). Music-bed sections removed per the channel's standing "music: none" decision (VIDEO_CONCEPT §7); ASS burn-in template deferred until the delivery decision changes. Edit this skill freely as the workflow evolves; keep this provenance section.

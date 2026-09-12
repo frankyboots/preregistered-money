@@ -1,4 +1,6 @@
-<!-- Vendored from https://github.com/saranambiar/hyperframes-video-agent-skills (Apache-2.0); unmodified. -->
+<!-- Vendored from https://github.com/saranambiar/hyperframes-video-agent-skills (Apache-2.0);
+<!-- licensed under Apache-2.0, see ../LICENSE. If you modify this file, note the change here (§4(b)). -->
+<!-- Changed 2026-09-12: header rewritten for in-repo change policy. -->
 # Storyboard Template
 
 Use this for multi-scene videos. Update status as scenes are approved so later agents do not mutate locked work.

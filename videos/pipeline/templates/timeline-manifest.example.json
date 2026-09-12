@@ -1,5 +1,5 @@
 {
-  "_provenance": "Vendored from https://github.com/saranambiar/hyperframes-video-agent-skills (Apache-2.0); otherwise unmodified.",
+  "_provenance": "Vendored from https://github.com/saranambiar/hyperframes-video-agent-skills (Apache-2.0); licensed under Apache-2.0, see ../LICENSE. Note changes here if modified (\u00a74(b)). Changed 2026-09-12: header rewritten for in-repo change policy.",
   "project": {
     "name": "sample-video",
     "width": 1920,
@@ -24,9 +24,20 @@
       "audio": "assets/scene-02-narration.mp3",
       "strategy": "segment-map",
       "maps": [
-        { "source_start": 0.0, "source_end": 4.0, "target_duration": 5.8 },
-        { "hold_source_time": 4.0, "target_duration": 1.5 },
-        { "source_start": 4.0, "source_end": 13.0, "target_duration": 9.2 }
+        {
+          "source_start": 0.0,
+          "source_end": 4.0,
+          "target_duration": 5.8
+        },
+        {
+          "hold_source_time": 4.0,
+          "target_duration": 1.5
+        },
+        {
+          "source_start": 4.0,
+          "source_end": 13.0,
+          "target_duration": 9.2
+        }
       ]
     }
   ],
@@ -42,8 +53,13 @@
     "end_silence_seconds": 2.0
   },
   "proofs": [
-    { "time": 10.0, "label": "scene-02-start" },
-    { "time": 27.0, "label": "chart-label-visible" }
+    {
+      "time": 10.0,
+      "label": "scene-02-start"
+    },
+    {
+      "time": 27.0,
+      "label": "chart-label-visible"
+    }
   ]
 }
-
