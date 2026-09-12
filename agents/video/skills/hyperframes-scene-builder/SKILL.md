@@ -54,14 +54,22 @@ Keep files small enough to inspect and diff.
 - Avoid bounce/rebound unless the user explicitly asks for it.
 - Keep final frame stable enough for proof extraction.
 
+## Project & CLI Mechanics (verified v0.8.35)
+
+- A HyperFrames "project" is just a directory containing an index.html — no global install, no node_modules, no lockfile, no daemon. `render`, `lint`, `check`, and `preview` all take the project directory as an argument.
+- Per-video vs. once: scaffolding happens once, when authoring the pipeline's committed skeleton; every new video is a **copy** of that skeleton. Never run `npx hyperframes init` inside this repo — it emits vendor router docs (AGENTS.md/CLAUDE.md) that claim authority over agent behavior and conflict with the repo's own skills.
+- Framework version is pinned in exactly one place (the pipeline render script / skeleton package.json). All hyperframes commands run through npx with that pinned version; never leave them bare in committed scripts or notes.
+- `npx hyperframes skills update` installs vendor skill docs into the home agent dirs (`~/.claude/skills`, `~/.agents/skills`) — this repo's agent stack reads only its own repo skills, so never run it here. The only opt-out env var is `HYPERFRAMES_SKIP_SKILLS=1`; set it in the render script as defense in case a future version makes the check mandatory. If one specific framework detail is missing from the repo skills, pull that one reference file into the repo skill library with an Apache-2.0 provenance note — never bulk-install vendor skills.
+
 ## Render Loop
 
-Typical commands (the repo's render script in `videos/pipeline/` wraps these):
+Typical commands (the repo's render script in `videos/pipeline/` wraps these): the video directory is the positional argument to every command.
 
 ```bash
-npx hyperframes preview
-npx hyperframes lint
-npx hyperframes render --composition compositions/scene-name.html --output renders/scene-name.mp4 --fps 24 --quality draft --workers 2
+npx hyperframes preview <video-dir>
+npx hyperframes lint <video-dir>
+npx hyperframes check <video-dir>   # lint + runtime + layout + motion + contrast in one browser session
+npx hyperframes render <video-dir> --composition compositions/scene-name.html --output renders/scene-name.mp4 --fps 24 --quality draft --workers 2
 ```
 
 Use higher FPS or quality only when the scene is approved or when testing frame-rate-specific motion. Every material render updates the build log.

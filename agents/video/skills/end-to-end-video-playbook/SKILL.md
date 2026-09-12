@@ -23,6 +23,7 @@ Use this skill to coordinate a complete video project from rough request to veri
 - The build log (`build.log`) is updated at every render and committed with the change it describes.
 - Commits follow the `video-commit` skill (boundary, message format, integrity checklist).
 - Style, palette, and motion come from the versioned style spec in `videos/pipeline/style/`; the build log pins the version used.
+- A video directory is a HyperFrames project by copying the committed pipeline skeleton — never by running `npx hyperframes init` per video (scaffold once into the skeleton; see `hyperframes-scene-builder`, Project & CLI Mechanics). The framework version is pinned in the pipeline render script, not per video.
 
 ## Workflow
 
