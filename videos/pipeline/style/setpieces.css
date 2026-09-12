@@ -1,0 +1,118 @@
+/* setpieces.css — pinned set pieces, style spec v1.0.0
+ *
+ * These classes render identically in every video. Any pixel change is a
+ * MAJOR style-spec version bump (disclaimer card: + owner decision).
+ * Imports tokens.css for the custom properties.
+ */
+
+/* --- 4.1 Corner bug -------------------------------------------------------- */
+.bug {
+  position: absolute;
+  top: 40px; left: 40px;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--paper-dim);
+  letter-spacing: 0.02em;
+  opacity: 0;
+  animation: bug-in var(--dur-fade) var(--ease-out) forwards;
+}
+@keyframes bug-in { to { opacity: 1; } }
+
+/* --- 4.3 The bar (SVG elements) --------------------------------------------- */
+.bar-line { stroke: var(--seal-amber); stroke-width: 3px; fill: none; }
+.bar-tag  { fill: var(--seal-amber); font-size: var(--fs-anno); }
+
+/* --- Chart conventions (§6) --------------------------------------------------- */
+.axis        { stroke: var(--paper-dim); stroke-width: 1px; }
+.gridline    { stroke: var(--paper-dim); stroke-width: 1px; opacity: 0.4; }
+.axis-label  { fill: var(--paper-dim); font-size: var(--fs-anno); }
+.series-cost { stroke: var(--paper);     stroke-width: 3px; fill: none; }
+.series-raw  { stroke: var(--paper-dim); stroke-width: 2px; fill: none; stroke-dasharray: 6 4; }
+.hero-number { font-family: var(--font-mono); font-weight: 500; font-size: var(--fs-hero); fill: var(--paper); }
+
+/* --- 4.4 Verdict card ---------------------------------------------------------- */
+.verdict-card {
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+}
+.verdict-word {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-hero);
+  letter-spacing: 0.01em;
+}
+.verdict-word.confirmed    { color: var(--confirmed); }
+.verdict-word.falsified    { color: var(--falsified); }
+.verdict-word.inconclusive { color: var(--inconclusive); }
+
+/* --- 4.5 Disclaimer card (PINNED) ----------------------------------------------- */
+.disclaimer-card {
+  background: var(--ink);
+  border: 1px solid var(--paper-dim);
+  padding: 40px;
+}
+.disclaimer-card .dc-title {
+  font-family: var(--font-mono);
+  font-size: var(--fs-anno);
+  color: var(--paper-dim);
+  letter-spacing: 0.12em;
+  margin-bottom: var(--gap-md);
+}
+.disclaimer-card ul {
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-body);
+  color: var(--paper);
+  line-height: 1.6;
+}
+.disclaimer-card li::before { content: "·  "; color: var(--paper-dim); }
+
+/* --- 4.6 Scoreboard ledger -------------------------------------------------------- */
+.ledger {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--ink);
+}
+.ledger th {
+  text-align: left;
+  font-size: var(--fs-anno);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--paper-dim);
+  border-bottom: 1px solid var(--paper-dim);
+  padding: 12px 16px;
+}
+.ledger td {
+  font-size: var(--fs-table);
+  color: var(--paper);
+  border-bottom: 1px solid rgba(107, 112, 120, 0.35);
+  padding: 10px 16px;
+  height: 56px;
+}
+.ledger tr.composite td { border-top: 2px solid var(--paper); }
+.ledger .v-confirmed    { color: var(--confirmed); }
+.ledger .v-falsified    { color: var(--falsified); }
+.ledger .v-inconclusive { color: var(--inconclusive); }
+
+/* --- Portfolio P&L rule (§2): never red/green -------------------------------------- */
+.pnl { font-family: var(--font-mono); color: var(--paper-dim); }
+
+/* --- Motion verbs (§5.2) ----------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: reveal-in var(--dur-reveal) var(--ease-out) forwards;
+}
+@keyframes reveal-in { to { opacity: 1; transform: none; } }
+
+.stamp {
+  animation: stamp-in var(--dur-stamp) var(--ease-out) forwards;
+}
+@keyframes stamp-in {
+  from { opacity: 0; transform: scale(1.15); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Forbidden (§5.3): no parallax, camera moves, 3D, bounce, glow, gradient
+   animation, ambient/idle motion, loops. New verbs require a minor bump. */
