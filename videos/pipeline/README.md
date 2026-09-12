@@ -9,7 +9,8 @@ pipeline/
 ├── skeleton/   # committed HyperFrames project skeleton — new videos are COPIES of this
 ├── tools/      # deterministic QA / assembly utilities (see below)
 ├── templates/  # spec + storyboard + change-request + timeline-manifest templates
-├── style/      # style-spec.md — palette, type, motion rules (versioned, semver)   [pending]
+├── style/      # style-spec.md v1.1.0 + tokens/setpieces css + brand-mark.svg (semver)
+├── brand/      # channel art (banner, profile logo) — generator + committed renders
 ├── render.sh   # only hyperframes entry point: pins version, skips vendor skills, logs to build.log
 ├── new_video.sh# create videos/<slug>/ from skeleton/ + spec template
 └── tts/        # TTS glue (ElevenLabs v3) + pinned voice/model/settings           [pending]

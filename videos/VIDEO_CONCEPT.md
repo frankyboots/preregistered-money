@@ -129,7 +129,7 @@ The benchmark-study episode (PR-2026-001) is the first *data* video; it lands wh
 
 ## 11. Open questions
 
-1. **Channel name / handle** — open in CONCEPT §11; the style spec's wordmark slot waits on it.
+1. **Channel name / handle** — settled 2026-09-12: **Preregistered Money**, `@preregisteredmoney` (already claimed). Wordmark is `PREREGISTERED MONEY`; the brand mark is pinned in `style/brand-mark.svg` (style-spec §4.2).
 2. **Slug convention** — proposed: series-prefix slugs (`meta-preregistration-rules`, `verdict-pr-2026-001`, `seal-pr-2026-002`). Settle when the second video is slugged.
 3. **Captions** — auto-generated SRT from the committed wav, committed in the video dir, uploaded with the video. Proposed: yes, always.
 4. **scoreboard.json** — request to the research side: scoreboard build emits the machine-readable export alongside `SCOREBOARD.md`.

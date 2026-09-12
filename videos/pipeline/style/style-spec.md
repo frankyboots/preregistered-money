@@ -1,8 +1,18 @@
 # Style Spec
 
-**Version: 1.0.0**
-Status: draft v1 — proposed at the branding session (2026-09-12), owner review
-pending.
+**Version: 1.1.0**
+Status: v1 — approved at the branding session (2026-09-12).
+
+Changelog:
+- 1.1.0 (2026-09-12): channel name settled — wordmark `PREREGISTERED MONEY`,
+  handle `@preregisteredmoney`. New set piece §4.2 (brand mark: the seal
+  stamp holding the bar); the seal ring and the corner bug now use it —
+  those slots were declared placeholders pending exactly this decision
+  (§11.1), and no output had been rendered against 1.0.0, so no shipped
+  pixels change. Set pieces renumbered: bar §4.4, verdict card §4.5,
+  disclaimer §4.6, ledger §4.7.
+- 1.0.0 (2026-09-12): palette, type, set pieces, motion verbs (draft,
+  owner review pending).
 
 This file is the "what" of the channel's visual system (VIDEO_CONCEPT §6).
 The concept document is the "why and how". Every build log pins this version.
@@ -92,30 +102,40 @@ decision.
 Upper-left, 40px margin, JetBrains Mono 20px `--paper-dim`:
 
 ```
-WORDMARK · PR-YYYY-NNN · sealed YYYY-MM-DD · <short-sha-8>
+PREREGISTERED MONEY · PR-YYYY-NNN · sealed YYYY-MM-DD · <short-sha-8>
 ```
 
 Fades in with each scene (200ms). Every frame self-identifies — the
-reproducibility promise, visually. Wordmark text waits on the channel-name
-decision; placeholder slot until then.
+reproducibility promise, visually. Wordmark: `PREREGISTERED MONEY`
+(channel name settled 2026-09-12, §11).
 
-### 4.2 The seal scene
+### 4.2 The brand mark (seal stamp with the bar)
+
+The channel's profile logo and the mark inside the seal ring. Owner decision
+2026-09-12: the certification stamp holds the bar — an ascending `--paper`
+line crossing a `--seal-amber` horizontal. Source of truth:
+`style/brand-mark.svg` (double ring, single-stroke weights, committed).
+Channel art (banner, profile logo) renders from this mark per the
+`channel-art` skill; the banner composition is the "bar" concept — curve,
+bar, wordmark — all inside the 1546×423 all-device safe zone.
+
+### 4.3 The seal scene
 
 The channel's signature moment. Sequence (~6–8s total, fixed):
 
 1. Ink background. A monospace line types in over ~1.2s:
    `git commit  <full-sha>` (left→right, 1 char/tick) — a plain commit: the
    seal never rewrites history (CONCEPT §2).
-2. The seal stamp — a single-stroke ring, wordmark inside (`style/seal.svg`) —
+2. The seal stamp — the brand mark (`style/brand-mark.svg`, §4.2) —
    scales in with **stamp** motion (150ms, 1.15→1.0, no overshoot, no
    bounce). This is the only impact motion in the system.
-3. The full SHA sits inside the ring, `--seal-amber`, JetBrains Mono, held 3s
-   before scene cut.
+3. The full SHA sits inside the ring below the mark, `--seal-amber`,
+   JetBrains Mono, held 3s before scene cut.
 
 Archetype: certification stamp / tamper-evident sticker, not a SaaS logo.
 Sound: none (standing; a pinned CC0 thud would require an owner decision).
 
-### 4.3 The bar
+### 4.4 The bar
 
 Pre-registered bars are **always drawn** on every chart that shows the
 relevant metric: a solid `--seal-amber` 3px horizontal line across the plot
@@ -124,7 +144,7 @@ area, tagged above it at the right end in JetBrains Mono 22px
 field, no paraphrase. Drawn **last**, after the series lines. The verdict is
 read by eye: the curve ends above or below the line.
 
-### 4.4 The verdict card
+### 4.5 The verdict card
 
 One layout for all three outcomes. Ink background, no border, no decoration:
 
@@ -134,7 +154,7 @@ One layout for all three outcomes. Ink background, no border, no decoration:
   variants. Falsified gets identical production values; the post-mortem
   beat follows as a separate scene.
 
-### 4.5 The disclaimer card
+### 4.6 The disclaimer card
 
 Verbatim CONCEPT §10, rendered identically in every video — same pixels
 every time. An integrity anchor, not a decoration.
@@ -152,7 +172,7 @@ Source of truth for the text is `docs/CONCEPT.md` §10. If CONCEPT §10
 changes, the card changes in the same release with a major style-spec bump
 and an owner decision recorded.
 
-### 4.6 The scoreboard ledger
+### 4.7 The scoreboard ledger
 
 Full-bleed table, `--paper` on `--ink`, thin `--paper-dim` rules:
 
@@ -224,7 +244,7 @@ same as any post-first-render spec change.
 3. **Labels near objects** — direct labels, no detached legend, unless a
    legend is explicitly justified in the video spec.
 4. **Gap fills** appear only after both curves make the gap meaningful.
-5. **The bar** is always drawn (§4.3), never omitted for space or drama.
+5. **The bar** is always drawn (§4.4), never omitted for space or drama.
 6. **Falsified results**: identical chart treatment; the chart stays
    neutral. Verdict color appears only in the verdict card and the
    scoreboard cell. The curve's position relative to the bar is the story.
@@ -276,10 +296,15 @@ Every video's build log pins the style-spec version it rendered against.
 
 ## 11. Open items (owner decisions, not drift)
 
-1. **Channel name / handle** — wordmark slot in the seal and bug waits on it
-   (placeholder until settled).
-2. **P&L color in Portfolio tables** — spec says no red/green (§2); confirm.
-3. **Seal SFX** — spec says none (§4.2); one pinned CC0 thud would need
+Resolved (2026-09-12): **channel name / handle** — `Preregistered Money`,
+`@preregisteredmoney` (handle already claimed). Wordmark is `PREREGISTERED
+MONEY` in the bug, seal scene, and channel art; the brand mark (§4.2) is
+locked in `style/brand-mark.svg`.
+
+Still open:
+
+1. **P&L color in Portfolio tables** — spec says no red/green (§2); confirm.
+2. **Seal SFX** — spec says none (§4.3); one pinned CC0 thud would need
    approval.
-4. **Captions** — standing proposal: always, committed SRT from the committed
+3. **Captions** — standing proposal: always, committed SRT from the committed
    wav; the bottom 132px caption-safe band assumes yes.

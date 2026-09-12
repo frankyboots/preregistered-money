@@ -167,6 +167,13 @@ IDEAS = {
     "bar":    {"label": "CONCEPT C — THE BAR",    "banner": banner_bar,    "logo": logo_bar,    "mark": bar_mark},
 }
 
+# Owner decision 2026-09-12: channel name "Preregistered Money",
+# handle @preregisteredmoney (already claimed). Final art = the bar banner
+# (concept C) + the seal stamp with the bar inside (concept A). The seal
+# stamp in the logo is the same mark pinned as style/brand-mark.svg
+# (style-spec v1.1.0 §4.2).
+FINAL = {"banner": banner_bar, "logo": logo_seal, "mark": seal_mark}
+
 def page(w, h, body, label=None):
     css = BASE_CSS.format(w=w, h=h) + FACES.format(f=FONT_REL)
     lab = ""
@@ -225,4 +232,7 @@ def build_idea(idea, d):
 
 for idea, d in IDEAS.items():
     build_idea(idea, d)
+# Final art: the chosen mix — bar banner + seal stamp logo.
+build_idea("final", {"label": "FINAL — PREREGISTERED MONEY @preregisteredmoney",
+                     **FINAL})
 print("done")

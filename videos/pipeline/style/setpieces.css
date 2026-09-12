@@ -1,4 +1,4 @@
-/* setpieces.css — pinned set pieces, style spec v1.0.0
+/* setpieces.css — pinned set pieces, style spec v1.1.0
  *
  * These classes render identically in every video. Any pixel change is a
  * MAJOR style-spec version bump (disclaimer card: + owner decision).
@@ -18,7 +18,13 @@
 }
 @keyframes bug-in { to { opacity: 1; } }
 
-/* --- 4.3 The bar (SVG elements) --------------------------------------------- */
+/* --- 4.2 The brand mark ------------------------------------------------------ */
+/* The brand mark is SVG, not CSS: style/brand-mark.svg is the source of truth.
+   Scenes embed it (img src or inline copy) and animate it with .stamp.
+   The wordmark text in the bug is set per-scene from the channel name
+   "PREREGISTERED MONEY" (settled 2026-09-12). */
+
+/* --- 4.4 The bar (SVG elements) --------------------------------------------- */
 .bar-line { stroke: var(--seal-amber); stroke-width: 3px; fill: none; }
 .bar-tag  { fill: var(--seal-amber); font-size: var(--fs-anno); }
 
@@ -30,7 +36,7 @@
 .series-raw  { stroke: var(--paper-dim); stroke-width: 2px; fill: none; stroke-dasharray: 6 4; }
 .hero-number { font-family: var(--font-mono); font-weight: 500; font-size: var(--fs-hero); fill: var(--paper); }
 
-/* --- 4.4 Verdict card ---------------------------------------------------------- */
+/* --- 4.5 Verdict card ---------------------------------------------------------- */
 .verdict-card {
   background: var(--ink);
   display: flex; align-items: center; justify-content: center;
@@ -45,7 +51,7 @@
 .verdict-word.falsified    { color: var(--falsified); }
 .verdict-word.inconclusive { color: var(--inconclusive); }
 
-/* --- 4.5 Disclaimer card (PINNED) ----------------------------------------------- */
+/* --- 4.6 Disclaimer card (PINNED) ----------------------------------------------- */
 .disclaimer-card {
   background: var(--ink);
   border: 1px solid var(--paper-dim);
@@ -67,7 +73,7 @@
 }
 .disclaimer-card li::before { content: "·  "; color: var(--paper-dim); }
 
-/* --- 4.6 Scoreboard ledger -------------------------------------------------------- */
+/* --- 4.7 Scoreboard ledger -------------------------------------------------------- */
 .ledger {
   width: 100%;
   border-collapse: collapse;
