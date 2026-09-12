@@ -16,6 +16,11 @@ agents/video/skills/autonomous-ai-agents/
 agents/research/config.yaml
 agents/video/config.yaml
 
+# Render outputs and QA artifacts are reproducible from the committed video dir;
+# they are not part of the record (regenerable = not committed).
+videos/*/renders/
+videos/*/snapshots/
+
 # Raw data snapshots — live on disk in data/ for viewing, never in git.
 # The contract is research/data/: manifests, checksums.txt, verify.py.
 data/*
