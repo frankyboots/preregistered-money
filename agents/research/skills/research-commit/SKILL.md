@@ -102,7 +102,7 @@ Run all seven before every commit. On failure: fix or stop and tell the user —
 1. **Boundary clean** — no `agents/video/` or `videos/` path staged (see Hard boundary).
 2. **Sealed doc touched?** — must be an append-only amendment (ceremony rule 4); if the intended change is not an amendment, stop and flag it for a new PR instead.
 3. **Sealing?** — the commit contains exactly one prereg with `sealed: true`, and nothing else.
-4. **No raw data** — `research/data/` commits carry manifests, loaders, and download recipes only (source/version/checksum/recipe), never data dumps.
+4. **No raw data** — `research/data/` commits carry manifests, loaders, and download recipes only (source/version/checksum/recipe), never data dumps. Raw snapshots live in the gitignored `data/` drop zone at the repo root: before committing any data change, run `python3 research/data/verify.py` (must exit 0 — all pinned hashes match, no unpinned files) and confirm nothing under `data/` is staged except `data/README.md`, the only tracked file there. Full procedure: the `data-snapshots` skill.
 5. **No history rewriting** — never `rebase`, `reset --hard`, or `commit --amend` on a pushed commit or on any `seal` commit. Fix forward with a new commit.
 6. **Scoreboard is generated** — `SCOREBOARD.md` changes come from `scoreboard/build.py`, never hand-edits (commit type `chore(scoreboard)`).
 7. **Format valid** — type and scope both in the allowed sets above; subject ≤ 72 chars, imperative, no trailing period.
