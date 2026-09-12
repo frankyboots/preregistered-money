@@ -7,6 +7,9 @@ agents/video/skills/.usage.json.lock
 agents/video/skills/.hub/
 agents/video/skills/.curator_ledger.jsonl
 
+# Hermes memory runtime locks (lock files, not the record; MEMORY.md itself is committed)
+agents/*/memories/*.lock
+
 # Vendored Hermes bundled skills — version-pinned by .bundled_manifest,
 # re-syncable from the Hermes install
 agents/research/skills/autonomous-ai-agents/
