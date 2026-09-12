@@ -1,0 +1,6 @@
+# sha256 of every raw snapshot in data/. Format: <sha256>  data/<filename>
+# Regenerate after adding a file:  cd repo && sha256sum data/* | grep -v README
+# A changed hash = a different snapshot: update the manifest, note it, re-pin.
+044196dafe44c3030b2facbdea023975b3f6aa68b4e52f8f9bafc403e19589c1  data/ie_data.xls
+dd331063f7d6979b63861de1bde293bf1d57410cb661c60ead900dc39c79f8ab  data/FRED_FEDFUNDS, 1M.csv
+92217de25d5d14b8cf62d33ef74d56369429363b077e694d6665173dfd5a0334  data/TVC_GOLD, 1M.csv
