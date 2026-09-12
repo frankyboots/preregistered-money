@@ -129,23 +129,24 @@ def banner_ledger():
 </div>'''
 
 def banner_bar():
-    # zone-local coordinates: 1546 x 423. curve + bar in the upper area, name below.
-    curve_pts = [(0, 200), (300, 190), (600, 185), (900, 170),
-                 (1150, 150), (1350, 110), (1500, 60), (1546, 45)]
+    # zone-local coordinates: 1546 x 423. Chart is the design; the channel name
+    # is deliberately NOT on the banner — YouTube already renders it below the
+    # art on the channel page (owner decision 2026-09-12). The tagline is the
+    # only word.
+    curve_pts = [(0, 242), (300, 230), (600, 222), (900, 204),
+                 (1150, 180), (1350, 132), (1500, 74), (1546, 56)]
     poly = " ".join(f"{x},{y}" for x, y in curve_pts)
     return f'''
 <div style="position:absolute;left:507px;top:509px;width:1546px;height:423px;">
-  <svg width="1546" height="260" viewBox="0 0 1546 260" style="position:absolute;left:0;top:0;">
-    <line x1="0" y1="175" x2="1546" y2="175" stroke="{AMBER}" stroke-width="6"/>
+  <svg width="1546" height="300" viewBox="0 0 1546 300" style="position:absolute;left:0;top:0;">
+    <line x1="0" y1="215" x2="1546" y2="215" stroke="{AMBER}" stroke-width="6"/>
     <polyline points="{poly}" fill="none" stroke="{PAPER}" stroke-width="7"
               stroke-linejoin="round" stroke-linecap="round"/>
   </svg>
-  <div class="mono" style="position:absolute;right:0;top:228px;font-size:22px;color:{DIM};">
+  <div class="mono" style="position:absolute;right:0;top:262px;font-size:22px;color:{DIM};">
        bar: pre-registered</div>
-  <div style="position:absolute;left:0;right:0;top:292px;text-align:center;font-size:92px;
-       font-weight:700;letter-spacing:2px;color:{PAPER};">PREREGISTERED MONEY</div>
-  <div class="mono" style="position:absolute;left:0;right:0;top:402px;text-align:center;
-       font-size:24px;color:{DIM};">every result is judged against a bar set in advance</div>
+  <div class="mono" style="position:absolute;left:0;right:0;top:350px;text-align:center;
+       font-size:30px;letter-spacing:1px;color:{PAPER};white-space:nowrap;">every result is judged against a bar set in advance</div>
 </div>'''
 
 # ---- logos (800x800) ---------------------------------------------------------
