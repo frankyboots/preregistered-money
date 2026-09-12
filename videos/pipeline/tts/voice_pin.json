@@ -1,7 +1,20 @@
 {
-  "_provenance": "Channel TTS/STT pin (ElevenLabs). Created 2026-09-12 during TTS glue build; voice_id pending owner choice from auditions. MIT-adjacent config for tooling vendored from https://github.com/elevenlabs/skills.",
-  "voice_id": null,
-  "voice_name": null,
+  "_provenance": "Channel TTS/STT pin (ElevenLabs). Created 2026-09-12 during TTS glue build; voice pinned 2026-09-12 (owner: duo — Helen pilot narrator, Zane second voice). MIT-adjacent config for tooling vendored from https://github.com/elevenlabs/skills.",
+  "voice_id": "XB0fDUnXU5powFXDhCwa",
+  "voice_name": "Helen (professional, en-british)",
+  "duo": {
+    "narrator": {
+      "voice_id": "XB0fDUnXU5powFXDhCwa",
+      "name": "Helen",
+      "role": "Default narrator; the pilot video (meta-preregistration-rules) is fully narrated by her."
+    },
+    "counterpart": {
+      "voice_id": "L6s7ahP9mHOb2S1Qynng",
+      "name": "Zane - Cool & Energetic British Friend",
+      "role": "Second channel voice (owner decision 2026-09-12, 'a duo, at least in the beginning'). Not yet used; per-beat voice assignment in voiceover.py is not implemented — add a '[voice: zane]' beat tag when a script first needs both."
+    },
+    "note": "Delivery direction is flat and calm (style spec). Zane's profile is energetic — verify stability/speed fit on his first real beat before relying on him."
+  },
   "model_id": "eleven_v3",
   "voice_settings": {
     "stability": 0.55,

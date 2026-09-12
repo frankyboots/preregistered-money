@@ -24,6 +24,15 @@ The narration pipeline: `narration.md` (one `## beat-NN` per spec beat) → comm
 `audio/voiceover.wav` (the timing source of truth) → `audio/timing/` (beat-map,
 word-level transcript, SRT).
 
+**Channel voices (duo — owner decision 2026-09-12):** the channel runs two
+voices. `Helen` (`XB0fDUnXU5powFXDhCwa`, professional, en-british) is the
+default narrator and narrates the pilot video; `Zane`
+(`L6s7ahP9mHOb2S1Qynng`, "Cool & Energetic British Friend", professional) is the
+second voice, reserved for future use (watch his energy against the channel's
+flat/calm direction on his first beat). `voiceover.py` currently synthesizes a
+whole script with the default `voice_id`; per-beat voice switching is a
+documented extension, not yet built.
+
 | Pinned (build log carries these) | Value / location |
 |---|---|
 | SDK | `elevenlabs` python — version in `tts/requirements.lock.txt` (venv: `tts/.venv`, gitignored) |
