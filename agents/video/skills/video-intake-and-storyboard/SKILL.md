@@ -55,6 +55,8 @@ The intake artifact is the video's `spec.md` — committed before the first rend
 - Include what must not appear early.
 - Include first-frame and final-frame requirements.
 - Include proof timestamps for later QA.
+- A video whose sources don't exist yet (no results doc / empty scoreboard) is not blocked on a prereg for every placeholder figure: use placeholder IDs from a non-colliding range (e.g. `PR-0000-000`-style, never inside the real ID sequence), label every such value `example` on screen in annotation type, and record in the spec that no real number appears. The citation rule binds real figures; labeled examples are a documented spec exception.
+- For a channel's first video, the seal set piece's SHA is the spec's own commit SHA — pin it to `data/spec-sha.txt` in a follow-up commit BEFORE the first render and checksum it in the build log. The SHA is a data input, never computed in the composition (deterministic re-renders).
 
 ## Storyboard Rules
 

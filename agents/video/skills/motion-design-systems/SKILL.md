@@ -70,6 +70,19 @@ Use progressive reveal logic:
 
 Read `references/chart-storytelling.md` for more.
 
+### Anti-staleness: relevance ordering, not pixel activity
+
+- Never ban scenes longer than N seconds. Long scenes are fine; cueless scenes are not. Boredom comes from preloaded frames sitting idle, not from duration.
+- The frame state at any moment must equal the set of elements the narration has named so far — reveal each element on the word that names it, never more than ~2s before (axes/frame may pre-exist).
+- Change floor: at least one state change per 10s of narration (new element, number roll, table row, line extension). A scene that can't hit the floor is overlong: split it or cut the script.
+- Stillness is sanctioned only in the final hold — the settled, most-informative state, which is what proof frames check.
+- A >3s narration silence is a script problem (tighten or add a cue), never something to fill with motion.
+
+## Fonts (determinism)
+
+- Scenes may only use the pipeline's vendored WOFF2 set (`videos/pipeline/fonts/`) via the pinned `@font-face` block in `tokens.css`; font checksums go in the build log. Never a runtime CDN font link — it breaks same-inputs-same-pixels and needs network at render time.
+- Vendoring recipe (verified): `curl -sfL https://cdn.jsdelivr.net/fontsource/fonts/<family>@latest/<subset>-<weight>-normal.woff2 -o <Name>-<Weight>.woff2`, verify with `file` (must say "Web Open Font Format"), pin via `sha256sum`.
+
 ## Theme Consistency
 
 When a theme changes:
