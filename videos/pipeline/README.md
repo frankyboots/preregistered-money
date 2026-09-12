@@ -122,6 +122,17 @@ tools lives in the video agent's skills: `end-to-end-video-playbook`,
 `scene-continuity-and-transitions`, `video-intake-and-storyboard` — each carries
 a Provenance section and may be edited freely the same way.
 
+`humanizer` (video agent skill) is adapted from
+[blader/humanizer](https://github.com/blader/humanizer) (MIT, Copyright
+(c) 2025 Siqi Chen), upstream v3.0.0 @ 9862685: the 25 numbered patterns for
+de-AI-ing prose, adapted to narration (beat headings, TTS reads raw text,
+numbers spoken exactly as cited in the spec; print-only sections marked
+*(print)*). Used when writing `narration.md`. **Skipped upstream, by decision:**
+`README.md`, `AGENTS.md` (upstream install/maintenance docs),
+`scripts/validate-package.py` (validates upstream's package layout),
+`.claude-plugin/`, `agents/openai.yaml`, `.github/workflows/` (agent packaging;
+workflows are outside the video commit boundary).
+
 The music-bed caption tooling from the source repo was intentionally not vendored:
 standing decision is no music (VIDEO_CONCEPT §7), and captions ship as soft SRT
 generated from the committed voiceover wav (§11).
