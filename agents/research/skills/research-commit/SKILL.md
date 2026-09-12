@@ -72,6 +72,7 @@ Standard conventional set, plus one project type:
 | `concept` | `docs/CONCEPT.md` |
 | `templates` | `docs/templates/` |
 | `repo` | root files, repo plumbing |
+| `agents` | `agents/research/` — the research agent profile: SOUL.md, MEMORY.md, skills, memories/README.md |
 
 Subject ≤ 72 chars; keep the whole `type(scope):` prefix short by preferring the narrowest scope that fits.
 
@@ -106,6 +107,7 @@ Run all seven before every commit. On failure: fix or stop and tell the user —
 5. **No history rewriting** — never `rebase`, `reset --hard`, or `commit --amend` on a pushed commit or on any `seal` commit. Fix forward with a new commit.
 6. **Scoreboard is generated** — `SCOREBOARD.md` changes come from `scoreboard/build.py`, never hand-edits (commit type `chore(scoreboard)`).
 7. **Format valid** — type and scope both in the allowed sets above; subject ≤ 72 chars, imperative, no trailing period.
+8. **Concurrent writer** — the video agent commits to the same working tree while you work. Re-run `git status --short` immediately before committing: a path that was pending minutes ago may already be committed (by the other agent), and new commits can land between your check and yours. After committing, confirm with `git log --oneline` that your commit is at the tip; if a foreign commit interleaved, `git show <sha> --stat` and confirm it stayed on the other side of the boundary.
 
 ## Templates (the common cases)
 
@@ -128,5 +130,6 @@ docs(concept): resolve open question — data budget
 docs(templates): PR_TEMPLATE.md first draft
 chore(scoreboard): regenerate from prereg+result docs
 chore(repo): pin deps, add LICENSE (MIT) and .gitignore
+docs(agents): README for research memory store
 ci: re-run latest sealed prereg on schedule, publish drift as incident
 ```
