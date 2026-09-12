@@ -14,3 +14,8 @@ agents/video/skills/autonomous-ai-agents/
 # Machine-local agent runtime config (localhost provider endpoint, display)
 agents/research/config.yaml
 agents/video/config.yaml
+
+# Raw data snapshots — live on disk in data/ for viewing, never in git.
+# The contract is research/data/: manifests, checksums.txt, verify.py.
+data/*
+!data/README.md
