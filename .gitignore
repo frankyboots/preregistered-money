@@ -1,6 +1,7 @@
 # Hermes skill runtime state (usage tracking)
 agents/research/skills/.usage.json
 agents/research/skills/.usage.json.lock
+agents/research/skills/.curator_ledger.jsonl
 agents/video/skills/.usage.json
 agents/video/skills/.usage.json.lock
 agents/video/skills/.hub/
