@@ -36,9 +36,13 @@ Refused — unstage and abort, report to the user:
 
 Allowed paths for video commits: `videos/**`, `agents/video/**`, the video-render workflow in `.github/workflows/`, and root files (README, LICENSE, .gitignore) *only when the change is about video tooling or the scaffold itself*.
 
+`agents/video/memories/MEMORY.md` is committed — it is the agent's auditable task-tracker state, part of the scaffold. Its `*.lock` sibling is runtime noise and is gitignored; never stage a lock file.
+
 The video agent **never edits run configs, sealed preregs, results docs, or scoreboard output.** Numbers for a video come *from* the published results doc (read-only); a video that needs a new number requests a new prereg — it never produces one. This is the mechanical research/video separation (CONCEPT §11).
 
 Gate: before committing, run `git status --short` and inspect every path that would be staged. If any matches a refused pattern, stop. Do not "just leave it in the working tree if it's already staged" — unstage it explicitly.
+
+**Concurrent writer:** the research agent commits to the same working tree while you work. Re-run `git status --short` immediately before each commit — a path that was untracked minutes ago may already be committed, and new commits can land between your check and yours. After committing, confirm with `git log --oneline` that your commit landed at the tip; if a foreign commit appeared around yours, `git show <sha> --stat` and confirm it stayed on the other side of the boundary before moving on.
 
 ## Message format
 
