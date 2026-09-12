@@ -34,6 +34,12 @@ Shared, versioned things (templates, render script, TTS glue, fonts, style spec)
 
 Keep files small enough to inspect and diff.
 
+## Sub-composition Authoring (verified v0.8.35)
+
+A scene file is standalone HTML: its own `<div data-composition-id="scene-XX" data-start data-duration data-width data-height>` root, its own paused GSAP timeline registered under that ID, its own GSAP script tag. It renders alone via `--composition composition/scene-XX.html`. It mounts in `index.html` via `<div data-composition-id="scene-XX" data-composition-src="composition/scene-XX.html" data-start data-duration data-track-index>`.
+
+Lint is strict about mount elements: every `data-composition-src` host needs **both** `data-composition-id` and a stable `id` (the second is the Studio edit target) — a host with only `data-composition-src` is a lint error, not a warning.
+
 ## Composition Rules
 
 - Define an explicit composition root with `data-composition-id`, `data-width`, `data-height`, and timing metadata where the project uses it.
@@ -59,18 +65,20 @@ Keep files small enough to inspect and diff.
 - A HyperFrames "project" is just a directory containing an index.html — no global install, no node_modules, no lockfile, no daemon. `render`, `lint`, `check`, and `preview` all take the project directory as an argument.
 - Per-video vs. once: scaffolding happens once, when authoring the pipeline's committed skeleton; every new video is a **copy** of that skeleton. Never run `npx hyperframes init` inside this repo — it emits vendor router docs (AGENTS.md/CLAUDE.md) that claim authority over agent behavior and conflict with the repo's own skills.
 - Framework version is pinned in exactly one place (the pipeline render script / skeleton package.json). All hyperframes commands run through npx with that pinned version; never leave them bare in committed scripts or notes.
-- `npx hyperframes skills update` installs vendor skill docs into the home agent dirs (`~/.claude/skills`, `~/.agents/skills`) — this repo's agent stack reads only its own repo skills, so never run it here. The only opt-out env var is `HYPERFRAMES_SKIP_SKILLS=1`; set it in the render script as defense in case a future version makes the check mandatory. If one specific framework detail is missing from the repo skills, pull that one reference file into the repo skill library with an Apache-2.0 provenance note — never bulk-install vendor skills.
+- `npx hyperframes skills update` installs vendor skill docs into the home agent dirs (`~/.claude/skills`, `~/.agents/skills`) — this repo's agent stack reads only its own repo skills, so never run it here. The only opt-out env var is `HYPERFRAMES_SKIP_SKILLS=1`; set it in the render script as defense in case a future version makes the check mandatory. If vendor skill dirs or symlinks appear under `agents/video/skills/` in git status, they are vendor-install pollution (the repo skills dir is one of the vendor's install targets, so it symlinks into `~/.claude/skills`): remove the repo symlinks and the home-dir entries — they are never repo content and never get committed. If one specific framework detail is missing from the repo skills, pull that one reference file into the repo skill library with an Apache-2.0 provenance note — never bulk-install vendor skills.
 
 ## Render Loop
 
 Typical commands (the repo's render script in `videos/pipeline/` wraps these): the video directory is the positional argument to every command.
 
 ```bash
-npx hyperframes preview <video-dir>
-npx hyperframes lint <video-dir>
-npx hyperframes check <video-dir>   # lint + runtime + layout + motion + contrast in one browser session
-npx hyperframes render <video-dir> --composition compositions/scene-name.html --output renders/scene-name.mp4 --fps 24 --quality draft --workers 2
+pipeline/render.sh <video-dir> preview
+pipeline/render.sh <video-dir> lint
+pipeline/render.sh <video-dir> check   # lint + runtime + layout + motion + contrast in one browser session
+pipeline/render.sh <video-dir> render --composition composition/scene-name.html --output renders/scene-name.mp4 --fps 24 --quality draft --workers 2
 ```
+
+`render.sh` is the sanctioned entry point: pins the framework version, sets `HYPERFRAMES_SKIP_SKILLS=1`, and appends a build.log line per invocation. Bare `npx hyperframes <cmd> <video-dir>` is for diagnostics only — see the `--output` pitfall below.
 
 Use higher FPS or quality only when the scene is approved or when testing frame-rate-specific motion. Every material render updates the build log.
 
@@ -153,6 +161,7 @@ Use draft renders while iterating:
 
 Watch for:
 
+- **`--output` resolves relative to the shell CWD, not the project dir** — a bare CLI render silently dumps the MP4 at the repo root instead of the video dir. Always render through `pipeline/render.sh`, which re-anchors relative `--output` to the video dir (landed renders must sit under `videos/<slug>/renders/`, gitignored).
 - Timeline ID mismatches.
 - Unscoped selectors in nested compositions.
 - GSAP overwriting existing CSS transforms.

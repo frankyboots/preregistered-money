@@ -30,6 +30,7 @@ Use this skill to coordinate a complete video project from rough request to veri
 1. Ground in the current project.
    - Inspect available assets, renders, compositions, committed audio, and any existing spec.
    - Identify locked scenes and user boundaries such as "do not modify Scene 01."
+   - New video: bootstrap with `pipeline/new_video.sh <slug>` (copies the pipeline skeleton into `videos/<slug>/` and stages the spec template from `templates/spec.md`) — never `npx hyperframes init`. Keep the spec at the top of the commit order: the spec must be committed before the first render (CONCEPT §4.1).
    - Use `videos/pipeline/templates/storyboard.md` for multi-scene planning.
 
 2. Convert intent into a spec.
