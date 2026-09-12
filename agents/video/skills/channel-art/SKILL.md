@@ -42,13 +42,19 @@ Living directory: `videos/pipeline/brand/` (generator + `concepts/<idea>/`).
    the generator — when anything brand-level changes, edit the one constant
    and re-render everything; never re-handcraft art. The final mix (owner
    decision 2026-09-12): bar banner + seal stamp holding the bar, committed
-   under `concepts/final/`.
+   under `concepts/final/`. Banner v2 (2026-09-12) dropped the name from the
+   banner per owner: chart + `bar: pre-registered` annotation + tagline only;
+   the wordmark still appears in videos (beat 1), logo, and metadata.
 
 ## Sizes (YouTube)
 
 - **Banner:** upload 2560×1440. All-device safe area is **1546×423 centered**
-  → x 507..2053, y 509..931. All required content (name, mark, tagline) lives
-  inside the safe box; outer margins are plain ink shown only on TV.
+  → x 507..2053, y 509..931. All content lives inside the safe box; outer
+  margins are plain ink shown only on TV. **No channel name on the banner**
+  (owner decision 2026-09-12): YouTube already renders the name directly below
+  the art on the channel page, so repeating it is redundant — the banner carries
+  only the chart/wordless mark, annotations, and tagline (the tagline becomes
+  the hero text).
 - **Profile logo:** 800×800, all content inside the central circle — YouTube
   crops avatars to a circle.
 - Max file size 6 MB; these renders are ~50–150 KB.
