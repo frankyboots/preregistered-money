@@ -129,6 +129,8 @@ preregistered-money/
 │   ├── backtest/              # small in-house backtest engine (transparent, testable)
 │   ├── data/                  # loaders, manifests, snapshot pins (no raw dumps)
 │   └── strategies/            # one package per PR, config-driven
+├── data/                      # raw snapshot drop zone — GITIGNORED (data/README.md);
+│   #   raw exports live here on disk for viewing; manifests live in research/data/
 ├── agents/                    # agent definitions + prompts used in research & production
 ├── videos/
 │   └── <video-slug>/          # hyperframes composition (HTML/CSS/JS) + build log
@@ -138,7 +140,7 @@ preregistered-money/
 └── .github/workflows/         # CI: re-runs, scoreboard build, video render
 ```
 
-Raw data generally does not live in the repo — data *manifests* (source, version, checksum, download recipe) do, so snapshots are reproducible without shipping gigabytes.
+Raw data generally does not live in the repo — data *manifests* (source, version, checksum, download recipe) do, so snapshots are reproducible without shipping gigabytes. Concretely: raw exports are dropped into `data/` at the repo root (gitignored, per `data/README.md`) so they can be inspected locally; `research/data/` holds the dataset manifests (`datasets/*.md`), the pin file (`checksums.txt`), and `verify.py`, which checks every file in `data/` against its pinned checksum and flags any unpinned file. A re-download is a *new snapshot* — new checksum, new manifest note — never a silent overwrite of a file a sealed prereg pinned.
 
 ---
 
@@ -206,7 +208,7 @@ Raw data generally does not live in the repo — data *manifests* (source, versi
 Still open:
 
 1. **Composite recipe.** Direction forming (September 2026): *risk-weighted* (inverse-vol) across pinned sleeves, with composite-level vol-targeted leverage — gross exposure scaled up/down to a target realized vol, within a band, excess in cash/T-bills. Strategies are designed to be complementary and to *nest within one another*, so the composite is a tree of sleeves (frozen passive base + pinned tactical sleeves), not a flat list. Split of judgment: Sharpe governs the *pin* (membership — discretionary, prereg-confirmed, recorded); rolling vol governs *sizing* (mechanical, in the recipe). Paper tracking at the first pin; live from Phase 2 (§9). The recipe itself is a Phase 0 deliverable: a versioned, sealed spec — changes are new versions, append-only, never retroactive. Open parameters: target vol, exposure band, vol-estimation window, rebalance frequency, per-sleeve weight cap, and whether the frozen passive base sits inside the composite or alongside it. Schema note: the strategy spec carries an explicit *composite placement* field (sleeve, intended role, interaction with siblings).
-2. **Data budget.** What will we actually spend on data in year 1? (Leaning: $0 — public sources only; the three-asset stack fits this.)
+2. **Data budget.** Resolved in practice (September 2026): $0 — public sources only, per the layout above. Working stack: Shiller *Irrational Exuberance* monthly dataset (SPX + 10Y history, shillerdata.com), TradingView exports of FRED FEDFUNDS (risk-free rate) and GOLDUSD spot (gold; usable from 1970). Each is pinned by manifest + checksum in `research/data/`; expansion (e.g. LBMA pre-1970 gold fix, daily bars) is a new manifest, not a re-spend.
 3. **Naming/branding details.** Channel art, handle, whether "The Ledger" / "the scoreboard" gets an official name.
 
 ---
