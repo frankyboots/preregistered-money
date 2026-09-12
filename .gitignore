@@ -31,3 +31,10 @@ data/*
 
 # Python bytecode from pipeline tool runs
 __pycache__/
+
+# ElevenLabs SDK venv (rebuild: uv venv + uv pip install -r requirements.lock.txt)
+videos/pipeline/tts/.venv/
+
+# Voice audition samples — owner review only; the pin + first real voiceover
+# are the record (regenerable artifacts, not committed)
+videos/*/audio/auditions/

@@ -13,8 +13,51 @@ pipeline/
 ├── brand/      # channel art (banner, profile logo) — generator + committed renders
 ├── render.sh   # only hyperframes entry point: pins version, skips vendor skills, logs to build.log
 ├── new_video.sh# create videos/<slug>/ from skeleton/ + spec template
-└── tts/        # TTS glue (ElevenLabs v3) + pinned voice/model/settings           [pending]
+└── tts/        # TTS glue (ElevenLabs): voiceover.py (per-beat TTS), transcribe.py
+                # (Scribe v2 word timings + SRT), voice_pin.json (the pin),
+                # .venv (gitignored; elevenlabs SDK pinned by requirements.lock.txt)
 ```
+
+## tts/ — narration glue (ElevenLabs)
+
+The narration pipeline: `narration.md` (one `## beat-NN` per spec beat) → committed
+`audio/voiceover.wav` (the timing source of truth) → `audio/timing/` (beat-map,
+word-level transcript, SRT).
+
+| Pinned (build log carries these) | Value / location |
+|---|---|
+| SDK | `elevenlabs` python — version in `tts/requirements.lock.txt` (venv: `tts/.venv`, gitignored) |
+| TTS model | `voice_pin.json` `model_id` (`eleven_v3` per the first video's spec) |
+| Voice + settings | `voice_pin.json` `voice_id` + `voice_settings` (owner decision; change = logged act) |
+| STT model | `voice_pin.json` `stt.model_id` (`scribe_v2`, word granularity) |
+| Output format | `voice_pin.json` `output_format` (`pcm_24000` on the Creator tier — raw 16-bit PCM, wrapped and normalized to 44.1 kHz by `voiceover.py`; `wav_44100` is Pro-only) |
+| Inter-beat gap | `voice_pin.json` `gap_s` (0.75s; pinned — reshuffles the beat map if changed) |
+| Keyterms | `voice_pin.json` `keyterms` (channel-vocabulary bias for the ASR) |
+
+```bash
+# generate narration (per-beat wavs + master + beat-map + build-log summary)
+python3 videos/pipeline/tts/voiceover.py --script videos/<slug>/narration.md --video-dir videos/<slug>
+# word timings + soft SRT (from the committed wav)
+python3 videos/pipeline/tts/transcribe.py --video-dir videos/<slug>
+```
+
+Requires the key as `ELEVENLABS_API_KEY` in the environment, else
+`~/.config/elevenlabs/api_key` (file, 0600 — the repo convention: `~/.bashrc`
+early-returns for non-interactive shells, so tool invocations read the file).
+The key never lands in the repo. TTS is never called inside a render —
+the render consumes the committed wav, so re-renders stay deterministic
+(VIDEO_CONCEPT §7). Regeneration is a deliberate, logged act (the summary JSON
+records script sha256, voice/model/settings, per-beat request-ids, master sha256).
+
+Vendored from [elevenlabs/skills](https://github.com/elevenlabs/skills) (MIT):
+`text-to-speech` + `speech-to-text` (+ installation/voice-settings/
+transcription-options references), adapted to the per-beat committed-wav model.
+**Skipped upstream, by decision:** `music` (standing: no music, VIDEO_CONCEPT §7),
+`sound-effects` (standing: no SFX, style spec §4.3), `speech-engine` / `agents` /
+realtime-STT refs (live voice conversation — not this workflow), `voice-changer`,
+`voice-isolator`, `dubbing` (not in the pipeline), `evals/` + MCP config
+(we pin the Python SDK in a venv instead of the CLI). The setup-api-key flow is
+folded into the `elevenlabs-tts` skill.
 
 ## Working with HyperFrames
 

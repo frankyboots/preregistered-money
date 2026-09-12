@@ -1,0 +1,43 @@
+{
+  "_provenance": "Channel TTS/STT pin (ElevenLabs). Created 2026-09-12 during TTS glue build; voice_id pending owner choice from auditions. MIT-adjacent config for tooling vendored from https://github.com/elevenlabs/skills.",
+  "voice_id": null,
+  "voice_name": null,
+  "model_id": "eleven_v3",
+  "voice_settings": {
+    "stability": 0.55,
+    "similarity_boost": 0.75,
+    "style": 0.0,
+    "speed": 1.0,
+    "use_speaker_boost": true
+  },
+  "output_format": "pcm_24000",
+  "pcm_sample_rate": 24000,
+  "gap_s": 0.75,
+  "stt": {
+    "model_id": "scribe_v2",
+    "language_code": "eng",
+    "timestamps_granularity": "word"
+  },
+  "keyterms": [
+    "preregistration",
+    "pre-registration",
+    "scoreboard",
+    "verdict",
+    "falsified",
+    "confirmation rate",
+    "out-of-sample",
+    "OOS",
+    "Sharpe",
+    "CAGR",
+    "max DD",
+    "git commit",
+    "seal",
+    "prereg"
+  ],
+  "audition_candidates": {
+    "JBFqnCBsd6RMkjVDRZzb": "George (male, narrative)",
+    "onwK4e9ZLuTAKqWW03F9": "Daniel (male, authoritative)",
+    "XB0fDUnXU5powFXDhCwa": "Charlotte (female, conversational)",
+    "EXAVITQu4vr4xnSDxMaL": "Sarah (female, soft)"
+  }
+}
