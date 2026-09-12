@@ -51,7 +51,9 @@ symlinks and real files into the repo (`~/preregistered-money`):
 2. Join entries with a single `\n§\n` (a `§` on its own line). A `§` mid-entry
    splits the entry — it is the record separator.
 3. Stay under the per-store budget (config `memory.memory_char_limit`,
-   `memory.user_char_limit` — currently 5000 / 2500 chars). The `memory` tool
+   `memory.user_char_limit` — currently 5000 / 2500 chars). Never cite the code
+   defaults (2,200 / 1,375): the profile config overrides them, and docs that
+   state the defaults are wrong for this profile. The `memory` tool
    enforces the budget at write time; a hand-written file is not, so keep it
    small and trim the oldest Recent items before adding.
 4. Verify it round-trips through the store's own parser before committing:
@@ -62,10 +64,15 @@ symlinks and real files into the repo (`~/preregistered-money`):
 
 ## Commit
 
-Both `SOUL.md` and `MEMORY.md` live under `agents/research/` — inside the
-research-commit boundary, never a seal, no raw data. `chore(repo)` scope.
-The scratchpad's evolution is part of the public record, so commit the
-changes rather than leaving them untracked.
+`SOUL.md`, `MEMORY.md`, and the `memories/` docs (e.g. `README.md`) all live
+under `agents/research/` — inside the research-commit boundary, never a seal,
+no raw data. Scratchpad state commits as `chore(repo)`; the memories README
+commits as `docs(agents)`. Runtime lock files under `memories/` are
+gitignored — never stage one. The scratchpad's evolution is part of the
+public record, so commit the changes rather than leaving them untracked.
+Re-check `git status --short` immediately before committing — the video agent
+commits to the same working tree and its commits can land between your
+check and yours (research-commit checklist item 8).
 
 ## Standing rules
 
