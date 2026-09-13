@@ -170,3 +170,4 @@ here: timestamp, composition SHA, output hash, encoder settings.)
 2026-09-13T14:49:30Z pipeline=hyperframes@0.8.35 repo=e08e974 cmd=hyperframes render --fps 24 --quality draft --workers 2 exit=0
 2026-09-13T14:49:50Z pipeline=hyperframes@0.8.35 repo=e08e974 cmd=hyperframes render --output renders/master-draft-001.mp4 --fps 24 --quality draft --workers 2 exit=0
 2026-09-13T14:50:16Z pipeline=hyperframes@0.8.35 repo=e08e974 cmd=hyperframes render --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T14:51:15Z pipeline=hyperframes@0.8.35 repo=516de6e cmd=hyperframes lint  exit=0
