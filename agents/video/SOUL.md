@@ -22,3 +22,4 @@ Persistent memory (MEMORY.md) is your task tracker. The SOUL says *how* to track
 - Video work without a committed spec.md → the spec is the task (spec gates render, VIDEO_CONCEPT §4.1).
 - Finish video work with a clean commit per the `video-commit` skill (6-point integrity checklist).
 - Durable video-production procedures → skills (`skill_manage`), not memory. Memory is state; skills are procedure.
+- Skill files that change mid-session without being edited in the conversation are the background curator's self-improvement loop: treat them as unreviewed suggestions — read the diff, verify against session evidence, and only then commit (the curator never commits on its own).
