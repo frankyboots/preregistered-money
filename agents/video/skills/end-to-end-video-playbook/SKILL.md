@@ -30,8 +30,7 @@ Use this skill to coordinate a complete video project from rough request to veri
 1. Ground in the current project.
    - Inspect available assets, renders, compositions, committed audio, and any existing spec.
    - Identify locked scenes and user boundaries such as "do not modify Scene 01."
-   - New video: bootstrap with `pipeline/new_video.sh <slug>` (copies the pipeline skeleton into `videos/<slug>/` and stages the spec template from `templates/spec.md`) — never `npx hyperframes init`. Keep the spec at the top of the commit order: the spec must be committed before the first render (CONCEPT §4.1).
-   - Dir pre-existing without the scaffold (e.g. built audio-first: `spec.md`, `audio/`, `build.log` already committed): `new_video.sh` refuses existing dirs, so merge manually — copy `index.html`, `hyperframes.json`, `composition/README.md`, `data/README.md` from the skeleton verbatim; set `meta.json` + `package.json` id/name to the slug; skip the skeleton's `README.md` (it documents the skeleton, not the video). Never overwrite committed files; confirm via `git status` that only new untracked files landed. Verify the project boots (`pipeline/render.sh <dir> lint` + `check`), record the scaffold files' checksums in `build.log`, and commit scaffold + log together as one `chore(video-<slug>)`.
+   - **Phase A (new video, no render-ready dir yet): `video-bootstrap` owns the commit order** — spec gate first (fresh: `new_video.sh <slug>` → fill the spec → commit `spec.md` alone before anything else; audio-first pre-existing dir: spec already on top, manual skeleton merge), spec-SHA pin (first video only), audio lock + build-log creation, scaffold verify, style wiring. One commit per milestone; never `npx hyperframes init`; the spec is committed before the first render (CONCEPT §4.1).
    - Use `videos/pipeline/templates/storyboard.md` for multi-scene planning.
 
 2. Convert intent into a spec.
@@ -72,6 +71,7 @@ Use this skill to coordinate a complete video project from rough request to veri
 
 ## Agent Routing Table
 
+- New video (no spec or render-ready dir): start with `video-bootstrap` (Phase A), then `scene-spec-and-commit` per scene (Phase B).
 - User gives a rough idea only: start with `video-intake-and-storyboard`.
 - User gives a reference final frame: intake first, then `motion-design-systems`, then `hyperframes-scene-builder`.
 - User says a scene must start from another scene: use `scene-continuity-and-transitions`.
@@ -81,8 +81,10 @@ Use this skill to coordinate a complete video project from rough request to veri
 
 ## Implementation Order
 
+Phase map: A bootstrap (`video-bootstrap`) → B scene specs, one scene per commit (`scene-spec-and-commit`) → C scene builds, one scene per commit (skill pending) → D assembly/final.
+
 1. Lock approved scenes.
-2. Prepare spec and scene specs.
+2. Phase B: one scene spec + commit at a time (`scene-spec-and-commit`) — never batch.
 3. Build or revise scene sources.
 4. Render scene drafts.
 5. Extract proof frames.

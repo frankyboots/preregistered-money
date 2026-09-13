@@ -130,6 +130,10 @@ Avoid:
 - Global CSS that affects all mounted scenes.
 - Numbers typed into markup instead of read from a data input.
 
+## Scene-Spec Cue Rules (Phase B, this repo)
+
+Spec-side rules (window derivation, cue-table verification against words.json, change floor) live in `scene-spec-and-commit` — the one-scene-then-commit loop. Scene specs are that skill's output; this skill consumes them as build contracts.
+
 ## Timeline Authoring Checklist
 
 For every timeline:

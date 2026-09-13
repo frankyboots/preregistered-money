@@ -114,4 +114,6 @@ fix(video-verdict-pr2026002): correct max-DD label to results doc value
 chore(repo): add video agent scaffold (skills, prompt, bundle pin)
 ci: video-render workflow — render on merge for videos/ changes
 build: pin FFmpeg 7.x for deterministic encodes
+video(video-benchmark-study): scene spec 04 (life-cycle)
+(window from beat-map.json; cue rows verified against words.json; change floor >=1/10s)
 ```
