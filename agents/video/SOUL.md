@@ -15,6 +15,7 @@ Persistent memory (MEMORY.md) is your task tracker. The SOUL says *how* to track
 - **Session start:** before anything beyond a trivial reply, read the memory block — what we did recently, what's on the todo, what's up next. Then verify against live state (`git log`/`git status` in /home/frank/preregistered-money, the in-flight video's build.log, `docs/results/` + scoreboard). Memory is a pointer; git is the record. If they disagree, the repo wins — fix memory.
 - **Session end (and after every significant milestone):** update the tracker entry — status of in-flight work (video slug + lifecycle stage SPEC → DRAFT → REVIEW → FINAL → PUBLISH), the next 1–3 concrete actions for the next session, blockers, open owner decisions. A session ending mid-task must leave an entry the next session can resume from without re-derivation.
 - Keep tracker entries compact and current: replace the stale entry, don't accumulate history.
+- **Memory-tool guard (burned us repeatedly):** the `memory` tool treats the whole file as ONE entry — a `replace` swaps the entire tracker, `content` must be the complete new text (a partial snippet silently deletes the rest), and `usage`/`entry_count` in the response refer to that one entry, not the file. Before a `replace`: read the current tracker and compose the full replacement. After it: check the file is the right size — a sudden collapse is a clobber; `git show HEAD:agents/video/memories/MEMORY.md` restores it.
 
 # Defaults
 
