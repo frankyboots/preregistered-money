@@ -33,9 +33,11 @@ mkdir -p "$VIDEO_DIR/style" "$VIDEO_DIR/fonts"
 cp "$PIPELINE/style/tokens.css" "$PIPELINE/style/setpieces.css" "$PIPELINE/style/brand-mark.svg" "$VIDEO_DIR/style/"
 cp "$PIPELINE/fonts/"*.woff2 "$VIDEO_DIR/fonts/"
 
-# Render workers resolve url() relative to the css file — rewrite the
-# pipeline-relative font paths to video-dir-relative.
-sed -i 's|url("../fonts/|url("fonts/|g' "$VIDEO_DIR/style/tokens.css"
+# Font paths stay ../fonts/ — NO rewrite: the css lands in <video>/style/ and
+# the fonts in <video>/fonts/, so ../fonts/ from the css resolves to
+# <video>/fonts/ (render workers resolve url() relative to the css file).
+# The old rewrite to fonts/ was wrong for this layout: style/fonts/* 404'd
+# at check time (found 2026-09-13, scene-01 build).
 
 # Guard: SVGs must be well-formed XML (no `--` inside comments — that
 # breaks strict viewers AND the render media preflight).
@@ -56,8 +58,8 @@ PY
 if ! grep -q 'SNAPSHOT — copied from pipeline/style/' "$VIDEO_DIR/style/tokens.css"; then
   {
     echo "/* SNAPSHOT — copied from pipeline/style/ by snapshot_style.sh on $(date -u +%Y-%m-%d) from pipeline SHA $PIPELINE_SHA. */"
-    echo "/* ../fonts/ paths rewritten to fonts/ (render workers resolve url() relative to the file;"
-    echo "   ../ escapes the project root — lint: invalid_parent_traversal_in_asset_path)."
+    echo "/* Font paths stay ../fonts/ (resolve from <video>/style/ to <video>/fonts/);"
+    echo "   the layout is pinned so a rewrite would 404 at check time."
     echo "/* Version of record: the pipeline SHA in this video's build.log. */"
     cat "$VIDEO_DIR/style/tokens.css"
   } > "$VIDEO_DIR/style/tokens.css.tmp" && mv "$VIDEO_DIR/style/tokens.css.tmp" "$VIDEO_DIR/style/tokens.css"
