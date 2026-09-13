@@ -72,6 +72,8 @@ pipeline/render.sh <video-dir> render --composition composition/scene-NN.html --
 
 Extract proof frames at **exactly the timestamps the spec's QA Checklist names** — first frame, each boundary proof, each audio-sync proof, the final-frame proof — then judge each against the spec's stated expectation:
 
+**The MP4's clock is render-local.** `--time` is an offset into `renders/scene-NN.mp4`, which starts at 0 — for a single-scene render that is *not* the spec's master time. Master time (what the QA checklist names) = render-local + the window start; convert once, extract in local. Master times on a single-scene MP4 silently yield empty/blank frames for any time beyond the window length (ffmpeg -ss past EOF prints no frame) — the tool exits 0.
+
 ```bash
 python3 pipeline/tools/extract_proof_frames.py <video-dir>/renders/scene-NN.mp4 --time <t1> --time <t2> --output-dir <video-dir>/snapshots/scene-NN-proof/ --prefix scene-NN
 python3 pipeline/tools/probe_media.py <video-dir>/renders/scene-NN.mp4   # duration, fps, streams
