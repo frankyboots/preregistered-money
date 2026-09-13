@@ -31,6 +31,7 @@ Use this skill to coordinate a complete video project from rough request to veri
    - Inspect available assets, renders, compositions, committed audio, and any existing spec.
    - Identify locked scenes and user boundaries such as "do not modify Scene 01."
    - New video: bootstrap with `pipeline/new_video.sh <slug>` (copies the pipeline skeleton into `videos/<slug>/` and stages the spec template from `templates/spec.md`) — never `npx hyperframes init`. Keep the spec at the top of the commit order: the spec must be committed before the first render (CONCEPT §4.1).
+   - Dir pre-existing without the scaffold (e.g. built audio-first: `spec.md`, `audio/`, `build.log` already committed): `new_video.sh` refuses existing dirs, so merge manually — copy `index.html`, `hyperframes.json`, `composition/README.md`, `data/README.md` from the skeleton verbatim; set `meta.json` + `package.json` id/name to the slug; skip the skeleton's `README.md` (it documents the skeleton, not the video). Never overwrite committed files; confirm via `git status` that only new untracked files landed. Verify the project boots (`pipeline/render.sh <dir> lint` + `check`), record the scaffold files' checksums in `build.log`, and commit scaffold + log together as one `chore(video-<slug>)`.
    - Use `videos/pipeline/templates/storyboard.md` for multi-scene planning.
 
 2. Convert intent into a spec.
