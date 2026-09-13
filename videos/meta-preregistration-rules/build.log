@@ -100,10 +100,16 @@ the vendored WOFF2 fonts are snapshotted into this dir via
   errors on any asset path climbing above the project root
   (`invalid_parent_traversal_in_asset_path`) — a `../pipeline/style/`
   link cannot work from inside the project.
-- `<img src="….svg">` fails the render media preflight
-  (`media_load_failed`) — the brand mark must be **inlined** (SVG copy,
-  style spec §4.2 sanctions inline copy) or referenced from within the
-  project root. Phase B rule: no `<img>` for SVG assets.
+- `<img src="….svg">` **works** (re-verified 2026-09-13 in a throwaway
+  probe — no `media_load_failed`, mark renders). The earlier
+  `media_load_failed` was a **misdiagnosis**: the real cause was that
+  `brand-mark.svg`'s XML comment contained `--` (the token names
+  `--paper`/`--seal-amber`), which is illegal in XML comments, so the
+  file was malformed and failed to parse. Fixed the comment (no
+  `--` inside comments) — the SVG is now well-formed and `<img>` and
+  inline both render. Phase B rule: keep SVG XML well-formed (no `--`
+  inside comments); either `<img src="style/brand-mark.svg">` or inline
+  copy is fine.
 
 Scene files import `style/tokens.css` + `style/setpieces.css`
 (root-relative — base URL is the project root), e.g. the master
@@ -113,7 +119,7 @@ Scene files import `style/tokens.css` + `style/setpieces.css`
 |---|---|
 | `style/tokens.css` | `eeafb9c397b06b7961c2933606907e413b42da0cf54c3e5185bd2cd0abd22339` (banner + `../fonts/`→`fonts/` rewrite vs. pipeline source) |
 | `style/setpieces.css` | `d1917403ca0205726b564edd98d6f171b95472018c4cd1f52b39130faf7986d1` (byte-identical to pipeline) |
-| `style/brand-mark.svg` | `99c39d1f2e7398e7dac9d582df29997f7ca6836b7d3eed35b0bb46b46392c3de` (byte-identical to pipeline) |
+| `style/brand-mark.svg` | `eccdc43f838a7ef435f5d052853ef04113b606cbe1469cf1db8c4edad0eb986b` (pipeline copy as of the XML-comment fix — comment no longer contains `--`; the pre-fix `99c39d1f…` copy was malformed XML) |
 | `fonts/Inter-Regular.woff2` | `8909904ab6c872eb994093482a88a28eca2cd95912d7b6fecd72103b0dc07edc` |
 | `fonts/Inter-SemiBold.woff2` | `f9a06e79cd3a2a20951c0f0e28f66dd0e6d3fda73911d640a2125c8fcb78f21a` |
 | `fonts/Inter-Bold.woff2` | `6f56409fd3d64bb85f7d070bce20749db2d66b6d63cec586cc22d1c761be2491` |
@@ -171,3 +177,4 @@ here: timestamp, composition SHA, output hash, encoder settings.)
 2026-09-13T14:49:50Z pipeline=hyperframes@0.8.35 repo=e08e974 cmd=hyperframes render --output renders/master-draft-001.mp4 --fps 24 --quality draft --workers 2 exit=0
 2026-09-13T14:50:16Z pipeline=hyperframes@0.8.35 repo=e08e974 cmd=hyperframes render --fps 24 --quality draft --workers 2 exit=0
 2026-09-13T14:51:15Z pipeline=hyperframes@0.8.35 repo=516de6e cmd=hyperframes lint  exit=0
+2026-09-13T14:55:12Z pipeline=hyperframes@0.8.35 repo=aa0edd7 cmd=hyperframes render --composition composition/_probe-img.html --output renders/_probe-img.mp4 --fps 24 --quality draft --workers 2 exit=0
