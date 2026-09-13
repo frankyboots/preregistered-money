@@ -66,17 +66,41 @@ datasets (spec: "No raw data, no datasets").
 
 ## Composition
 
-Not yet built. Pending: wire `tokens.css` + `setpieces.css` into the
-skeleton; scene specs from the beat sheet + `words.json` cues; first
-DRAFT render. When scenes land, this section records the composition
-SHA, template family (Meta v1), style-spec version, and HF version used.
+Project scaffold merged from `videos/pipeline/skeleton` (skeleton as of
+pipeline HEAD `6c21d46`; last skeleton touch `e7a510a`), 2026-09-13:
+`index.html` (master assembly root, scene mounts pending),
+`hyperframes.json` (paths config — unmodified from skeleton),
+`meta.json` + `package.json` (id/name → slug), `composition/README.md`,
+`data/README.md`. `npx hyperframes init` was NOT run (repo rule:
+copy-only, no vendor docs/skills). Committed files untouched by the
+merge (`spec.md`, `build.log`, `audio/`, `data/spec-sha.txt`,
+`narration.md`).
+
+| Scaffold file | sha256 |
+|---|---|
+| `index.html` | `d4ad4ea683a5d85cb15bdf0e05c141902aa029cbcb3f0d49667de7a6d9385674` |
+| `hyperframes.json` | `767541773b5cac60204a115c6a395d39d2eab600aa722933a5313897c136191b` |
+| `meta.json` | `b833e5e635c30a6968f5ec23f0dd2f6532ce5395f441570a489aae17caf5e7b2` |
+| `package.json` | `b86a887f6eeeac2e450bcb4a62df5c6a52b3ce2605379f6761c2296ba4e56ec6` |
+| `composition/README.md` | `49a1a689eea03d14339cacc5739c3bec8952f467f34ff5e6f0217f4960e961ab` |
+| `data/README.md` | `5cd0022ccb3be37dad4189715c574740ee29dc94cb65d13f7226ab251d1c55cc` |
+
+Verified after merge (2026-09-13T14:34Z): `hyperframes lint` 0 errors /
+0 warnings; `hyperframes check` (lint + runtime + layout + motion +
+contrast) passed — project boots.
+
+Scene compositions not yet built. Pending: wire `tokens.css` +
+`setpieces.css` into the composition; scene specs from the beat sheet +
+`words.json` cues; first DRAFT render. When scenes land, this section
+records the composition SHA, template family (Meta v1), style-spec
+version, and HF version used.
 
 ## Pipeline versions at audio lock
 
 - Pipeline HEAD: `c14fac6` (includes gap re-pin `4fba18a` + concat
-  absolute-path fix in `voiceover.py`)
-- HyperFrames: 0.8.35 (`HF_VERSION` in `pipeline/render.sh`) — not yet
-  exercised (no render yet)
+  absolute-path fix in `voiceover.py`); scaffold merged at `6c21d46`
+- HyperFrames: 0.8.35 (`HF_VERSION` in `pipeline/render.sh`) — verified
+  via lint + check on the scaffold (2026-09-13); no renders yet
 - Style spec: 1.1.0 — not yet wired into the composition
 
 ## Render history
@@ -87,3 +111,5 @@ composition SHA, output hash, encoder settings)
 ## Publish record
 
 (none — PUBLISH is a dated, manual owner act; recorded here afterwards)
+2026-09-13T14:34:17Z pipeline=hyperframes@0.8.35 repo=6c21d46 cmd=hyperframes lint  exit=0
+2026-09-13T14:34:20Z pipeline=hyperframes@0.8.35 repo=6c21d46 cmd=hyperframes check  exit=0
