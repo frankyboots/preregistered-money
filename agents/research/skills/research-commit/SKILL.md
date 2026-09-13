@@ -66,6 +66,7 @@ Standard conventional set, plus one project type:
 | `results` | `docs/results/` |
 | `backtest` | `research/backtest/` |
 | `data` | `research/data/` (manifests, loaders, recipes — **no raw data**) |
+| `wiki` | `research/wiki/` (LLM-wiki pages, raw/ sources, schema, index, log) |
 | `strategy` | `research/strategies/` |
 | `scoreboard` | `scoreboard/` |
 | `methodology` | `docs/METHODOLOGY.md` |
