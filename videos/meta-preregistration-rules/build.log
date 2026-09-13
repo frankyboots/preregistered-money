@@ -608,6 +608,96 @@ local + 128.57):
   layout 0/9 samples, motion 0, contrast 7/7);
   `scan_theme_colors.py composition/scene-06.html` — 0 findings.
 
+scene-07 DRAFT (2026-09-13, the ledger, window master 162.06–205.47 local
+0–43.41 @24fps — proof-frame times below are render-local; master =
+local + 162.06):
+- Composition: `composition/scene-07.html` sha256
+  `fdf5814e552bb115d0f829dd10b8b15e7b713d3f794294517ac577d1e75f9b0f`
+  (hand-authored — no data injection: every number on screen is a pinned
+  placeholder string, `PR-0000-00x`-style, all labeled `example` /
+  `examples` on screen; spec Inputs "no number appears in this scene").
+  Pinned `.ledger` set-piece (§4.7) with the column reveal unit ratified
+  by style-spec 1.1.1; aggregate block (`meta:aggregate-rows`) above the
+  table. Two measured-geometry fixes found in throwaway probes
+  (deleted): (1) the scene's own `* { box-sizing: border-box }` reset was
+  missing (the master's global reset doesn't reach a standalone
+  composition) → rows inflated to 77px (77 = 56 + the strut the
+  inline-block .cell spans pull in without box-sizing); with the reset
+  rows are 56px and every ruled line lands on its spec y. (2) The
+  composite row's 2px rule is a collapsed table border — Chrome draws it
+  at the table grid, so `tr.composite { opacity: 0 }` could not hide it
+  and it lit with the frame wipe (frame 84) 30s before its cue. The
+  structural border-top is color-transparent (2px transparent still wins
+  the collapse, geometry unchanged) and the visible rule is the
+  `.comp-rule` overlay (2px `--paper`, y495–496), revealed on the
+  composite cue. Static color override only; all sizing/styling stays
+  pinned.
+- Render: `renders/scene-07.mp4` sha256
+  `4cf3d09a6627473e6a4e63ff7623faaa90e6e27b8f99e7bf996e88dc82c32371`
+  (1920×1080 yuv420p 24fps, draft, 1042 frames; last extractable frame
+  local 43.35, master 205.41, before the 205.47 cut).
+- Inputs at first render: `audio/timing/words.json` (cues, read-only,
+  spec-pinned sha256 `4cfb0cb0…`); style snapshot per the table above
+  (style spec 1.1.1 pin; css byte-identical to 1.1.0). Data inputs:
+  none — no real number appears in this scene (spec Inputs); the three
+  example rows, the three aggregate values, and the null-baseline
+  annotation are the pinned placeholder strings (spec.md Number
+  citations row "Ledger example rows (beat 7)").
+- Beats (master): title @162.30 (0.24 local, settled 0.49), definition
+  @163.40 (1.34, settled 1.59), frame+header wipe @165.54 (3.48, 600ms,
+  lands 4.08 = 166.14 — 248ms after word end, noted in spec), PR ID
+  @167.44 (5.38, settled 5.58), hypothesis @169.64 (7.58, 7.78), date
+  @170.78 (8.72, 8.92 = 170.98 proof exact), verdict @171.80 (9.74,
+  9.94), OOS @172.76 (10.70, 10.90), link @174.36 (12.30, 12.50 =
+  174.56 proof exact), `all rows are examples` @177.62 (15.56, 15.81),
+  section rule @181.74 (19.68, 19.93), agg 1 + example box @183.14
+  (21.08, 21.33 = 183.39 proof exact), agg 2 @184.50 (22.44, 22.69),
+  agg 3 @188.18 (26.12, 26.37), null annotation @191.14 (29.08, 29.33),
+  composite rule + cell @196.08 (34.02, 34.27), dormant label @202.30
+  (40.24, 40.49) ✓
+- Audio-sync: every element fully in by the end of its naming word
+  (spec QA audio-sync rows) ✓; link and agg-1 land on their proof
+  times exactly.
+- Frame-exact onset sweep (all 1042 frames decoded, one rawvideo dump +
+  numpy memmap; per-zone first lit frame, thr>60 — text peaks 255,
+  35%-dim cell rules peak 49, so the threshold separates them; zones
+  cleared of the full-width rule rows): all 19 elements 0 px at cue−1
+  and first lit at cue frame +0/+1 — title 7 (6), def 34 (32),
+  header 84 (84), c-id 130 (129), c-hyp 183 (182), c-date 210 (209),
+  c-verd 235 (234), c-oos 258 (257), c-link 296 (295), anno 375 (373),
+  secl 474 (472), agg1 507 (506), exbox 507 (506), agg2 539 (539),
+  agg3 628 (627), nullanno 699 (698), comp-rule 817 (816), c-comp
+  818 (816), dormant 967 (966). The +1–2 offsets are the front-loaded
+  --ease-out curve's first visible frame; nothing is over-named by a
+  frame.
+- Geometry (settled frame, full-width ruled lines measured): 328 / 384 /
+  440 / 495–496 (2px composite) / 552; header text y296–311 (baseline
+  ≈311); title+def baseline y≈112 (title Inter 600 top 62, def
+  `--fs-anno` top 88); aggregate block above the table (secl y148,
+  rows y162–277) per spec layout item 2; caption band y948–1080:
+  0 non-ink ✓. `−` glyph (U+2212) in `−1.2%` renders correctly
+  (JetBrains Mono, probe-cropped) ✓
+- Chroma audit (settled frame, strong-chroma test): `--confirmed`
+  pixels only in the verdict column (x1020–1260, y335–490) and
+  agg-row-2 band (y190–220) — 0 elsewhere; `--falsified` same two
+  regions + 56 isolated fringing pixels on row text edges (≤3 px per
+  local window, sub-density — the h264 warm-fringe diagnostic class,
+  not content); no `--seal-amber` anywhere (nothing pending) ✓; no P&L
+  red/green (the OOS deltas are plain `--paper` mono) ✓
+- Hold: raw frames 1012–1041 (42.167–43.375 local) — max per-frame
+  diff 0 (byte-identical, stronger than the codec micro-block allowed
+  by the scene-06 precedent); extracted-frame hold 42.74/43.35
+  sha-identical ✓
+- Contact sheet `snapshots/scene-07-contact.png` (4×5, 20 QA frames):
+  vision pass — every frame matches the spec build-up (empty open →
+  title → def → frame+header → six columns in narration order →
+  examples annotation → section rule → three aggregate rows + example
+  box → null annotation → composite rule + cell → dormant label →
+  hold); no misalignment, overlap, wrong color, or cut-off text ✓
+- Verification: lint 0 errors/0 warnings; check passed (runtime 0,
+  layout 0/9 samples, motion 0, contrast 7/7);
+  `scan_theme_colors.py composition/scene-07.html` — 0 findings.
+
 ## Pipeline versions at audio lock
 
 - Pipeline HEAD: `c14fac6` (includes gap re-pin `4fba18a` + concat
@@ -702,3 +792,18 @@ Scene-content DRAFT renders: scene-01 at 18:27:15Z, scene-02 at
 2026-09-13T22:31:26Z pipeline=hyperframes@0.8.35 repo=d50075f cmd=hyperframes lint  exit=0
 2026-09-13T22:31:29Z pipeline=hyperframes@0.8.35 repo=d50075f cmd=hyperframes check  exit=0
 2026-09-13T22:31:38Z pipeline=hyperframes@0.8.35 repo=d50075f cmd=hyperframes render --composition composition/scene-06.html --output renders/scene-06.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T22:58:02Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes render --composition composition/_probe-07.html --output renders/_probe-07.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T23:03:09Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes lint  exit=0
+2026-09-13T23:03:11Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes check  exit=0
+2026-09-13T23:03:19Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes render --composition composition/scene-07.html --output renders/scene-07.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T23:14:02Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes render --composition composition/_probe-07b.html --output renders/_probe-07b.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T23:15:42Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes lint  exit=0
+2026-09-13T23:15:44Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes check  exit=0
+2026-09-13T23:15:50Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes render --composition composition/scene-07.html --output renders/scene-07.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T23:19:17Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes render --composition composition/_probe-bisect.html --output renders/_probe-bisect.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T23:20:53Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes lint  exit=0
+2026-09-13T23:20:55Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes check  exit=0
+2026-09-13T23:21:12Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes render --composition composition/scene-07.html --output renders/scene-07.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T23:33:58Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes lint  exit=0
+2026-09-13T23:34:00Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes check  exit=0
+2026-09-13T23:34:06Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes render --composition composition/scene-07.html --output renders/scene-07.mp4 --fps 24 --quality draft --workers 2 exit=0

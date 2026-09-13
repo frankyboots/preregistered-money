@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>scene-07 — the ledger</title>
+  <link rel="stylesheet" href="style/tokens.css" />
+  <link rel="stylesheet" href="style/setpieces.css" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    /* scene-07 — the ledger (spec: scene-specs/scene-07.md)
+       Stack: corner bug (set piece, 200ms fade) / Inter 600 title +
+       mono definition (one baseline, spec title zone) / aggregate
+       block (section rule + 3 mono rows + null annotation, the
+       `example` box labels row 1) / the .ledger table (pinned §4.7
+       classes only) / composite row (2px --paper rule, dormant) /
+       `all rows are examples` annotation.
+       Colors: --paper / --paper-dim base; the ONLY chromatic pixels
+       are the three verdict cells and the three matching words in
+       aggregate row 2 (--confirmed / --falsified / --inconclusive
+       via the pinned .ledger verdict classes + scene-scoped vars).
+       No amber (nothing pending). OOS deltas plain --paper (P&L rule:
+       no red/green for unjudged numbers).
+       Data: none — no real number appears (spec Inputs). Every row
+       and count is the pinned placeholder, labeled `example` /
+       `all rows are examples` on screen. `PR-0000-00x` IDs are the
+       spec's placeholder convention, never a real PR number.
+       Geometry (global px, probe-verified; JetBrains Mono advance
+       0.6em = 14.4px/char at --fs-table, 13.2px at --fs-anno):
+       Title top 62 (Inter 600 52px, cap 74–112 → baseline y=112
+       per spec); definition top 91 (mono 22px, baseline 112 — the
+       same baseline, x=490). Bug bottom ≈65 → 9px to cap top.
+       Section rule: 1px --paper-dim, x80–1840, y=148.
+       Aggregate rows (mono 24px, --paper-dim labels / --paper
+       values): row 1 baseline 176 (top 154), row 2 baseline 210
+       (top 192), row 3 baseline 244 (top 226); null annotation
+       baseline 276 (top 255, 59ch × 13.2 = 779px → x80–859, fits).
+       `example` box: mono 22px --paper-dim, 1px --paper-dim border,
+       h 28, outer y 152–180, left x=330 (13px right of `preregs: 3`
+       which ends x≈317; 4px under the section rule, 12px above row 2
+       text top 192).
+       Table (.ledger, pinned classes; positioned left 80, top 282,
+       width 1760; colgroup 240/500/200/240/160/420 → column edges
+       x 80/320/820/1020/1260/1420/1840 per spec; pinned 16px cell
+       padding): header baseline 312 (glyphs 295–311), 1px header
+       rule y=328, 56px rows y 328–384 / 384–440 / 440–496 (pinned
+       .ledger td height 56 + 10px padding, borders at 384/440/496),
+       composite row y 496–552 with the pinned 2px --paper border-top
+       (border-collapse: the 2px rule wins over row 3's 1px 35%
+       dim rule). Cell baselines 368/424/480; `composite` text
+       baseline 536 (x96–223). Longest cell strings measured in
+       probe: `momentum survives costs` 329px (col 500, fits),
+       `results/PR-0000-000` 273px (col 420, fits), verdict
+       `inconclusive` 170px (col 240, fits). `−1.2%` uses U+2212
+       (JetBrains Mono renders it; verified in probe frame).
+       Dormant label: mono 22px --paper-dim, top 506 (baseline 528
+       per spec), x=340, inside the composite row band.
+       Annotation `all rows are examples`: mono 22px --paper-dim,
+       left 80, top 575 (baseline 596, descender 600) — lowest
+       element in the scene, 348px above the caption band top 948.
+       Motion (spec Visual Direction + Beat Timeline durations):
+       title/definition reveal 250ms (the system verb); table frame
+       + header = draw 600ms as a left→right clip-path wipe of the
+       whole table (scene-06's frame-draw precedent; the 1px rules
+       and header text sweep in together); the six columns reveal
+       200ms (the pinned table-row verb, §5.2) — each column's three
+       cells as ONE unit, in the narration's enumeration order
+       (style-spec 1.1.1: the narration's enumeration is the reveal
+       unit); section rule, both annotations, dormant label: 200ms
+       (rule: opacity only — a 12px slide on a 1px line is wrong);
+       aggregate rows 1–3: 250ms (Beat Timeline per-cue durations);
+       `example` box with aggregate row 1 (one unit); composite row
+       200ms (row opacity for the 2px rule + cell text slide).
+       No roll (table cells, not hero numbers), no stamp. Nothing
+       after the last word (final hold, §5.1 rule 5).
+       Initial states: .hide-y (opacity 0 + 12px down) on
+       title/definition/aggregate rows/box/annotations/dormant;
+       .cell spans opacity 0 + 12px down; table clip-path
+       inset(0 100% 0 0); tr.composite opacity 0 — so frame 0 =
+       ink + corner bug only (the open state; the table is named on
+       its word, spec Open state). Cues are LOCAL (root
+       data-start=0); the window offset 162.06s lives only on the
+       index.html mount. */
+    #scene-07 {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    /* the master's global reset — a standalone composition render has
+       no other stylesheet, so the pinned .ledger 56px rows (content
+       height + 10px padding, border-box) need it here to render at the
+       spec's y 328/384/440/496/552 (probe-verified; content-box
+       inflated every row to 77px and pushed the header rule to 335) */
+    #scene-07 * { box-sizing: border-box; }
+    #scene-07 .sc-title {
+      position: absolute;
+      left: 80px;
+      top: 62px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: var(--fs-title);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    #scene-07 .sc-def {
+      position: absolute;
+      left: 490px;
+      top: 91px;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    #scene-07 .secl {
+      position: absolute;
+      left: 80px;
+      top: 148px;
+      width: 1760px;
+      height: 1px;
+      background: var(--paper-dim);
+      opacity: 0;
+    }
+    #scene-07 .agg {
+      position: absolute;
+      left: 80px;
+      font-family: var(--font-mono);
+      font-size: var(--fs-table);
+      color: var(--paper);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    #scene-07 .agg .dim { color: var(--paper-dim); }
+    /* aggregate row 2 verdict words — same tokens as the table's
+       pinned verdict classes (the only chromatic words in the scene) */
+    #scene-07 .agg .vc { color: var(--confirmed); }
+    #scene-07 .agg .vf { color: var(--falsified); }
+    #scene-07 .agg .vi { color: var(--inconclusive); }
+    #scene-07 .agg1 { top: 154px; }
+    #scene-07 .agg2 { top: 192px; }
+    #scene-07 .agg3 { top: 226px; }
+    #scene-07 .exbox {
+      position: absolute;
+      left: 330px;
+      top: 152px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      border: 1px solid var(--paper-dim);
+      padding: 0 8px;
+      box-sizing: border-box;
+      white-space: nowrap;
+    }
+    #scene-07 .nullanno {
+      position: absolute;
+      left: 80px;
+      top: 255px;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    /* the pinned ledger — positioned; ALL table styling is the
+       .ledger set piece (header style, 56px rows, 35% cell rules,
+       verdict classes, composite 2px rule). No ad-hoc table CSS.
+       Scoped line-height on th: the set piece pins font-size +
+       padding but not line-height, so a standalone composition (UA
+       default ~1.2+ for the mono stack) inflates the header row to
+       53px; line-height:1 restores the spec's 45px header (rule at
+       y=327, header baseline 312 — probe-verified). td needs none:
+       its row height is pinned 56px, which wins over content. */
+    #scene-07 .ledger {
+      position: absolute;
+      left: 80px;
+      top: 282px;
+      width: 1760px;
+      clip-path: inset(0 100% 0 0); /* frame wipe, draw 600ms @ local 3.48 */
+    }
+    #scene-07 .ledger th { line-height: 1; }
+    #scene-07 .ledger td { line-height: 1; }
+    /* composite 2px rule — timing gate. The pinned class's 2px
+       border-top is a COLLAPSED table border: Chrome draws it at the
+       table grid, so tr.composite { opacity: 0 } cannot hide it — the
+       rule would light up with the frame wipe 30s before its cue
+       (the composite is "distinguished by the rule, not color", §4.7).
+       Mechanism: the structural border-top is made color-transparent
+       (2px transparent still wins the collapse, keeping the row
+       geometry byte-identical), and the visible rule is the .comp-rule
+       overlay (2px --paper, y496–497 — pixel-registered to where the
+       pinned rule renders, probe-verified), revealed on the composite
+       cue. Static color override only; all sizing/styling stays pinned. */
+    #scene-07 .ledger tr.composite td { border-top-color: transparent; }
+    #scene-07 .comp-rule {
+      position: absolute;
+      left: 80px;
+      top: 495px;
+      width: 1760px;
+      height: 2px;
+      background: var(--paper);
+      opacity: 0;
+    }
+    #scene-07 .ledger col.c-id   { width: 240px; }
+    #scene-07 .ledger col.c-hyp  { width: 500px; }
+    #scene-07 .ledger col.c-date { width: 200px; }
+    #scene-07 .ledger col.c-verd { width: 240px; }
+    #scene-07 .ledger col.c-oos  { width: 160px; }
+    #scene-07 .ledger col.c-link { width: 420px; }
+    /* column cells — each column's three cells reveal as one unit */
+    #scene-07 .cell {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    /* composite row: dormant until its cue (rule + cell together) */
+    #scene-07 .ledger tr.composite { opacity: 0; }
+    #scene-07 .dormant {
+      position: absolute;
+      left: 340px;
+      top: 506px;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    #scene-07 .anno {
+      position: absolute;
+      left: 80px;
+      top: 575px;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    #scene-07 .hide-y { opacity: 0; transform: translateY(12px); }
+  </style>
+</head>
+<body>
+  <div id="scene-07" data-composition-id="scene-07"
+       data-width="1920" data-height="1080"
+       data-start="0" data-duration="43.41">
+    <div class="bug">PREREGISTERED MONEY · meta · sealed 2026-09-12 · 86140f92</div>
+    <div class="sc-title hide-y">the scoreboard</div>
+    <div class="sc-def hide-y">the product</div>
+
+    <div class="secl"></div>
+    <div class="agg agg1 hide-y"><span class="dim">preregs:</span> 3</div>
+    <div class="exbox hide-y">example</div>
+    <div class="agg agg2 hide-y"><span class="vc">confirmed</span><span class="dim">:</span> 1&nbsp;&nbsp;<span class="vf">falsified</span><span class="dim">:</span> 1&nbsp;&nbsp;<span class="vi">inconclusive</span><span class="dim">:</span> 1</div>
+    <div class="agg agg3 hide-y"><span class="dim">confirmation rate vs. null:</span> 1/3</div>
+    <div class="nullanno hide-y">null baseline: the fraction random strategies pass by chance</div>
+
+    <table class="ledger">
+      <colgroup>
+        <col class="c-id" /><col class="c-hyp" /><col class="c-date" />
+        <col class="c-verd" /><col class="c-oos" /><col class="c-link" />
+      </colgroup>
+      <thead>
+        <tr><th>PR ID</th><th>hypothesis</th><th>date sealed</th><th>verdict</th><th>OOS</th><th>link</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="cell c-id">PR-0000-000</span></td>
+          <td><span class="cell c-hyp">trend carries OOS</span></td>
+          <td><span class="cell c-date">2026-01-01</span></td>
+          <td><span class="cell c-verd v-confirmed">confirmed</span></td>
+          <td><span class="cell c-oos">+3.4%</span></td>
+          <td><span class="cell c-link">results/PR-0000-000</span></td>
+        </tr>
+        <tr>
+          <td><span class="cell c-id">PR-0000-001</span></td>
+          <td><span class="cell c-hyp">carry beats its costs</span></td>
+          <td><span class="cell c-date">2026-01-15</span></td>
+          <td><span class="cell c-verd v-falsified">falsified</span></td>
+          <td><span class="cell c-oos">&minus;1.2%</span></td>
+          <td><span class="cell c-link">results/PR-0000-001</span></td>
+        </tr>
+        <tr>
+          <td><span class="cell c-id">PR-0000-002</span></td>
+          <td><span class="cell c-hyp">momentum survives costs</span></td>
+          <td><span class="cell c-date">2026-02-01</span></td>
+          <td><span class="cell c-verd v-inconclusive">inconclusive</span></td>
+          <td><span class="cell c-oos">+0.8%</span></td>
+          <td><span class="cell c-link">results/PR-0000-002</span></td>
+        </tr>
+        <tr class="composite">
+          <td><span class="cell c-comp">composite</span></td>
+          <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="comp-rule"></div>
+    <div class="dormant hide-y">dormant &mdash; no pins yet</div>
+    <div class="anno hide-y">all rows are examples</div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    /* Cue times are LOCAL to the composition root (data-start=0):
+       master word-start from the spec Beat Timeline minus the window
+       offset 162.06s. e.g. spec 162.30 "scoreboard" -> 0.24; spec
+       205.47 (cut) -> 43.41. Initial hidden states live in CSS
+       (.hide-y, .cell, the table's clip-path, tr.composite) so the
+       render's first frame is ink + corner bug only. */
+
+    // helper: reveal — opacity + 12px slide-up, power2.out (system verb)
+    const reveal = (sel, t, d) =>
+      tl.to("#scene-07 " + sel,
+            { opacity: 1, y: 0, duration: d || 0.2, ease: "power2.out" }, t);
+    // helper: plain opacity fade (1px rule — no slide on a line)
+    const fade = (sel, t, d) =>
+      tl.to("#scene-07 " + sel, { opacity: 1, duration: d || 0.2, ease: "power2.out" }, t);
+
+    // 162.06 open: ink + corner bug only — CSS initial states (nothing
+    //   to set at t=0)
+
+    // 162.30 "scoreboard": title `the scoreboard` (settles 0.49)
+    reveal(".sc-title", 0.24, 0.25);
+
+    // 163.40 "product.": definition `the product`, same baseline (settles
+    //   1.59; bar: end of "product." 163.84)
+    reveal(".sc-def", 1.34, 0.25);
+
+    // 165.54 "table,": ledger frame + column headers draw 600ms as a
+    //   left->right clip wipe of the whole table (the 1px rules and
+    //   header text sweep in together — scene-06's frame-draw
+    //   precedent). Lands 4.08 = 166.14 master (+248ms after word
+    //   end, noted in spec). Cell text stays hidden per column
+    //   (.cell opacity 0 — multiplicative with the wipe).
+    tl.fromTo("#scene-07 .ledger",
+              { clipPath: "inset(0 100% 0 0)" },
+              { clipPath: "inset(0 0% 0 0)", duration: 0.6, ease: "power2.out" },
+              3.48);
+
+    // 167.44 "prereg": PR ID column — all three cells as one unit
+    //   (200ms, the pinned table-row verb; settled 5.58)
+    reveal(".c-id", 5.38);
+
+    // 169.64 "hypothesis,": hypothesis column (settles 7.78)
+    reveal(".c-hyp", 7.58);
+
+    // 170.78 "seal": date sealed column ("seal date"; settles 8.92 =
+    //   170.98 master, the proof time, exact)
+    reveal(".c-date", 8.72);
+
+    // 171.80 "verdict,": verdict column — the only colored cells
+    //   (settles 9.94)
+    reveal(".c-verd", 9.74);
+
+    // 172.76 "out-of-sample": OOS column (settles 10.90)
+    reveal(".c-oos", 10.7);
+
+    // 174.36 "link": link column (settles 12.50 = 174.56 master, exact)
+    reveal(".c-link", 12.3);
+
+    // 177.62 "examples": annotation `all rows are examples` under the
+    //   table (settles 15.76; bar: end of "examples" 178.26)
+    reveal(".anno", 15.56);
+
+    // 181.74 "aggregate": section rule above the aggregate block
+    //   (1px fade, 200ms; settles 19.88)
+    fade(".secl", 19.68);
+
+    // 183.14 "Total": aggregate row 1 `preregs: 3` + the `example`
+    //   box, one unit (250ms, Beat Timeline; settles 21.33 = 183.39
+    //   master, exact)
+    reveal(".agg1", 21.08, 0.25);
+    reveal(".exbox", 21.08, 0.25);
+
+    // 184.50 "confirmed,": aggregate row 2 — the three verdict words in
+    //   their colors, counts --paper (250ms; settles 22.69)
+    reveal(".agg2", 22.44, 0.25);
+
+    // 188.18 "confirmation": aggregate row 3 `confirmation rate vs.
+    //   null: 1/3` (250ms; settles 26.37)
+    reveal(".agg3", 26.12, 0.25);
+
+    // 191.14 "fraction": null baseline annotation (settles 29.28;
+    //   bar: end of "fraction" 191.60)
+    reveal(".nullanno", 29.08);
+
+    // 196.08 "composite,": composite row — the 2px --paper rule +
+    //   `composite` cell (row fade 200ms; cell text slides; settles
+    //   34.22; bar: end of "composite," 196.56). The visible rule is
+    //   the .comp-rule overlay (the pinned tr.composite border-top is
+    //   color-transparent — a collapsed table border would render
+    //   through tr.composite { opacity: 0 }, probe-verified).
+    fade("tr.composite", 34.02);
+    fade(".comp-rule", 34.02);
+    reveal(".c-comp", 34.02);
+
+    // 202.30 "dormant,": label `dormant — no pins yet` in the composite
+    //   row (settles 40.44; bar: end of "dormant," 202.72)
+    reveal(".dormant", 40.24);
+
+    // 204.20 (speech ends) -> 205.47 cut: final hold — nothing moves
+    //   (earned hold, §5.1 rule 5; 42.14–43.41 local)
+    tl.set({}, {}, 43.41);
+
+    window.__timelines["scene-07"] = tl;
+  </script>
+</body>
+</html>
