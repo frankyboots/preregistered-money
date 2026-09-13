@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>scene-02 — the failure mode (loop diagram)</title>
+  <link rel="stylesheet" href="style/tokens.css" />
+  <link rel="stylesheet" href="style/setpieces.css" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    /* scene-02 — the failure mode (spec: scene-specs/scene-02.md)
+       Stack: corner bug (set piece) / title (Inter 400 30px --paper-dim) /
+       the loop chain (mono nodes + paper-dim arrows, vertically centered) /
+       annotations under the chain / final state: three identical run lines +
+       survivor tag + "no label" annotation.
+       Colors: --paper + --paper-dim only (no verdict colors, no amber —
+       nothing is judged in this scene). Everything except the title is
+       JetBrains Mono (the data machine).
+       Caption band (bottom 132px, y>=948) stays clear: lowest element
+       ("no label") spans ~908–930.
+       Initial hidden states are CSS (render frame 0 must be blank ink +
+       bug without relying on a tl.set at t=0); GSAP only animates them in.
+       Chain geometry (measured at 30px mono-medium = 18px/char advance,
+       node/…/? placed by center via translateX(-50%); arrows 60px, 24px
+       gaps). Left→right: run c468 · a1 l519 · nothing c666 · a2 l753 ·
+       re-run c891 · a3 l969 · nothing c1116 · a4 l1203 · re-run c1341 ·
+       … c1428 · ? c1470. Chain spans x ≈ 414–1479, well inside the 80px
+       safe margins (80–1840). */
+    #scene-02 {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    #scene-02 .sc-title {
+      position: absolute;
+      top: 96px;
+      left: 80px;
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: 30px;
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    /* the loop: a horizontal mono chain, centered vertically; the group
+       carries the settle-up + dim at the final state */
+    #scene-02 .loop-group {
+      position: absolute;
+      inset: 0;
+    }
+    #scene-02 .node {
+      position: absolute;
+      top: 440px;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: var(--fs-body);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    #scene-02 .node .ch { opacity: 0; } /* typed chars reveal one by one */
+    /* initial hidden states (frame 0: blank ink + corner bug only) — the
+       12px slide offset is part of the reveal (spec: 250ms opacity + 12px
+       slide-up) and must exist in CSS so it holds without a t=0 tl.set */
+    #scene-02 .hide-y { opacity: 0; transform: translateY(12px); }
+    #scene-02 .node.hide-y,
+    #scene-02 .anno.hide-y,
+    #scene-02 .runline.hide-y,
+    #scene-02 .anno-final.hide-y { transform: translateX(-50%) translateY(12px); }
+    #scene-02 .arrow .ah { opacity: 0; }
+    #scene-02 .arrow { position: absolute; top: 453px; }
+    #scene-02 .arrow svg { display: block; }
+    #scene-02 .anno {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    /* final state: three identical run lines, centered */
+    #scene-02 .runline {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: var(--fs-body);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    #scene-02 .survivor-tag {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      border: 1px solid var(--paper-dim);
+      padding: 2px 10px;
+      white-space: nowrap;
+    }
+    #scene-02 .anno-final {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="scene-02" data-composition-id="scene-02"
+       data-width="1920" data-height="1080"
+       data-start="0" data-duration="25.17">
+    <div class="bug">PREREGISTERED MONEY · meta · sealed 2026-09-12 · 86140f92</div>
+    <div class="sc-title hide-y">the failure mode</div>
+
+    <div class="loop-group" id="loop-group">
+      <!-- the chain: run → nothing → re-run → nothing → re-run … ?
+           node left = center (translateX(-50%)); arrow left = left edge.
+           Centers (30px mono, 18px/char): run 468 / nothing 666 / re-run
+           891 / nothing 1116 / re-run 1341 / … 1428 / ? 1470. -->
+      <div class="node" id="n1" style="left:468px;"><span class="ch">r</span><span class="ch">u</span><span class="ch">n</span></div>
+      <div class="arrow" id="a1" style="left:519px; width:60px; height:12px;">
+        <svg width="60" height="12" viewBox="0 0 60 12"><line class="al" x1="0" y1="6" x2="50" y2="6" stroke="var(--paper-dim)" stroke-width="2" stroke-dasharray="50" stroke-dashoffset="50"/><polygon class="ah" points="50,0 60,6 50,12" fill="var(--paper-dim)"/></svg>
+      </div>
+      <div class="node hide-y" id="n2" style="left:666px;">nothing</div>
+      <div class="arrow" id="a2" style="left:753px; width:60px; height:12px;">
+        <svg width="60" height="12" viewBox="0 0 60 12"><line class="al" x1="0" y1="6" x2="50" y2="6" stroke="var(--paper-dim)" stroke-width="2" stroke-dasharray="50" stroke-dashoffset="50"/><polygon class="ah" points="50,0 60,6 50,12" fill="var(--paper-dim)"/></svg>
+      </div>
+      <div class="node" id="n3" style="left:891px;"><span class="ch">r</span><span class="ch">e</span><span class="ch">-</span><span class="ch">r</span><span class="ch">u</span><span class="ch">n</span></div>
+      <div class="arrow" id="a3" style="left:969px; width:60px; height:12px;">
+        <svg width="60" height="12" viewBox="0 0 60 12"><line class="al" x1="0" y1="6" x2="50" y2="6" stroke="var(--paper-dim)" stroke-width="2" stroke-dasharray="50" stroke-dashoffset="50"/><polygon class="ah" points="50,0 60,6 50,12" fill="var(--paper-dim)"/></svg>
+      </div>
+      <div class="node hide-y" id="n4" style="left:1116px;">nothing</div>
+      <div class="arrow" id="a4" style="left:1203px; width:60px; height:12px;">
+        <svg width="60" height="12" viewBox="0 0 60 12"><line class="al" x1="0" y1="6" x2="50" y2="6" stroke="var(--paper-dim)" stroke-width="2" stroke-dasharray="50" stroke-dashoffset="50"/><polygon class="ah" points="50,0 60,6 50,12" fill="var(--paper-dim)"/></svg>
+      </div>
+      <div class="node" id="n5" style="left:1341px;"><span class="ch">r</span><span class="ch">e</span><span class="ch">-</span><span class="ch">r</span><span class="ch">u</span><span class="ch">n</span></div>
+      <div class="node hide-y" id="dots" style="left:1428px;">…</div>
+      <div class="node hide-y" id="qmark" style="left:1470px; color: var(--paper-dim);">?</div>
+
+      <!-- annotations under the chain (one per "change" + the ledger line) -->
+      <div class="anno hide-y" id="an-window" style="top:545px;">change: window</div>
+      <div class="anno hide-y" id="an-filter" style="top:595px;">change: +filter</div>
+      <div class="anno hide-y" id="an-else" style="top:645px;">change: else</div>
+      <div class="anno hide-y" id="an-ledger" style="top:695px;">nobody keeps a ledger</div>
+    </div>
+
+    <!-- final state: three identical runs, one survivor, no label -->
+    <div class="runline hide-y" id="rl1" style="top:730px;">run 1 ▮▮▮▮▮▮▮▮</div>
+    <div class="runline hide-y" id="rl2" style="top:794px;">run 2 ▮▮▮▮▮▮▮▮</div>
+    <div class="runline hide-y" id="rl3" style="top:858px;">run 3 ▮▮▮▮▮▮▮▮</div>
+    <div class="survivor-tag hide-y" id="surv" style="top:778px; left:1165px;">survivor</div>
+    <div class="anno-final hide-y" id="an-final" style="top:918px;">no label for which is real</div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    /* Cue times are LOCAL to the composition root (data-start=0): master
+       word-start from the spec Beat Timeline minus the window offset 2.69s.
+       e.g. spec 2.98 "failure" -> 0.29; spec 21.96 "Three" -> 19.27.
+       Initial hidden states live in CSS (.hide-y, .ch, arrow attrs) so the
+       render's first frame is blank without depending on a t=0 tl.set. */
+
+    // helper: type a node's chars in (~100ms/char, spec)
+    const typeNode = (sel, t) => {
+      const n = document.querySelectorAll(sel + " .ch").length;
+      tl.fromTo(sel + " .ch", { opacity: 0 },
+                      { opacity: 1, duration: 0.1, stagger: 0.1, ease: "none" }, t);
+      return t + (n - 1) * 0.1; // end of typing
+    };
+    // helper: draw an arrow (600ms line-draw + head fade, spec)
+    const drawArrow = (sel, t) => {
+      tl.fromTo(sel + " .al", { strokeDashoffset: 50 },
+                           { strokeDashoffset: 0, duration: 0.6, ease: "power2.out" }, t);
+      tl.fromTo(sel + " .ah", { opacity: 0 },
+                           { opacity: 1, duration: 0.15, ease: "power2.out" }, t + 0.5);
+      return t + 0.6;
+    };
+    // helper: reveal (250ms opacity + 12px slide-up, spec)
+    const reveal = (sel, t, d = 0.25) =>
+      tl.to(sel, { opacity: 1, y: 0, duration: d, ease: "power2.out" }, t);
+
+    // 2.98 "failure": title reveals
+    reveal("#scene-02 .sc-title", 0.29);
+
+    // 5.02 "backtest": node "run" types in
+    typeNode("#scene-02 #n1", 2.33);
+
+    // 6.64 "loses": arrow-1 draws + "nothing" reveals
+    drawArrow("#scene-02 #a1", 3.95);
+    reveal("#scene-02 #n2", 3.95);
+
+    // 8.56 "window,": annotation change: window
+    reveal("#scene-02 #an-window", 5.87);
+
+    // 9.46 "filter,": annotation change: +filter
+    reveal("#scene-02 #an-filter", 6.77);
+
+    // 10.08 "run": arrow-2 draws + "re-run" types in
+    drawArrow("#scene-02 #a2", 7.39);
+    typeNode("#scene-02 #n3", 7.39);
+
+    // 11.46 "something": arrow-3 draws + second "nothing" reveals (next loss)
+    drawArrow("#scene-02 #a3", 8.77);
+    reveal("#scene-02 #n4", 8.77);
+
+    // 11.78 "else.": annotation change: else
+    reveal("#scene-02 #an-else", 9.09);
+
+    // 13.16 "variation": arrow-4 draws + final node "re-run" types in + "…"
+    //   after it (the loop continues) — both in by the spec's t=13.50 proof
+    drawArrow("#scene-02 #a4", 10.47);
+    typeNode("#scene-02 #n5", 10.47);
+    reveal("#scene-02 #dots", 10.47);
+
+    // 16.42 "ledger": annotation nobody keeps a ledger
+    reveal("#scene-02 #an-ledger", 13.73);
+
+    // 19.66 "which": "?" after the "…"
+    reveal("#scene-02 #qmark", 16.97);
+
+    // 21.96 "Three": loop fades to 40% + settles up; three identical run
+    //   lines reveal (200ms each, 150ms stagger)
+    tl.to("#loop-group", { opacity: 0.4, y: -54, duration: 0.2, ease: "power2.out" }, 19.27);
+    reveal("#scene-02 #rl1", 19.27, 0.2);
+    reveal("#scene-02 #rl2", 19.42, 0.2);
+    reveal("#scene-02 #rl3", 19.57, 0.2);
+
+    // 23.94 "survivor": survivor tag on run 2 (the middle line)
+    reveal("#scene-02 #surv", 21.25, 0.2);
+
+    // 25.34 "label": annotation no label for which is real
+    reveal("#scene-02 #an-final", 22.65);
+
+    // 25.59–27.86 final hold: nothing moves; extend timeline to the window end
+    tl.set({}, {}, 25.17);
+
+    window.__timelines["scene-02"] = tl;
+  </script>
+</body>
+</html>

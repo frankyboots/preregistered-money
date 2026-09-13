@@ -69,10 +69,10 @@ Times are word starts from `words.json`; visual completes within ≤250ms unless
 | 10.08 | `run` | arrow draws; node `re-run` types in | t=10.50 |
 | 11.46 | `something` | second arrow draws; second node `nothing` reveals (the next loss) | t=11.90 |
 | 11.78 | `else.` | annotation `change: else` | t=12.00 |
-| 13.16 | `variation` | final node `re-run` types in + `…` after it (the loop continues) | t=13.50 loop complete |
+| 13.16 | `variation` | arrow-4 draws; final node `re-run` types in (~100ms/char, 6 chars) + `…` reveals (250ms) with it | t=13.50 loop structure complete (`…` in; `re-run` typing, 4/6 chars — measured: 6 chars land 13.76) |
 | 16.42 | `ledger` | annotation: `nobody keeps a ledger` | t=16.60 |
 | 19.66 | `which` | `?` (mono, `--paper-dim`) after the `…` | t=19.80 |
-| 21.96 | `Three` | loop fades to 40% + settles up; three identical run lines reveal (200ms, 150ms stagger) | t=22.30 |
+| 21.96 | `Three` | loop fades to 40% + settles up; three identical run lines reveal (200ms each, 150ms stagger; first in by 22.16, last in by 22.46 — measured) | t=22.30 all three visible (last line ≈75% in, settled 22.46) |
 | 23.94 | `survivor` | `survivor` tag on `run 2` (the middle line) | t=24.20 |
 | 25.34 | `label` | annotation: `no label for which is real` | t=25.60 |
 | 26.58 | (speech ends) | final hold — nothing moves | t=27.0 = final state |
@@ -96,8 +96,9 @@ tag on the middle line is a fixed authoring choice (not data).
 
 - Final-frame proof: **t=27.0** — dim loop, three identical run lines,
   `survivor` on run 2, `no label for which is real` below.
-- Boundary proofs: t=13.50 (loop complete with `…`), t=22.30 (final state
-  settled), t=27.85 (hold stable to cut).
+- Boundary proofs: t=13.50 (loop structure complete with `…`; final
+  `re-run` typing, fully typed 13.76), t=22.30 (all three run lines visible;
+  last settles 22.46), t=27.85 (hold stable to cut).
 - Caption proof: run lines + annotations clear the bottom 132px band.
 - Audio sync: first `nothing` in by end of "loses" (7.08); `re-run` + `…`
   in by end of "variation" (13.78); three lines settled by end of "runs,"
@@ -106,5 +107,8 @@ tag on the middle line is a fixed authoring choice (not data).
   is `█` (U+2588) or a CSS-drawn rect. Check in the probe render before full
   build. Also: chain width at 30px mono — verify 5 nodes + arrows fit within
   the 80px safe margins; if tight, drop node font to `--fs-anno` (22px).
+  (Both resolved at build, 2026-09-13, probe render: `▮`, `…`, `?` render
+  cleanly in JetBrains Mono — no fallback needed; the full chain spans
+  x ≈ 414–1479 at 30px, 80px margins clear — no font drop.)
 - Acceptance: lint 0 errors; final-frame proof matches layout; no non-token
   color (`scan_theme_colors.py`).
