@@ -63,6 +63,12 @@ Status: SPEC (Phase B). Template: prose beats + pinned `seal-scene` (style spec 
      inside the outer ring below the mark (chord at dy=100px ≈ 607px wide —
      fits; the line crosses the thin inner ring, accepted). Held until the
      cut (≈14.4s — the pinned ≥3s stillness before cut is satisfied).
+     - Amended (Phase C build, no design change): the SHA line renders at
+       top y=699 (center ≈711) — the committed mark's ascending-line round
+       cap (endpoint (814,692), cap bottom ≈700) measured intruding ~5px
+       into the glyph tops at the original top 689. The +10px shift clears
+       the cap (≥4px verified in proof) and grows the chord slack
+       39→71px; the SHA remains inside the outer ring.
 - Colors: `--paper` + `--paper-dim` for title/command/prose; the only scene
   amber is the SHA (the seal, §4.3 step 3) plus the mark's own pinned bar
   stroke (part of the committed mark, not scene coloring). No verdict colors
@@ -146,7 +152,9 @@ its word).
   the 100ms/char of scenes 02–03 — different verb instance (pinned ~1.2s full
   line, §4.3); verify the line reads as "typing", not a flash, at draft
   quality. (4) Prose column L5 (607px) vs the ring's left edge at y≈396
-  (x≈714) — 27px gap, verify in probe.
+  (x≈714) — 27px gap, verify in probe. (5) Mark's ascending-line cap vs the
+  SHA glyph tops — realized: cap bottom ≈700 intruded ~5px at SHA top 689;
+  amended SHA to top 699 (see Seal zone note), clearance ≥4px in proof.
 - Acceptance: lint 0 errors; final-frame proof matches layout; SHA on screen
   byte-identical to `data/spec-sha.txt`; the only amber pixels are the SHA
   and the mark's pinned bar (`scan_theme_colors.py` clean); no other number
