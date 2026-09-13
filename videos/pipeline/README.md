@@ -40,7 +40,7 @@ documented extension, not yet built.
 | Voice + settings | `voice_pin.json` `voice_id` + `voice_settings` (owner decision; change = logged act) |
 | STT model | `voice_pin.json` `stt.model_id` (`scribe_v2`, word granularity) |
 | Output format | `voice_pin.json` `output_format` (`pcm_24000` on the Creator tier — raw 16-bit PCM, wrapped and normalized to 44.1 kHz by `voiceover.py`; `wav_44100` is Pro-only) |
-| Inter-beat gap | `voice_pin.json` `gap_s` (0.75s; pinned — reshuffles the beat map if changed) |
+| Inter-beat gap | `voice_pin.json` `gap_s` (1.25s; pinned — reshuffles the beat map if changed) |
 | Keyterms | `voice_pin.json` `keyterms` (channel-vocabulary bias for the ASR) |
 
 ```bash

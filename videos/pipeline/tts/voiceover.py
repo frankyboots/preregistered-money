@@ -19,7 +19,7 @@ Usage (from repo root):
   python3 videos/pipeline/tts/voiceover.py \
       --script videos/<slug>/narration.md \
       --video-dir videos/<slug> \
-      [--voice-id ID] [--model-id ID] [--gap 0.75] \
+      [--voice-id ID] [--model-id ID] [--gap 1.25] \
       [--summary audio/timing/voiceover-summary.json]
 
 Key: ELEVENLABS_API_KEY in the environment, else
@@ -200,9 +200,9 @@ def main():
             "character_count": headers.get("x-character-count"),
             "duration_s": round(dur, 3),
         })
-        list_lines.append(f"file '{norm}'")
+        list_lines.append(f"file '{norm.resolve()}'")
         if i < len(beats) - 1:
-            list_lines.append(f"file '{gap_wav}'")
+            list_lines.append(f"file '{gap_wav.resolve()}'")
         print(f"  {b['id']}: {len(b['text'])} chars, {dur:.2f}s, "
               f"req={headers.get('request-id')}", file=sys.stderr)
 
