@@ -146,7 +146,10 @@ style-spec version, and HF version used.
   absolute-path fix in `voiceover.py`); scaffold merged at `6c21d46`
 - HyperFrames: 0.8.35 (`HF_VERSION` in `pipeline/render.sh`) — verified
   via lint + check on the scaffold (2026-09-13); renders verified 2026-09-13
-- Style spec: 1.1.0 — wired (snapshot above; pipeline SHA `77f8791`)
+- Style spec: 1.1.1 (amended 2026-09-13 — §4.7 prose-only clarification,
+  owner ratified the column reveal unit; `tokens.css`/`setpieces.css`
+  byte-identical to the 1.1.0 snapshot above, which this video renders
+  against; pipeline SHA of the amendment recorded in git history)
 
 ## Scene inputs (recorded at first render)
 

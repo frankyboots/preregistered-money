@@ -131,7 +131,9 @@ narration's own enumeration — `prereg` (a row's identity is its PR ID),
 Pinned §4.7's "rows reveal one at a time" governs rows the narration names
 one by one; here the narration names the *columns*, so the column unit is the
 reveal unit, in the narration's order (the pinned 200ms row verb is kept).
-Flagged for REVIEW. `all rows are examples` keys to `examples`; the aggregate
+RESOLVED (owner, 2026-09-13): the column reading is accepted — ratified by
+style-spec 1.1.1, which makes the narration's enumeration the reveal unit
+(row-unit stays the default). `all rows are examples` keys to `examples`; the aggregate
 block to `aggregate` (rule first, rows as named: `Total`, `confirmed,` — the
 first of the three counted verdicts, `confirmation`); the null definition to
 `fraction`; the composite row to `composite,` and its dormant label to
@@ -181,8 +183,10 @@ row it qualifies).
   "confirmation" (188.76); null annotation by end of "fraction" (191.60);
   composite row by end of "composite," (196.56); dormant label by end of
   "dormant," (202.72).
-- Known risks: (1) column-unit reveals vs pinned §4.7 "rows one at a time" —
-  documented reading (narration names columns), verify at REVIEW. (2) Width
+- Known risks: (1) ~~column-unit reveals vs pinned §4.7 "rows one at a
+  time"~~ — resolved: owner accepted the column reading 2026-09-13;
+  style-spec 1.1.1 ratifies the column unit when the narration enumerates
+  columns. (2) Width
   fits — longest hypothesis 302px in a 500px column; null annotation ≈779px
   from x=80; `results/PR-0000-000` ≈245px in a 420px column: verify in probe.
   (3) Verdict colors are the only chromatic pixels besides none —

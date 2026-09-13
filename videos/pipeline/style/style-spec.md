@@ -1,9 +1,15 @@
 # Style Spec
 
-**Version: 1.1.0**
+**Version: 1.1.1**
 Status: v1 — approved at the branding session (2026-09-12).
 
 Changelog:
+- 1.1.1 (2026-09-13): §4.7 prose clarification (no pixel change) —
+  "rows reveal one at a time" is the default reveal unit; when the
+  narration enumerates columns, the column is the reveal unit in the
+  narration's order, same 200ms verb. Ratified by owner review of
+  scene-07 (meta-preregistration-rules), which names the ledger's
+  columns rather than its rows.
 - 1.1.0 (2026-09-12): channel name settled — wordmark `PREREGISTERED MONEY`,
   handle `@preregisteredmoney`. New set piece §4.2 (brand mark: the seal
   stamp holding the bar); the seal ring and the corner bug now use it —
@@ -184,7 +190,9 @@ Full-bleed table, `--paper` on `--ink`, thin `--paper-dim` rules:
 - The composite row (pinned strategies) is distinguished by a 2px `--paper`
   rule above it, not by color.
 - Rows reveal one at a time on their narration cue (200ms each), in
-  scoreboard order. No full-table fade-in.
+  scoreboard order. No full-table fade-in. When the narration enumerates
+  the columns instead of the rows, the column is the reveal unit (200ms
+  each, in the narration's order) — see the 1.1.1 changelog entry.
 
 ## 5. Motion system
 
