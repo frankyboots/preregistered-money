@@ -1,0 +1,71 @@
+{
+  "master": "audio/voiceover.wav",
+  "master_sha256": "4cfb0cb026e06c6169fa56226fdf06b0aca8c42789000c737f6faf94f9254766",
+  "master_duration_s": 246.96,
+  "gap_s": 1.25,
+  "beats": [
+    {
+      "id": "beat-01",
+      "start_s": 0.0,
+      "end_s": 1.44,
+      "duration_s": 1.44,
+      "gap_after_s": 1.25
+    },
+    {
+      "id": "beat-02",
+      "start_s": 2.69,
+      "end_s": 26.61,
+      "duration_s": 23.92,
+      "gap_after_s": 1.25
+    },
+    {
+      "id": "beat-03",
+      "start_s": 27.86,
+      "end_s": 60.18,
+      "duration_s": 32.32,
+      "gap_after_s": 1.25
+    },
+    {
+      "id": "beat-04",
+      "start_s": 61.43,
+      "end_s": 93.99,
+      "duration_s": 32.56,
+      "gap_after_s": 1.25
+    },
+    {
+      "id": "beat-05",
+      "start_s": 95.24,
+      "end_s": 127.32,
+      "duration_s": 32.08,
+      "gap_after_s": 1.25
+    },
+    {
+      "id": "beat-06",
+      "start_s": 128.57,
+      "end_s": 160.81,
+      "duration_s": 32.24,
+      "gap_after_s": 1.25
+    },
+    {
+      "id": "beat-07",
+      "start_s": 162.06,
+      "end_s": 204.22,
+      "duration_s": 42.16,
+      "gap_after_s": 1.25
+    },
+    {
+      "id": "beat-08",
+      "start_s": 205.47,
+      "end_s": 234.35,
+      "duration_s": 28.88,
+      "gap_after_s": 1.25
+    },
+    {
+      "id": "beat-09",
+      "start_s": 235.6,
+      "end_s": 246.96,
+      "duration_s": 11.36,
+      "gap_after_s": null
+    }
+  ]
+}

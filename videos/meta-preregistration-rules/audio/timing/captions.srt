@@ -1,0 +1,391 @@
+1
+00:00:00,060 --> 00:00:01,600
+The name is the method.
+
+2
+00:00:02,740 --> 00:00:03,860
+The failure mode.
+
+3
+00:00:04,840 --> 00:00:07,280
+You backtest a strategy and it loses.
+
+4
+00:00:08,160 --> 00:00:10,520
+Change the window, add a filter, run it
+
+5
+00:00:10,340 --> 00:00:10,820
+again,
+
+6
+00:00:11,180 --> 00:00:12,250
+change something else.
+
+7
+00:00:12,900 --> 00:00:15,810
+Each variation is defensible on its own, but
+
+8
+00:00:15,620 --> 00:00:18,900
+nobody keeps a ledger of every variation.
+
+9
+00:00:18,740 --> 00:00:20,780
+No one can say which one produced the
+
+10
+00:00:20,580 --> 00:00:21,200
+numbers.
+
+11
+00:00:21,940 --> 00:00:24,660
+Three identical runs, one survivor,
+
+12
+00:00:25,080 --> 00:00:26,780
+no label for which is real.
+
+13
+00:00:27,920 --> 00:00:31,840
+The fix comes from clinical trials, preregistration.
+
+14
+00:00:32,860 --> 00:00:35,480
+Before the run, you write down three things,
+
+15
+00:00:36,020 --> 00:00:39,040
+the hypothesis in one falsifiable sentence,
+
+16
+00:00:39,520 --> 00:00:40,220
+the data,
+
+17
+00:00:40,820 --> 00:00:41,640
+and the bar,
+
+18
+00:00:41,880 --> 00:00:43,890
+a number to clear after costs.
+
+19
+00:00:44,660 --> 00:00:46,120
+The document goes to Git.
+
+20
+00:00:46,550 --> 00:00:48,120
+The commit is the seal,
+
+21
+00:00:48,460 --> 00:00:50,200
+and Git is the notary.
+
+22
+00:00:51,160 --> 00:00:54,120
+After that, the document is append only.
+
+23
+00:00:53,980 --> 00:00:56,280
+Anyone can diff it against the run config
+
+24
+00:00:56,100 --> 00:00:57,420
+to check nothing moved.
+
+25
+00:00:58,330 --> 00:01:00,340
+The commitment is the point.
+
+26
+00:01:01,480 --> 00:01:02,410
+Four states,
+
+27
+00:01:02,880 --> 00:01:07,040
+the prereg, hypothesis, data, and bar written down
+
+28
+00:01:06,860 --> 00:01:08,140
+before anything runs.
+
+29
+00:01:08,820 --> 00:01:09,460
+The seal,
+
+30
+00:01:09,880 --> 00:01:11,660
+the commit that locks the document.
+
+31
+00:01:12,480 --> 00:01:13,260
+The verdict,
+
+32
+00:01:13,600 --> 00:01:16,700
+the result judged by the preregistered criteria,
+
+33
+00:01:16,940 --> 00:01:18,180
+not by how it looks.
+
+34
+00:01:18,820 --> 00:01:21,820
+Confirmed, falsified, or inconclusive.
+
+35
+00:01:22,460 --> 00:01:23,500
+Then the scoreboard,
+
+36
+00:01:23,880 --> 00:01:25,980
+every prereg in one public table
+
+37
+00:01:26,320 --> 00:01:27,980
+and an arrow back to the prereg.
+
+38
+00:01:28,280 --> 00:01:30,460
+The postmortem becomes the next prereg.
+
+39
+00:01:31,120 --> 00:01:33,610
+Every video on this channel lives inside this
+
+40
+00:01:33,400 --> 00:01:34,140
+diagram.
+
+41
+00:01:35,290 --> 00:01:37,390
+What does sealed mean in practice?
+
+42
+00:01:38,240 --> 00:01:41,400
+After the commit, the document is append only,
+
+43
+00:01:41,200 --> 00:01:43,080
+and the Git history is the audit trail.
+
+44
+00:01:43,780 --> 00:01:46,180
+The same rule holds for runs.
+
+45
+00:01:46,020 --> 00:01:48,140
+A result counts only if it matches the
+
+46
+00:01:47,940 --> 00:01:48,900
+sealed config.
+
+47
+00:01:49,630 --> 00:01:52,260
+The seal is one command on screen now.
+
+48
+00:01:53,060 --> 00:01:55,720
+The commit produces a SHA recorded in the
+
+49
+00:01:55,520 --> 00:01:57,200
+document and on the scoreboard.
+
+50
+00:01:57,750 --> 00:01:59,870
+The SHA on screen is the commit that
+
+51
+00:01:59,700 --> 00:02:01,160
+first committed this spec,
+
+52
+00:02:01,530 --> 00:02:04,560
+the channel's first sealed artifact.
+
+53
+00:02:04,420 --> 00:02:06,960
+If the scoreboard shows a different one, that
+
+54
+00:02:06,780 --> 00:02:07,460
+is a bug.
+
+55
+00:02:08,589 --> 00:02:09,280
+The bar,
+
+56
+00:02:10,060 --> 00:02:12,040
+a number to reach after costs.
+
+57
+00:02:12,960 --> 00:02:15,370
+The chart draws the cost-adjusted series,
+
+58
+00:02:15,640 --> 00:02:17,730
+then the bar, an amber line
+
+59
+00:02:17,980 --> 00:02:18,559
+last.
+
+60
+00:02:19,620 --> 00:02:21,640
+The value in the tag is an example
+
+61
+00:02:21,820 --> 00:02:23,100
+labeled on screen.
+
+62
+00:02:23,760 --> 00:02:25,900
+No results document exists yet.
+
+63
+00:02:27,120 --> 00:02:29,360
+The bar is drawn the same way whether
+
+64
+00:02:29,150 --> 00:02:31,240
+the strategy passes or fails.
+
+65
+00:02:31,550 --> 00:02:33,440
+Same chart, same bar.
+
+66
+00:02:34,309 --> 00:02:37,440
+The only difference is where the curve ends
+
+67
+00:02:37,260 --> 00:02:38,500
+relative to the line,
+
+68
+00:02:39,000 --> 00:02:40,980
+and that is the story.
+
+69
+00:02:42,110 --> 00:02:44,040
+The scoreboard is the product.
+
+70
+00:02:45,320 --> 00:02:46,060
+One table,
+
+71
+00:02:46,640 --> 00:02:48,140
+each row a prereg
+
+72
+00:02:48,440 --> 00:02:51,480
+with its ID, hypothesis, seal date,
+
+73
+00:02:51,780 --> 00:02:52,450
+verdict,
+
+74
+00:02:52,740 --> 00:02:56,620
+out-of-sample number, and link to results.
+
+75
+00:02:56,460 --> 00:02:59,230
+The rows on screen are examples labeled as
+
+76
+00:02:59,040 --> 00:02:59,540
+such.
+
+77
+00:03:00,400 --> 00:03:02,700
+Above the table, the aggregate rows.
+
+78
+00:03:03,120 --> 00:03:07,600
+Total preregs, the confirmed, falsified, and inconclusive counts,
+
+79
+00:03:07,980 --> 00:03:10,500
+and the confirmation rate against a null baseline,
+
+80
+00:03:10,940 --> 00:03:14,020
+the fraction random strategies pass by chance.
+
+81
+00:03:14,920 --> 00:03:16,760
+Below the table, the composite,
+
+82
+00:03:17,320 --> 00:03:19,700
+the strategies the owner decides to trade.
+
+83
+00:03:20,860 --> 00:03:22,920
+Until the first pin, it is dormant,
+
+84
+00:03:23,160 --> 00:03:24,400
+and the label says so.
+
+85
+00:03:25,540 --> 00:03:28,020
+The same four lines on every video.
+
+86
+00:03:28,880 --> 00:03:31,640
+Educational content, not investment advice.
+
+87
+00:03:32,480 --> 00:03:35,460
+Backtest results are estimates under stated assumptions.
+
+88
+00:03:35,780 --> 00:03:38,260
+Live performance will differ, possibly badly.
+
+89
+00:03:39,070 --> 00:03:41,430
+Preregistration controls data snooping.
+
+90
+00:03:41,740 --> 00:03:44,640
+It does not control overfitting in pre-seal choices,
+
+91
+00:03:44,860 --> 00:03:47,140
+data quality, or market regime change.
+
+92
+00:03:47,660 --> 00:03:52,270
+Past performance, including preregistered, costed, out-of-sample past performance,
+
+93
+00:03:52,580 --> 00:03:54,540
+is the weakest predictor in finance.
+
+94
+00:03:55,700 --> 00:03:57,780
+Same inputs, same pixels.
+
+95
+00:03:58,550 --> 00:04:00,800
+The video pipeline is held to the same
+
+96
+00:04:00,620 --> 00:04:02,710
+reproducibility bar as the research.
+
+97
+00:04:03,520 --> 00:04:05,490
+If you cannot reproduce a number from this
+
+98
+00:04:05,280 --> 00:04:07,060
+repository, it is a bug

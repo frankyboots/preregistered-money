@@ -1,0 +1,89 @@
+{
+  "tool": "voiceover.py",
+  "transport": "REST v1 via requests 2.31.0",
+  "requirements_lock_sha256": "0d0d2938e5443f318fc97363f42cffe3309df1b718cc2bf713263a68cb7bbee5",
+  "voice_id": "XB0fDUnXU5powFXDhCwa",
+  "voice_name": "Helen (professional, en-british)",
+  "model_id": "eleven_v3",
+  "voice_settings": {
+    "stability": 0.55,
+    "similarity_boost": 0.75,
+    "style": 0.0,
+    "speed": 1.0,
+    "use_speaker_boost": true
+  },
+  "output_format": "pcm_24000",
+  "gap_s": 1.25,
+  "script_path": "videos/meta-preregistration-rules/narration.md",
+  "script_sha256": "62c78731c4b77ae58ef70bacb4ee7d0f0d19998c5b56cffc547922039dfdd5a9",
+  "beats": [
+    {
+      "id": "beat-01",
+      "chars": 23,
+      "request_id": "7impDGid1ghS43RNgSFP",
+      "character_count": null,
+      "duration_s": 1.44
+    },
+    {
+      "id": "beat-02",
+      "chars": 323,
+      "request_id": "PhJPtki6ieRRPCXFShpC",
+      "character_count": null,
+      "duration_s": 23.92
+    },
+    {
+      "id": "beat-03",
+      "chars": 404,
+      "request_id": "DqdhxTmvwjle0sKj1NF4",
+      "character_count": null,
+      "duration_s": 32.32
+    },
+    {
+      "id": "beat-04",
+      "chars": 440,
+      "request_id": "bST2KuyVLn5j1nl9dpjK",
+      "character_count": null,
+      "duration_s": 32.56
+    },
+    {
+      "id": "beat-05",
+      "chars": 477,
+      "request_id": "8HF9SBig3MJZnQAXRXDa",
+      "character_count": null,
+      "duration_s": 32.08
+    },
+    {
+      "id": "beat-06",
+      "chars": 383,
+      "request_id": "h4HwmVd0V45McoLH823S",
+      "character_count": null,
+      "duration_s": 32.24
+    },
+    {
+      "id": "beat-07",
+      "chars": 532,
+      "request_id": "xt2Zfl2ScaFRgWB2N3Yh",
+      "character_count": null,
+      "duration_s": 42.16
+    },
+    {
+      "id": "beat-08",
+      "chars": 434,
+      "request_id": "FxiUvUMmTv22JzbmpS7w",
+      "character_count": null,
+      "duration_s": 28.88
+    },
+    {
+      "id": "beat-09",
+      "chars": 169,
+      "request_id": "vs4iEmdAMsNkOGH3HjbT",
+      "character_count": null,
+      "duration_s": 11.36
+    }
+  ],
+  "master": {
+    "path": "audio/voiceover.wav",
+    "sha256": "4cfb0cb026e06c6169fa56226fdf06b0aca8c42789000c737f6faf94f9254766",
+    "duration_s": 246.96
+  }
+}

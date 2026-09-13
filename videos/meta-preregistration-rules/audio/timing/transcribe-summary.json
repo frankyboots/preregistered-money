@@ -1,0 +1,34 @@
+{
+  "tool": "transcribe.py",
+  "transport": "REST v1 via requests 2.31.0",
+  "requirements_lock_sha256": "0d0d2938e5443f318fc97363f42cffe3309df1b718cc2bf713263a68cb7bbee5",
+  "model_id": "scribe_v2",
+  "keyterms": [
+    "preregistration",
+    "pre-registration",
+    "scoreboard",
+    "verdict",
+    "falsified",
+    "confirmation rate",
+    "out-of-sample",
+    "OOS",
+    "Sharpe",
+    "CAGR",
+    "max DD",
+    "git commit",
+    "seal",
+    "prereg"
+  ],
+  "request_id": null,
+  "transcription_id": "42BOYRpGCVh6OVuoLLbX",
+  "language_code": "eng",
+  "language_probability": 1.0,
+  "audio_duration_secs": 246.96,
+  "word_count": 534,
+  "caption_count": 98,
+  "wav_sha256": "4cfb0cb026e06c6169fa56226fdf06b0aca8c42789000c737f6faf94f9254766",
+  "outputs": {
+    "words": "audio/timing/words.json",
+    "srt": "audio/timing/captions.srt"
+  }
+}

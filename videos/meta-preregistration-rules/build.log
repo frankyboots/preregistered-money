@@ -1,0 +1,89 @@
+# Build log — meta-preregistration-rules
+
+Regenerated on every material change (VIDEO_CONCEPT §4). One line per
+artifact: what it is, its checksum, how it was made. Same input → same
+pixels is checkable from this file.
+
+Lifecycle: SPEC → **DRAFT** (audio locked, scenes not yet built) → REVIEW
+→ FINAL → PUBLISH.
+
+## Audio (locked 2026-09-13)
+
+Narration, committed once; the render consumes the wav (TTS is never
+called inside a render).
+
+| Artifact | sha256 |
+|---|---|
+| `narration.md` | `62c78731c4b77ae58ef70bacb4ee7d0f0d19998c5b56cffc547922039dfdd5a9` |
+| `audio/voiceover.wav` | `4cfb0cb026e06c6169fa56226fdf06b0aca8c42789000c737f6faf94f9254766` (246.96s, 44.1 kHz mono) |
+| `audio/beats/beat-01.wav` | `15b7b9ed35859c89ea2aa8e9fc1f9ab4f92ea72f1da855288ab7c9340b252597` |
+| `audio/beats/beat-02.wav` | `880f979968c3421bd0d8d5a1e08905cb4fca7f51ccd7d38d0740474d614a03d1` |
+| `audio/beats/beat-03.wav` | `bfbcf2d4defa0c5b480a407d59eaa2151c0701092342b07855eb18f025875ac6` |
+| `audio/beats/beat-04.wav` | `3198597adcded7e722576c8e8072ebadd0add1fb9eed5125266b69e2af45ebad` |
+| `audio/beats/beat-05.wav` | `19e7672483754090233652ef03e9fa827a355a9a8191da40e0285951ece64b02` |
+| `audio/beats/beat-06.wav` | `7b6f3c1714e9967c48f7814af899248c26e895958ac2c00e34b660e0ff23579f` |
+| `audio/beats/beat-07.wav` | `12e48937537cb4d9075f340f8f56dcbd8865f98c6c19529b5a4c19b529318fce` |
+| `audio/beats/beat-08.wav` | `d7dea527550644af8c1d7a3af56ebb17dbe060d719343f88887dd8edb3781ac6` |
+| `audio/beats/beat-09.wav` | `96e9dd1d61d52816b8fe83f019086e9b7cc3fc8c8d6d928f73551f0f9378ff9d` |
+| `audio/timing/beat-map.json` | `6053b46e717fa4598341dd59d76c25afa842bae6aa5a4a153e408f41f97b3aab` |
+| `audio/timing/words.json` | `4adc49d66720d1066dda5ea97e4ba8b3aec91f1ac8f598c90cc4ea0da94df471` |
+| `audio/timing/captions.srt` | `f0cb5f6486eb04dc23ba3ab12117e7bd96cab1387425ddd5ea17c398dae0e096` |
+| `audio/timing/voiceover-summary.json` | `30afc9afe17d9e6f3d6513d3e6995ed2c1d6831a3aeab5d5bb1d701ffecd43cb` |
+| `audio/timing/transcribe-summary.json` | `eb5939d6af19de1d854a3f103a5483bed4ea1aefea42cb1a0ce59b199f0d4676` |
+
+TTS (ElevenLabs, REST v1 via requests 2.31.0): voice
+`XB0fDUnXU5powFXDhCwa` (Helen, professional en-british — channel
+default), model `eleven_v3`, settings stability 0.55 / similarity_boost
+0.75 / style 0.0 / speed 1.0 / speaker_boost on, output `pcm_24000` →
+44.1 kHz mono, inter-beat gap **1.25s** (pin re-pinned 2026-09-13,
+commit `4fba18a`; was 0.75s). Script sha256 `62c78731…dfdd5a9`.
+Measured pace 133 wpm (527 words ÷ 236.96s speech). Per-beat API
+request-ids and per-beat durations in `voiceover-summary.json`.
+
+STT: Scribe v2 (`scribe_v2`, word granularity, eng), keyterms per pin;
+transcription_id `42BOYRpGCVh6OVuoLLbX`; 534 words, 98 caption lines.
+
+Audio iteration record:
+1. Draft (621 words) + owner text review → trim pass (−94 words,
+   beats 2–7; beat 8 = CONCEPT §10 verbatim, untouched).
+2. Zane trial (owner web-GUI reference 4:41 at creative stability):
+   pipeline repro ≈ 274s speech. Owner preferred Helen; Zane stays
+   reserved (duo pin unchanged).
+3. Helen @ 0.75s gap: 4:05 — owner: gap too short.
+4. Gap re-pin to 1.25s → this master: **4:07 — locked by owner.**
+   No further trims.
+
+## Data inputs
+
+| File | Value / checksum | Source |
+|---|---|---|
+| `data/spec-sha.txt` | `86140f927343296bb2efc390288ac56b2c9865e2` (file sha256 `225809172e884309cab78e4fb11be46bece0dc67856d7a3cdf9dc003acf4f29d`) | SHA of the commit that first committed `spec.md` (`86140f9`, amended `30359c1`); the seal-scene SHA (spec Inputs) |
+
+Rule-text sources (read-only, cited by path, not checksummed):
+`docs/CONCEPT.md`, `docs/METHODOLOGY.md` — SHAs recorded here at first
+render (they are scene inputs, not audio inputs). No other data; no
+datasets (spec: "No raw data, no datasets").
+
+## Composition
+
+Not yet built. Pending: wire `tokens.css` + `setpieces.css` into the
+skeleton; scene specs from the beat sheet + `words.json` cues; first
+DRAFT render. When scenes land, this section records the composition
+SHA, template family (Meta v1), style-spec version, and HF version used.
+
+## Pipeline versions at audio lock
+
+- Pipeline HEAD: `c14fac6` (includes gap re-pin `4fba18a` + concat
+  absolute-path fix in `voiceover.py`)
+- HyperFrames: 0.8.35 (`HF_VERSION` in `pipeline/render.sh`) — not yet
+  exercised (no render yet)
+- Style spec: 1.1.0 — not yet wired into the composition
+
+## Render history
+
+(empty — no renders yet; the first DRAFT render appends here: timestamp,
+composition SHA, output hash, encoder settings)
+
+## Publish record
+
+(none — PUBLISH is a dated, manual owner act; recorded here afterwards)
