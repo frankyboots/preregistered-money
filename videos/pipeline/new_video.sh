@@ -22,6 +22,9 @@ DEST="$REPO_ROOT/videos/$SLUG"
 cp -r "$PIPELINE/skeleton" "$DEST"
 rm -f "$DEST/.DS_Store"
 
+# style/ + fonts/ snapshot (committed render inputs — see snapshot_style.sh)
+bash "$PIPELINE/snapshot_style.sh" "$DEST"
+
 # meta.json: set id/name to the slug
 python3 - "$DEST/meta.json" "$SLUG" <<'PY'
 import json, sys
