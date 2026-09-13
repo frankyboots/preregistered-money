@@ -45,6 +45,10 @@ Keep files small enough to inspect and diff.
 
 A scene file is standalone HTML: its own `<div data-composition-id="scene-XX" data-start data-duration data-width data-height>` root, its own paused GSAP timeline registered under that ID, its own GSAP script tag. It renders alone via `--composition composition/scene-XX.html`. It mounts in `index.html` via `<div data-composition-id="scene-XX" data-composition-src="composition/scene-XX.html" data-start data-duration data-track-index>`.
 
+**Timing: cues are local, the offset lives only on the mount.** The composition root is always `data-start="0"` with `data-duration` = window length, and every GSAP cue is in the composition's local time (the spec's master word-start minus the window start). The global window offset lives only on the `index.html` mount div's `data-start` (= window start). If you set the root's `data-start` to the window start AND author cues in master time, the scene shifts by the offset and the render shows a blank lead-in of exactly that many seconds (the double-offset bug). Convert the cues to local once and keep the root at 0.
+
+**Initial hidden state lives in CSS, not only a `tl.set` at t=0.** Elements hidden until a cue start hidden in CSS (e.g. `.hide-y { opacity:0; transform: translateY(12px) }`), so the render's first frame is correct even if the timeline hasn't applied its t=0 state. GSAP then animates them in. For a center-aligned element already using `translateX(-50%)`, bake the 12px slide into the same CSS transform (`translateX(-50%) translateY(12px)`) and reveal to `translateY(0)` — a reveal that only sets `y` won't compose with a `translateX(-50%)` the CSS didn't set up.
+
 Lint is strict about mount elements: every `data-composition-src` host needs **both** `data-composition-id` and a stable `id` (the second is the Studio edit target) — a host with only `data-composition-src` is a lint error, not a warning.
 
 ## Composition Rules
@@ -157,6 +161,7 @@ Before rendering final:
 - Check logo rows have spacing and no separator artifacts unless intended.
 - Check cards and tables are not oversized.
 - Check final frame matches reference scale.
+- Precompute monospace layout instead of eyeballing it: JetBrains Mono's advance is 0.6× the font size (30px → 18px/char). For a centered text chain, compute each node's center/left from char-count × advance plus the gaps, so the whole chain fits the safe margins before you render.
 
 ## Render Strategy
 

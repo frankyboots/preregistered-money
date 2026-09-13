@@ -29,7 +29,7 @@ If a prerequisite is missing, stop — Phase C consumes committed state, it does
 
 From `scene-specs/scene-NN.md`, take, verbatim:
 
-- **Window** (Scene Identity) → the composition's `data-start` + `data-duration`, and the render's expected length.
+- **Window** (Scene Identity) → the mount's `data-start` (window start) + `data-duration` (window length), the root's `data-duration`, and the render's expected length.
 - **Source composition** + **Render output** paths (Scene Identity) — the file to author and the MP4 the render must land at.
 - **Output format** (resolution, fps, quality) — draft fps/quality per the spec's Phase C line.
 - **Data inputs** (Inputs) — files under `data/` to draw charts from; or "none. No number appears in this scene." If a shown number has no committed data input or no citation in `spec.md`'s table, stop (Step 6 rule).
@@ -42,14 +42,14 @@ The spec is the whole design brief. Do not invent layout, motion, or content the
 
 Build `composition/scene-NN.html` to the spec. Craft rules live in `hyperframes-scene-builder` (sub-composition authoring, GSAP timeline rules, root-relative asset paths, component patterns) — follow that skill; the rules below are the Phase C loop's non-negotiables:
 
-- Standalone HTML: `data-composition-id="scene-NN"`, `data-width`, `data-height`, `data-start`/`data-duration` matching the spec window. Paused, seekable GSAP timeline registered under that ID; initial states set at t=0; cues placed at the spec's word-start times (the visual completes within ≤250ms of its cue unless the spec notes otherwise).
+- Standalone HTML: `data-composition-id="scene-NN"`, `data-width`, `data-height`, `data-start="0"` + `data-duration` = window length (cues are local to the root; the window offset goes only on the `index.html` mount — see Step 3). Paused, seekable GSAP timeline registered under that ID; initial hidden states in CSS (see `hyperframes-scene-builder`); cues placed at the spec's word-start times minus the window start (the visual completes within ≤250ms of its cue unless the spec notes otherwise).
 - Import `style/tokens.css` + `style/setpieces.css` root-relative (base URL is the project root) — never `../`. Colors from tokens only; motion verbs from style spec §5.2 only. No P&L red/green where nothing is judged.
 - Draw charts/tables from the `data/` input files — never type a number into markup.
 - SVG assets well-formed (no `--` inside XML comments).
 
 ## Step 3 — Mount + lint + check
 
-Mount the scene in `index.html` via `data-composition-src="composition/scene-NN.html"`. The mount host needs **both** `data-composition-id` and a stable `id` (lint errors on a host with only `data-composition-src`). `data-start` = window start, `data-duration` = window length, `data-track-index` = scene order.
+Mount the scene in `index.html` via `data-composition-src="composition/scene-NN.html"`. The mount host needs **both** `data-composition-id` and a stable `id` (lint errors on a host with only `data-composition-src`). Mount `data-start` = window start, `data-duration` = window length, `data-track-index` = scene order. The composition root itself stays `data-start="0"` — setting the window start on *both* mount and root double-offsets the scene (blank lead-in of exactly the window-start seconds).
 
 Then, through the sanctioned entry point (never bare `npx hyperframes` in committed work):
 
@@ -73,10 +73,12 @@ pipeline/render.sh <video-dir> render --composition composition/scene-NN.html --
 Extract proof frames at **exactly the timestamps the spec's QA Checklist names** — first frame, each boundary proof, each audio-sync proof, the final-frame proof — then judge each against the spec's stated expectation:
 
 ```bash
-python3 pipeline/tools/extract_proof_frames.py <video-dir> renders/scene-NN.mp4 <t1> <t2> ...
-python3 pipeline/tools/probe_media.py <video-dir> renders/scene-NN.mp4   # duration, fps, streams
+python3 pipeline/tools/extract_proof_frames.py <video-dir>/renders/scene-NN.mp4 --time <t1> --time <t2> --output-dir <video-dir>/snapshots/scene-NN-proof/ --prefix scene-NN
+python3 pipeline/tools/probe_media.py <video-dir>/renders/scene-NN.mp4   # duration, fps, streams
 python3 pipeline/tools/scan_theme_colors.py <composition or video-dir>  # token-only colors
 ```
+
+`extract_proof_frames.py` takes the full MP4 path (not the video dir), one `--time` per frame (repeatable), and writes to `--output-dir` with `--prefix`-numbered filenames. The first frame must be blank ink + persistent set pieces (corner bug) — if it comes out white or shows content, suspect a double-offset (Step 3) or missing CSS initial hidden state before touching cues. For risky content (a font glyph you haven't rendered in this stack, a long text chain that must fit margins), draft a throwaway probe composition (an `_probe-` name, never committed, deleted before commit) and verify it in a render before authoring the full scene.
 
 Pass/fail per the spec's Acceptance line (lint 0 errors; final-frame proof matches the spec layout; `scan_theme_colors.py` clean). Check audio-sync: each key element fully visible by the end of its naming word. Check the bottom 132px caption band is clear of key text. If a proof fails, fix the composition and re-render — do not lower the bar to pass. `make_contact_sheet.py` for a quick multi-frame look.
 
