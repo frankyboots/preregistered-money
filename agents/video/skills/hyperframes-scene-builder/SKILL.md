@@ -108,6 +108,7 @@ After rendering:
 - If a scene transition forgets a new label or visual, patch the next scene's carryover frame too.
 - If timeline objects appear too early, verify initial `opacity`, path progress, and node visibility.
 - If path points appear before the line reaches them, reveal points on line-progress milestones.
+- If an SVG line-draw (stroke-dashoffset) reveals in the wrong direction or leaks a segment before its cue, the dash math is off. Two traps, both caught on a lifecycle-loop scene: (1) `stroke-dasharray` MUST equal the path's measured length — a dasharray shorter than the path leaves the tail un-hidden, so it renders pre-cue (the "gap" only covers part of the path); for a straight-line path, sum the segment lengths by hand. (2) reveal direction = the path's point order: dashoffset `length→0` draws from the first point toward the last; to draw last→first, reverse the `d` point order rather than animating offset `0→length` (that direction is unreliable). Always proof a pre-cue frame of the draw zone (must be 0 non-ink) plus a few mid-draw frames to confirm the visible head advances the intended way.
 - If text gets clipped by a ring or card, reduce the full system scale instead of only shrinking the label.
 - If a value on screen does not match the cited results doc, stop — the data input is wrong, not the composition.
 
