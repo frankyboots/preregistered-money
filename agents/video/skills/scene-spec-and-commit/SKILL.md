@@ -68,6 +68,16 @@ Body: window + verification evidence (cue rows verified against words.json, chan
 
 Tracker update rides with the commit (scenes done, next scene number). Reference earlier scene commits by SHA, but never this commit's own SHA in the tracker (self-reference: the SHA only exists after the commit, so the tracker line breaks on any amend) — reference this scene by name and let git log carry the SHA. The `memory` tool treats the whole tracker file as one entry: a `replace` swaps the ENTIRE entry, so `content` must always be the complete new tracker text — a partial `new_text` silently deletes the rest of the tracker. When a `replace` fails with "No entry matched", read the error's `current_entries` before retrying: the entry may already be current because `write_file` to the repo's `MEMORY.md` (which rides in this commit) updated the profile store's text — retry only if the stored text is actually stale, and re-issue with the full replacement text.
 
+## Resolving a flagged reading (owner decision)
+
+When the owner accepts or rejects a "Flagged for REVIEW" reading, land it as ONE coherent commit — the amendment plus the scene-spec and build-log updates it drives are the same change; don't split.
+
+- **Accept, prose-only:** bump the style spec a patch per §10 change policy — version header + changelog entry naming the scene whose reading was ratified. Verify `tokens.css`/`setpieces.css` are byte-identical (sha256sum against the video's build-log snapshot table): if unchanged, NO snapshot refresh — the video still renders the earlier css snapshot, and the build log's style-spec pin line records the new spec version with that byte-identical note (no checksum re-pin). Commit under the `pipeline` scope (the style spec lives under `videos/pipeline/`).
+- **Accept, pixel change (minor/major):** refresh the style snapshot into the video dir via `pipeline/snapshot_style.sh`, re-record the sha256 table in the build log, and re-render affected scenes — the deterministic-build rule applies (committed pixels must match committed inputs).
+- **Reject:** the pin stands; amend the scene spec's cue table to the pinned reveal unit (re-key cues, re-check the change floor). If conformance would break reveal-on-naming (style spec §5.1 rule 1), the problem is the script, not the spec — escalate, don't force it.
+- **Retire the flag in the scene spec either way:** replace "Flagged for REVIEW" with a RESOLVED line citing the ratifying spec version; mark the known-risk entry resolved (strikethrough, not deletion — the flag's history is audit trail).
+- Tracker rides with the commit (flag resolved, next action).
+
 ## Stop conditions
 
 - A cited word is not in words.json → re-key it to a word actually spoken; do not render around it.

@@ -78,6 +78,7 @@ Use this skill to coordinate a complete video project from rough request to veri
 - User says captions are late or wrong: use `captions`.
 - User says narration changed: use `audio-sync-assembly`.
 - User says "everything is perfect except": use `render-qa-and-surgical-changes`.
+- Owner ratifies or rejects a "Flagged for REVIEW" reading (style-spec / scene-spec): `scene-spec-and-commit` → "Resolving a flagged reading".
 
 ## Implementation Order
 
