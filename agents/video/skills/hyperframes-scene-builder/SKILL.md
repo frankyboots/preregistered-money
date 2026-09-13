@@ -132,7 +132,7 @@ Avoid:
 
 ## Scene-Spec Cue Rules (Phase B, this repo)
 
-Spec-side rules (window derivation, cue-table verification against words.json, change floor) live in `scene-spec-and-commit` — the one-scene-then-commit loop. Scene specs are that skill's output; this skill consumes them as build contracts.
+Spec-side rules (window derivation, cue-table verification against words.json, change floor) live in `scene-spec-and-commit` — the one-scene-spec-then-commit loop. Scene specs are that skill's output. The Phase C build loop — executing a committed spec, draft-rendering, proof-checking, committing one scene at a time — is `scene-build-and-commit`; it consumes scene specs as build contracts and delegates the composition craft here (GSAP/timeline/asset-path/proof-frame mechanics).
 
 ## Timeline Authoring Checklist
 

@@ -14,7 +14,7 @@ metadata:
 
 # Scene Spec And Commit
 
-One scene of Phase B, then commit, then the next. The loop is spec 04 → commit → spec 05 → commit. Never batch multiple scene specs into one commit; never start scene N+1's spec while scene N is uncommitted. Phase C consumes these specs as build contracts (one scene build per commit; skill pending). (Provenance: scenes 01–03 of `meta-preregistration-rules`, 2026-09; the format reference is `scene-specs/scene-02.md`.)
+One scene of Phase B, then commit, then the next. The loop is spec 04 → commit → spec 05 → commit. Never batch multiple scene specs into one commit; never start scene N+1's spec while scene N is uncommitted. Phase C consumes these specs as build contracts (one scene build per commit, `scene-build-and-commit`). (Provenance: scenes 01–03 of `meta-preregistration-rules`, 2026-09; the format reference is `scene-specs/scene-02.md`.)
 
 ## Prerequisites (all committed)
 

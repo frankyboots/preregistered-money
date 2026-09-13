@@ -41,6 +41,7 @@ Use this skill to coordinate a complete video project from rough request to veri
 
 3. Route to focused skills.
    - `video-intake-and-storyboard` for unclear prompts or new scenes.
+   - `scene-build-and-commit` for the Phase C loop — one scene built from its spec, draft-rendered, proof-checked, committed, then the next (it owns the build-log + commit; it delegates composition craft to `hyperframes-scene-builder`).
    - `hyperframes-scene-builder` for HTML/GSAP composition work.
    - `audio-sync-assembly` for narration timing, segment retiming, and assembly.
    - `captions` for subtitle timing and wording.
@@ -82,7 +83,7 @@ Use this skill to coordinate a complete video project from rough request to veri
 
 ## Implementation Order
 
-Phase map: A bootstrap (`video-bootstrap`) → B scene specs, one scene per commit (`scene-spec-and-commit`) → C scene builds, one scene per commit (skill pending) → D assembly/final.
+Phase map: A bootstrap (`video-bootstrap`) → B scene specs, one scene per commit (`scene-spec-and-commit`) → C scene builds, one scene per commit (`scene-build-and-commit`) → D assembly/final.
 
 1. Lock approved scenes.
 2. Phase B: one scene spec + commit at a time (`scene-spec-and-commit`) — never batch.

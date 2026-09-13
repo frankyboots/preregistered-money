@@ -14,7 +14,7 @@ metadata:
 
 # Video Bootstrap
 
-Phase A of the channel lifecycle: **A bootstrap** → B scene specs (`scene-spec-and-commit`) → C scene builds (skill pending) → D assembly/final (`audio-sync-assembly`, `captions`, `render-qa-and-surgical-changes`). This skill owns the Phase A commit order. (Provenance: the channel's first video, `meta-preregistration-rules`, ran this loop in 2026-09; the commit order below is that run distilled.)
+Phase A of the channel lifecycle: **A bootstrap** → B scene specs (`scene-spec-and-commit`) → C scene builds (`scene-build-and-commit`) → D assembly/final (`audio-sync-assembly`, `captions`, `render-qa-and-surgical-changes`). This skill owns the Phase A commit order. (Provenance: the channel's first video, `meta-preregistration-rules`, ran this loop in 2026-09; the commit order below is that run distilled.)
 
 ## Commit invariants
 
