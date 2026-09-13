@@ -42,10 +42,22 @@ Status: SPEC (Phase B). Template: `meta:title-card`.
 | Time | Word (words.json) | Visual action | Required proof |
 |---|---|---|---|
 | 0.00 | — | scene open: black, 200ms fade-in to `--ink` (sanctioned open); no elements visible | first frame |
-| 0.24 | `name` | wordmark + brand mark reveal as one unit (250ms opacity + 12px slide-up) — the mark *is* the name | t=0.30 mid-reveal, not fully visible before 0.24 |
-| 0.98 | `method.` | one line "The name is the method." reveals (250ms) | t=1.00 line just begun (≈8% in, not fully in) |
+| 0.24 | `name` | wordmark + brand mark reveal as one unit (250ms opacity + 12px slide-up) — the mark *is* the name | t=0.20 not visible; t=0.30 ≥80% in (settled by ~0.42; see timing note) |
+| 0.98 | `method.` | one line "The name is the method." reveals (250ms) | t=1.00 line partially in (≈28%; fully in by ~1.13) |
 | 1.40 | (speech ends) | final hold — nothing moves until cut | t=2.50 = final state |
 | 2.69 | — | hard cut to scene-02 | t=2.68 stable |
+
+Renderer timing note (measured on the scene-01 DRAFT render, 2026-09-13):
+the reveal is the pinned verb/duration/ease (250ms, opacity + 12px
+slide-up, `--ease-out`). `--ease-out` (power2.out) is front-loaded, so
+high opacity lands early: the 0.24 unit reads 0.25s≈16%, 0.29s≈83%,
+settled by ~0.42s (nominal duration end 0.49s); the 0.98 line reads
+1.00s≈28%, 1.04s≈64%, settled by ~1.1s (end 1.23s). The original
+proof cell "t=0.30 mid-reveal, not fully visible" mis-described what a
+front-loaded ease-out produces at 24% progress — corrected to the
+measured "≥80% in." No pipeline bug: motion is exactly as pinned.
+Audio-sync bars (wordmark by end of "name" 0.55, line by end of
+"method." 1.40) hold with margin.
 
 Change floor: 1.32s of speech, 2 state changes on cue + the open fade ✓
 (scene is 1.44s of speech; the floor is per 10s). No pre-naming: the mark

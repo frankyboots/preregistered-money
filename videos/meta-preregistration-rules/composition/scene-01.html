@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>scene-01 — title card</title>
+  <link rel="stylesheet" href="style/tokens.css" />
+  <link rel="stylesheet" href="style/setpieces.css" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    /* scene-01 — title card (spec: scene-specs/scene-01.md)
+       Stack: brand mark (160px) / wordmark (Inter 600, --fs-title) / line
+       (Inter 400, --fs-body). Colors: --paper only (the mark carries its
+       own pinned tokens: paper + seal-amber). Caption band (bottom 132px)
+       stays clear: stack bottom lands ~705px. */
+    #scene-01 {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    #scene-01 .title-stack {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    /* mark + wordmark reveal as ONE unit (the mark *is* the name) */
+    #scene-01 .title-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #scene-01 .title-mark {
+      width: 160px;
+      height: 160px;
+      margin-bottom: var(--gap-md);
+    }
+    #scene-01 .title-mark svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    #scene-01 .title-wordmark {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: var(--fs-title);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    #scene-01 .title-line {
+      margin-top: var(--gap-md);
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: var(--fs-body);
+      color: var(--paper);
+    }
+    /* sanctioned open: 200ms fade from black to --ink (spec Beat Timeline
+       row 0.00; the only permitted fade open) */
+    #scene-01 .open-black {
+      position: absolute;
+      inset: 0;
+      background: #000; /* spec-sanctioned open black; no black token exists */
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="scene-01" data-composition-id="scene-01"
+       data-width="1920" data-height="1080"
+       data-start="0" data-duration="2.69">
+    <div class="title-stack">
+      <div class="title-unit">
+        <div class="title-mark">
+          <!-- brand mark, inline-embedded (spec: never &lt;img&gt; for SVG);
+               copy of style/brand-mark.svg, style spec v1.1.0 section 4.2 -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" aria-label="brand mark">
+            <circle cx="400" cy="400" r="330" fill="none" stroke="#E8E6E1" stroke-width="18"/>
+            <circle cx="400" cy="400" r="282" fill="none" stroke="#E8E6E1" stroke-width="4"/>
+            <line x1="230" y1="420" x2="570" y2="420" stroke="#C89B3C" stroke-width="7"/>
+            <polyline points="250,495 385,410 550,295" fill="none" stroke="#E8E6E1"
+                      stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="title-wordmark">PREREGISTERED MONEY</div>
+      </div>
+      <div class="title-line">The name is the method.</div>
+    </div>
+    <div class="open-black"></div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // initial states at t=0 (elements hidden; scene opens black)
+    tl.set("#scene-01 .title-unit", { opacity: 0, y: 12 }, 0);
+    tl.set("#scene-01 .title-line", { opacity: 0, y: 12 }, 0);
+    tl.set("#scene-01 .open-black", { opacity: 1 }, 0);
+
+    // 0.00 sanctioned open: 200ms fade from black to --ink (--dur-fade, --ease-out)
+    tl.to("#scene-01 .open-black", { opacity: 0, duration: 0.2, ease: "power2.out" }, 0);
+    // 0.24 cue "name": wordmark + brand mark reveal as one unit
+    // (250ms opacity + 12px slide-up; --dur-reveal, --ease-out)
+    tl.to("#scene-01 .title-unit", { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }, 0.24);
+    // 0.98 cue "method.": the one line reveals (250ms)
+    tl.to("#scene-01 .title-line", { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }, 0.98);
+    // 1.40-2.69 final hold: nothing moves; extend timeline to the window end
+    tl.set({}, {}, 2.69);
+
+    window.__timelines["scene-01"] = tl;
+  </script>
+</body>
+</html>

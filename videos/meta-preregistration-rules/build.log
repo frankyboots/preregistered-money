@@ -115,16 +115,29 @@ Scene files import `style/tokens.css` + `style/setpieces.css`
 (root-relative — base URL is the project root), e.g. the master
 `index.html` does; scenes may do the same or rely on the master.
 
-| Snapshot file (style spec 1.1.0, pipeline SHA `77f8791`) | sha256 |
+| Snapshot file (style spec 1.1.0) | sha256 |
 |---|---|
-| `style/tokens.css` | `eeafb9c397b06b7961c2933606907e413b42da0cf54c3e5185bd2cd0abd22339` (banner + `../fonts/`→`fonts/` rewrite vs. pipeline source) |
+| `style/tokens.css` | `b0341f6d8be8ad5163ddca484f66c54a6a99b83430d18369092ffd83a469ec85` (banner + `../fonts/`→`fonts/` rewrite vs. pipeline source) |
 | `style/setpieces.css` | `d1917403ca0205726b564edd98d6f171b95472018c4cd1f52b39130faf7986d1` (byte-identical to pipeline) |
-| `style/brand-mark.svg` | `eccdc43f838a7ef435f5d052853ef04113b606cbe1469cf1db8c4edad0eb986b` (pipeline copy as of the XML-comment fix — comment no longer contains `--`; the pre-fix `99c39d1f…` copy was malformed XML) |
+| `style/brand-mark.svg` | `eccdc43f838a7ef435f5d052853ef04113b606cbe1469cf1db8c4edad0eb986b` (well-formed XML; no `--` inside comments) |
 | `fonts/Inter-Regular.woff2` | `8909904ab6c872eb994093482a88a28eca2cd95912d7b6fecd72103b0dc07edc` |
 | `fonts/Inter-SemiBold.woff2` | `f9a06e79cd3a2a20951c0f0e28f66dd0e6d3fda73911d640a2125c8fcb78f21a` |
 | `fonts/Inter-Bold.woff2` | `6f56409fd3d64bb85f7d070bce20749db2d66b6d63cec586cc22d1c761be2491` |
 | `fonts/JetBrainsMono-Regular.woff2` | `14425ba9c695763c1547f48a206b7aa60350a33ae23de09f0407877f3fcd89eb` |
 | `fonts/JetBrainsMono-Medium.woff2` | `cb182feeed4d798ff6961d3c79f7026279448fca0676438aaecb21f3fc39553a` |
+
+Snapshot refresh 2026-09-13 (delete + re-snapshot, `snapshot_style.sh`):
+first check run against a real scene exposed that the live browser in
+check/preview resolves css `url()` relative to the css file, while lint
+forbids `../` asset paths — neither a bare `fonts/` (404 at
+`style/fonts/*`) nor a bare `../fonts/` (lint error) satisfies both.
+Fix `167133f` (replacing `e9c70bd`): the snapshot copies the woff2 set
+to BOTH `fonts/` and `style/fonts/` (byte-identical, `diff -r` clean);
+one table above covers both dirs. Re-snapshotted from pipeline
+`167133f`; `tokens.css` → `b0341f6d…` (banner text changed with the
+fix); `setpieces.css` + `brand-mark.svg` + all woff2 byte-identical to
+the table (values unchanged). Post-refresh: lint 0 errors/0 warnings,
+check passed (runtime 0, layout 0, motion 0, contrast 7/7).
 
 Wiring verified in a throwaway probe composition (not committed):
 corner bug, hero number, bar-tag amber, `SEALED` stamp, inline brand
@@ -135,10 +148,42 @@ pre-existing `setpieces.css` rgba(107,112,120,.35) row-rule (ledger
 border, pipeline-pinned) and the skeleton body `#000` (under every
 scene's `--ink` background) need `--allow` — no scene-introduced drift.
 
-Scene compositions not yet built. Pending: scene specs from the beat
-sheet + `words.json` cues; first DRAFT scene render. When scenes land,
-this section records the composition SHA, template family (Meta v1),
-style-spec version, and HF version used.
+### Phase C — scenes (built one at a time, `scene-build-and-commit`)
+
+#### scene-01 — title card (DRAFT, 2026-09-13)
+
+- Window: 0.00–2.69s (beat-01; speech 0.08–1.40, hold 1.40–2.69),
+  1920×1080 @ 24fps, draft quality.
+- `composition/scene-01.html` sha256
+  `d020eac01f4f4a2ef7db10e538aa887fea1a27db99f818c928b5b685d733600d`.
+  Template family: Meta v1 (`meta:title-card`). Brand mark inline-embedded
+  (copy of `style/brand-mark.svg`, style spec §4.2); colors tokens only
+  (`--paper` wordmark/line, mark carries its pinned paper + seal-amber
+  strokes); the one sanctioned `#000` is the 200ms open fade overlay
+  (spec-sanctioned open black — no black token exists).
+- Render: `pipeline/render.sh … render --composition
+  composition/scene-01.html --output renders/scene-01.mp4 --fps 24
+  --quality draft --workers 2` → 2.708s, 65 frames, 1920×1080 h264
+  yuv420p 24fps, no audio (scene audio is beat-01 at assembly);
+  output sha256 `9b21e3fcf017ea389dde9403cde1d3cba4083805be676cbbfa88af5a219e1e9e`.
+- Data inputs: none — no number appears in this scene (spec Inputs).
+- Style inputs: tokens/setpieces/brand-mark per the snapshot table above
+  (style spec 1.1.1 pin; css byte-identical to 1.1.0), pipeline SHA
+  `167133f`; HyperFrames 0.8.35.
+- Verification: lint 0 errors/0 warnings; check passed (runtime 0,
+  layout 0/9 samples, motion 0, contrast 7/7); `scan_theme_colors.py
+  composition/` — findings are the sanctioned `#000` overlay and the
+  inline brand-mark's pinned tokens (`#E8E6E1`/`#C89B3C` = `--paper` /
+  `--seal-amber`); no other non-token color.
+- Proof frames `snapshots/scene-01-proof/` (gitignored, re-derivable via
+  `extract_proof_frames.py` at the spec QA timestamps): 0.00 first frame
+  black; 0.30 unit ≥80% in (measured 82.8%); 1.00 unit settled + line
+  ≈28% in; 2.50 final frame — mark + wordmark + line settled, dead
+  center, 80px margins clear (wordmark ≈720px wide), bottom 132px band
+  clear; hold 2.67 stable to the cut. Audio-sync: wordmark fully in by
+  ~0.42s (bar: end of "name" 0.55) ✓; line fully in by ~1.1s (bar: end
+  of "method." 1.40) ✓. Timing note in the spec documents the
+  front-loaded `--ease-out` curve (no bug — motion as pinned).
 
 ## Pipeline versions at audio lock
 
@@ -181,3 +226,11 @@ here: timestamp, composition SHA, output hash, encoder settings.)
 2026-09-13T14:50:16Z pipeline=hyperframes@0.8.35 repo=e08e974 cmd=hyperframes render --fps 24 --quality draft --workers 2 exit=0
 2026-09-13T14:51:15Z pipeline=hyperframes@0.8.35 repo=516de6e cmd=hyperframes lint  exit=0
 2026-09-13T14:55:12Z pipeline=hyperframes@0.8.35 repo=aa0edd7 cmd=hyperframes render --composition composition/_probe-img.html --output renders/_probe-img.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T18:23:39Z pipeline=hyperframes@0.8.35 repo=5d1a512 cmd=hyperframes lint  exit=1
+2026-09-13T18:23:49Z pipeline=hyperframes@0.8.35 repo=5d1a512 cmd=hyperframes lint  exit=0
+2026-09-13T18:23:50Z pipeline=hyperframes@0.8.35 repo=5d1a512 cmd=hyperframes check  exit=1
+2026-09-13T18:25:33Z pipeline=hyperframes@0.8.35 repo=e9c70bd cmd=hyperframes lint  exit=1
+2026-09-13T18:25:35Z pipeline=hyperframes@0.8.35 repo=e9c70bd cmd=hyperframes check  exit=1
+2026-09-13T18:26:58Z pipeline=hyperframes@0.8.35 repo=e9c70bd cmd=hyperframes lint  exit=0
+2026-09-13T18:26:59Z pipeline=hyperframes@0.8.35 repo=e9c70bd cmd=hyperframes check  exit=0
+2026-09-13T18:27:15Z pipeline=hyperframes@0.8.35 repo=167133f cmd=hyperframes render --composition composition/scene-01.html --output renders/scene-01.mp4 --fps 24 --quality draft --workers 2 exit=0

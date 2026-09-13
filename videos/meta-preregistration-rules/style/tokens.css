@@ -1,6 +1,7 @@
-/* SNAPSHOT — copied from pipeline/style/ by snapshot_style.sh on 2026-09-13 from pipeline SHA e08e974. */
-/* ../fonts/ paths rewritten to fonts/ (render workers resolve url() relative to the file;
-   ../ escapes the project root — lint: invalid_parent_traversal_in_asset_path).
+/* SNAPSHOT — copied from pipeline/style/ by snapshot_style.sh on 2026-09-13 from pipeline SHA e9c70bd. */
+/* Font paths rewritten ../fonts/ -> fonts/ (lint: no parent traversal);
+   fonts copied to <video>/fonts/ AND <video>/style/fonts/ so render
+   workers (root-relative) and the live browser (css-relative) both load.
 /* Version of record: the pipeline SHA in this video's build.log. */
 /* tokens.css — style spec v1.1.0 (videos/pipeline/style/style-spec.md)
  *
