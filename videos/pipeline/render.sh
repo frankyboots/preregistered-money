@@ -32,7 +32,18 @@ esac
 
 # --output is CWD-relative in the CLI; make relative paths relative to the video
 # dir so renders land in <video-dir>/renders/ (gitignored), per CONCEPT layout.
+# An explicit --output is re-anchored in the loop below; when none is given,
+# the default (renders/<name>.mp4) is set here, before the loop consumes $@.
 ARGS=()
+OUTPUT_DEFAULT=false
+for a in "$@"; do
+  case "$a" in --output|--output=*) OUTPUT_DEFAULT=true ;; esac
+done
+if [[ "$OUTPUT_DEFAULT" == false ]]; then
+  case "$SUBCMD" in
+    render) ARGS+=(--output "$VIDEO_DIR/renders/${VIDEO_DIR##*/}.mp4") ;;
+  esac
+fi
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --output)
