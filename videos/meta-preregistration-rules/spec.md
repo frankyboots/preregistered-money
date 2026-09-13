@@ -60,7 +60,7 @@ Every figure the video will show, with its citation. **No uncited number.**
 | METHODOLOGY version (any on-screen reference) | v1.1, 2026-09-12 | `docs/METHODOLOGY.md` header |
 | Bar tag example (beat 6) | labeled `example` on screen | rule text only: `docs/CONCEPT.md` §3–4 (the bar is pre-registered); no results doc exists |
 | Ledger example rows (beat 7) | labeled `example` on screen | layout per `docs/CONCEPT.md` §5 (columns, aggregate stats, composite); no results/scoreboard data exists yet |
-| Disclaimer bullets (beat 8) | verbatim, 4 bullets | `docs/CONCEPT.md` §10 (pinned card, style spec §4.5) |
+| Disclaimer bullets (beat 8) | verbatim, 4 bullets | `docs/CONCEPT.md` §10 (pinned card, style spec §4.6) |
 
 No other figures appear. Nothing is computed in the composition.
 
