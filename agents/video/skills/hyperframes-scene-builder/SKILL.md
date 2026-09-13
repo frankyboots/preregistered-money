@@ -16,6 +16,13 @@ metadata:
 
 Use this skill when implementing or revising a HyperFrames scene. This skill assumes HyperFrames is the render engine and the scene source is HTML/CSS/JS.
 
+## Pipeline CSS + font wiring (verified v0.8.35, 2026-09-13)
+
+- **Styles + fonts are per-video committed snapshots, not live references.** `pipeline/snapshot_style.sh <video-dir>` copies `pipeline/style/{tokens.css,setpieces.css,brand-mark.svg}` + `pipeline/fonts/*.woff2` into `videos/<slug>/{style,fonts}/`, rewrites `../fonts/`→`fonts/` in tokens.css, and stamps the pipeline SHA as a banner. `new_video.sh` runs it automatically. The video build log pins the pipeline SHA the snapshot came from (its version of record); a refresh = delete + re-snapshot + build-log note (the script refuses existing snapshots).
+- **Why a snapshot:** (1) render workers resolve CSS `url()` relative to the css file, and lint errors on any asset path climbing above the project root (`invalid_parent_traversal_in_asset_path`) — a `../pipeline/style/` link cannot work from inside the project; (2) determinism: the render's inputs must live in the video dir so a committed re-render never depends on tree state outside it.
+- **Asset paths in compositions: root-relative only** (base URL is the project root): `style/tokens.css`, `style/brand-mark.svg`, `assets/x.mp4`. Never `../`.
+- **No `<img src="….svg">`** — it fails the render media preflight (`media_load_failed` warning + broken-image frame). Inline the SVG copy instead (style spec §4.2 sanctions inline copy); same for any image asset that must be present at frame 1. (Audio/video media load fine as `<audio>`/`<video>`.)
+
 ## Project Conventions (this repo)
 
 One video = one directory (VIDEO_CONCEPT §4):
