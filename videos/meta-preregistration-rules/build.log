@@ -521,6 +521,93 @@ master = local + 95.24):
   401 amber pixels at 32.76, 0 before 18.90; line-cap/glyph
   clearance 6px.
 
+scene-06 DRAFT (2026-09-13, the bar, window master 128.57–162.06 local
+0–33.49 @24fps — proof-frame times below are render-local; master =
+local + 128.57):
+- Composition: `composition/scene-06.html` sha256
+  `57f7a1f5046bfd75513a76e642466895949c9e5c2e66ddb984d535e25ce56839`
+  (hand-authored — no data injection: the only on-screen string with
+  numbers is the pinned §4.4 example tag, a rule-text constant, not a
+  data input). Two charts on one 1920×1080 SVG: A (main, x120–960,
+  y240–700) with the cost-adjusted series `--paper` 3px (dasharray 886
+  = measured 885.84) ending (900,380) 100px above its bar; B (small,
+  x1160–1840, y320–640) with the same curve translated down (x×0.7949,
+  y' = 295−(420−y)×0.196; dasharray 626 = measured 625.77) ending
+  (1780,560) 80px below its bar. Both bars `--seal-amber` 3px at
+  y=480 — the same screen height ("same bar" literally), pinned 400ms
+  draws, both after their series (§6.2). No tick labels; gridlines
+  40% dim. Frame rects are the axes (1px `--paper-dim`, dasharray
+  2600/2000, 600ms draws).
+- Render: `renders/scene-06.mp4` sha256
+  `6d52145437e9a0db59177b3ab7e0bcc8c4394e98631333c48c9f3345bc4a12b9`
+  (1920×1080 yuv420p 24fps, draft, 800 frames — last extractable
+  frame local 33.458, master 162.03, before the beat-end cut).
+- Inputs at first render: `audio/timing/words.json` sha256
+  `4adc49d66720d106…` (cues, read-only); style snapshot per the table
+  above (style spec 1.1.1 pin; css byte-identical to 1.1.0). Data
+  inputs: none — no real number appears in this scene (spec Inputs);
+  the tag `bar: ≥ 6.0% OOS CAGR` is the pinned §4.4 example, labeled
+  `example` on screen (spec.md Number citations row "Bar tag example
+  (beat 6)").
+- Beats (master): title @128.78 (cue 0.21 local), definition @130.18
+  (1.61), frame A @133.12 (4.55, settled 5.15), series A @133.96
+  (5.39, lands 6.19 = 134.76 — 8ms after word end, noted), bar A
+  @135.98 (7.41, lands 7.81 = 136.38 — 140ms after word end, noted,
+  pinned 400ms), tag A @140.30 (11.73, settled 11.98), example box
+  @140.90 (12.33, settled 12.58), annotation @145.46 (16.89, settled
+  17.14), frame B @151.86 (23.29, settled 23.89), series B @152.64
+  (24.07, lands 24.67 = 153.24 — 330ms after word start, noted),
+  bar B @152.96 (deferred 24.73 = 153.30 master per spec, lands
+  25.13 = 153.70), above/below @156.72 (28.15, settled 28.40),
+  tagline @160.40 (31.83, settled 32.08) ✓
+- Audio-sync: definition settled 1.86 ≤ end of "number" 130.46 ✓;
+  series A settled 134.76 ≤ 134.68+8ms (noted) ✓; bar A 136.38
+  (pinned, noted) ✓; tag 11.98 ≤ end of "tag" 140.64 ✓; example 12.58
+  ≤ end of "example" 141.44 ✓; bar B 153.70 (named from "bar."
+  152.96, the pinned draw order) ✓; above/below 28.40 ≤ end of "ends"
+  157.24 ✓; tagline 32.08 ≤ end of "story." 160.78 ✓.
+- Pre-naming negatives (verified pre-cue seek times, frame-index =
+  floor(t×24) < cue frame): title @0.10 (cue 0.21), def @0.17
+  (1.61), frame A @4.50 (4.55), series A @5.35 (5.39, A-zone), bar A
+  @7.37 (7.41, bar row), tag A @11.69 (11.73), example @12.29
+  (12.33), anno @16.85 (16.89), frame B @23.25 (23.29), series B
+  @24.03 (24.07, B plot), bar B @24.50 (24.73, bar row), above/below
+  @28.11 (28.15), tagline @31.59 (31.83) — all 0 non-ink at thr>50;
+  the bar B row shows 28 sub-threshold px at 24.50 (max lum ≤30 —
+  h264 fringing on series B's nearby curve, no content: the frame-
+  exact sweep's first lit bar-B frame is 595 = the cue frame).
+- Frame-exact onset sweep (all 804 frames decoded; per-zone first
+  lit frame at thr>80 to exclude the 40% gridlines): every element
+  first lit AT its cue frame +0/+1 — series A endpoint 131 (cue 130),
+  bar A 179 (178), tag A 284 (282), example 299 (296), anno 408 (406),
+  frame B 565 (559), series B endpoint 579 (578), bar B 595 (594),
+  above 678/677 (676), below 679 (676), tagline 766 (764). The +1–3
+  offsets are the front-loaded --ease-out curve's first visible
+  frame (the spec's measured-curve class); nothing is over-named by
+  a frame.
+- Amber audit (final frame): bar A row 3156 amber px, bar B row 2689
+  (≈ line length × 3px + AA), everywhere else 0 — the only amber is
+  the two bar lines ✓. Caption band y948–1080: 0 non-ink ✓.
+  No tick labels: all six axis-adjacent zones 0 non-ink ✓.
+- Hold: raw frames 777–804 (32.375–33.458 local) byte-identical
+  (sha256 `59e5758e8f1e…`); one 917-px codec micro-block at the
+  tagline AA edge (x880–991, y856–879) between 32.167 and 32.375 —
+  encoder plateau, content-identical (max diff 6/255 on 1920×1080).
+  Extracted-frame hold 32.83/33.20/33.45 byte-identical (sha256
+  `cb5e53996bbec1a3…`) ✓
+- Spec amendment in this commit (no design change): the `example`
+  box's y — the spec's own known-risk numbers (box y≈424–444 vs tag
+  top y≈430) put the box's bottom border line through the tag glyphs
+  ("OOS CAGR"); the normative text is "directly above the tag", so
+  the box is placed 6px above the tag top: top y=400, h 28
+  (400–428), right-aligned x960. Clearances measured in a throwaway
+  probe (deleted): endpoint cap 381.5 → box top 18.5px; box bottom
+  → tag top 6px; tag bottom → bar A 30px. Same amendment class as
+  the scene-04/05 measured-geometry fixes.
+- Verification: lint 0 errors/0 warnings; check passed (runtime 0,
+  layout 0/9 samples, motion 0, contrast 7/7);
+  `scan_theme_colors.py composition/scene-06.html` — 0 findings.
+
 ## Pipeline versions at audio lock
 
 - Pipeline HEAD: `c14fac6` (includes gap re-pin `4fba18a` + concat
@@ -611,3 +698,7 @@ Scene-content DRAFT renders: scene-01 at 18:27:15Z, scene-02 at
 2026-09-13T21:10:50Z pipeline=hyperframes@0.8.35 repo=1651495 cmd=hyperframes lint  exit=0
 2026-09-13T21:10:51Z pipeline=hyperframes@0.8.35 repo=1651495 cmd=hyperframes check  exit=0
 2026-09-13T21:10:57Z pipeline=hyperframes@0.8.35 repo=1651495 cmd=hyperframes render --composition composition/scene-05.html --output renders/scene-05.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T22:26:18Z pipeline=hyperframes@0.8.35 repo=d50075f cmd=hyperframes render --composition composition/_probe-06.html --output renders/_probe-06.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T22:31:26Z pipeline=hyperframes@0.8.35 repo=d50075f cmd=hyperframes lint  exit=0
+2026-09-13T22:31:29Z pipeline=hyperframes@0.8.35 repo=d50075f cmd=hyperframes check  exit=0
+2026-09-13T22:31:38Z pipeline=hyperframes@0.8.35 repo=d50075f cmd=hyperframes render --composition composition/scene-06.html --output renders/scene-06.mp4 --fps 24 --quality draft --workers 2 exit=0

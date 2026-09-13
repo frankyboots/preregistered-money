@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>scene-06 — the bar</title>
+  <link rel="stylesheet" href="style/tokens.css" />
+  <link rel="stylesheet" href="style/setpieces.css" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    /* scene-06 — the bar (spec: scene-specs/scene-06.md)
+       Stack: corner bug (set piece, 200ms fade) / Inter 600 title +
+       mono definition (top-left) / Chart A (main, left) / Chart B
+       (small, right — the same curve translated down, the same bar
+       at the same screen height) / direct labels / tagline.
+       Colors: series --paper; the ONLY amber in the scene is the two
+       bar lines (--seal-amber, §4.4); axes/gridlines/annotations
+       --paper-dim. No verdict colors: "passes or fails" is narrated
+       but nothing is judged here (§6.6). No tick labels — the
+       exemplar chart is unscaled (a scaled one would invent data).
+       Data: none — no real number appears in this scene (spec
+       Inputs). The bar tag string `bar: ≥ 6.0% OOS CAGR` is the
+       pinned example of style spec §4.4, labeled `example` on screen
+       (citation: spec.md Number citations row "Bar tag example
+       (beat 6)").
+       Geometry (global px, one 1920×1080 SVG; JetBrains Mono advance
+       0.6em → 13.2px/char at --fs-anno):
+       Chart A: frame x120–960, y240–700 (perimeter 2600, draw 600ms);
+       gridlines at y 356.7/473.3/590 (40% dim, set piece); axes = the
+       frame's left+bottom edges (same 1px --paper-dim stroke, §6).
+       Series A: rising curve with one mid dip (authoring choice),
+       (120,660) → endpoint (900,380), 100px above the bar;
+       dasharray 886 = measured path length 885.84 (draw 800ms).
+       Bar A: y=480, x120–960 (length 840), pinned 400ms draw (§5.2),
+       drawn after the series (§6.2).
+       Chart B: frame x1160–1840, y320–640 (perimeter 2000);
+       gridlines at y 426.7/533.3. Series B: the same curve
+       translated down to fit the smaller plot — x ×0.7949,
+       y' = 295 − (420−y)×0.196 → (1160,615) → endpoint (1780,560),
+       80px below the bar; dasharray 626 = measured 625.77
+       (draw 600ms, the verb minimum). Bar B: same --seal-amber 3px
+       line at y=480 — the same screen height as A's bar ("same bar"
+       literally), x1160–1840 (length 680), pinned 400ms, drawn last
+       (deferred to 153.30 master to keep series-before-bar order).
+       Right-side stack A (spec known risk 1 — verified in probe):
+       endpoint (900,380) + round cap → 378.5–381.5; `above` label
+       right-aligned ending x880, top 336 (baseline 352 ≈ spec y≈352,
+       bottom ≈358) → 20.5px to the cap top; tag right-aligned x960,
+       top 434 (baseline ≈451 ≈ spec y≈452; 20ch × 13.2 = 264 →
+       x696–960, no descenders in the string → bottom ≈450) → the
+       curve at x≥696 sits at y≤421+1.5 → ≥11.5px above the tag top;
+       `example` box right-aligned x960 (left 850, 7ch+padding+border
+       ≈110px), top 400 h 28 (400–428) — SPEC AMENDMENT: the spec's
+       known-risk numbers (box y≈424–444) overlap the tag (top 430)
+       by 14px — the border line would cut through "OOS CAGR"; the
+       normative text is "directly above the tag", so the box is
+       placed 6px above the tag top (428 → 400–428), 18.5px below
+       the endpoint cap. Probe-verified (throwaway _probe-06, deleted).
+       Stack B: tag B right-aligned x1840, top 434 (same string; no
+       second example box — the label is established once in A);
+       curve B top y=506+1.5 → 57.5px under the tag bottom; `below`
+       right-aligned ending x1750, top 572 (baseline 588 ≈ spec
+       y≈586, top ≈572) — the curve at x1684–1750 bottoms at
+       561.5 → 10.5px above the label.
+       Annotation: `no results document exists yet` centered on
+       chart A (x=540), top 728 (baseline 745 ≈ spec y≈740) — 28px
+       below the frame bottom 700 (spec: "centered under chart A").
+       Tagline: `and that is the story` centered x=960, top 850
+       (baseline ≈881 ≈ spec y≈872, descender ≈887 — the caption
+       proof's lowest element; 61px above the 948 band top).
+       Motion: reveal (250ms, 12px slide-up, the system verb) for
+       title, definition, tag, example box, annotation, above/below,
+       tagline; draw (600ms) for both frames/axes; draw (800ms) for
+       series A; draw (600ms) for series B; draw (400ms, pinned §5.2)
+       for both bar lines. No roll, no stamp. Nothing after the last
+       word (final hold to the cut, §5.1 rule 5).
+       Initial states: everything hidden in CSS (.hide-y, the two
+       frame groups opacity:0) or dashoffset=full length (series,
+       bars, frame rects) so frame 0 = ink + corner bug only — the
+       open state (the charts are named on their words). Cues are
+       LOCAL (root data-start=0); the window offset 128.57s lives
+       only on the index.html mount. */
+    #scene-06 {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    #scene-06 .sc-title {
+      position: absolute;
+      left: 80px;
+      top: 88px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: var(--fs-title);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    #scene-06 .sc-def {
+      position: absolute;
+      left: 80px;
+      top: 152px;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    #scene-06 .chart { position: absolute; left: 0; top: 0; }
+    #scene-06 .frameA, #scene-06 .frameB { opacity: 0; }
+    /* direct labels near the endpoints (§6.3) */
+    #scene-06 .lbl {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    #scene-06 .lbl.above { right: 1040px; top: 336px; } /* ends x880 */
+    #scene-06 .lbl.below { right: 170px; top: 572px; }  /* ends x1750 */
+    /* bar tags (the pinned §4.4 example string, mono --fs-anno) */
+    #scene-06 .tagA, #scene-06 .tagB {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    #scene-06 .tagA { right: 960px; top: 434px; }  /* ends x960 */
+    #scene-06 .tagB { right: 80px; top: 434px; }   /* ends x1840 */
+    /* `example` box — directly above tag A, right-aligned x960;
+       top 400 h 28 (amendment — see header) */
+    #scene-06 .ex {
+      position: absolute;
+      left: 850px;
+      top: 400px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      border: 1px solid var(--paper-dim);
+      padding: 0 8px;
+      box-sizing: border-box;
+      white-space: nowrap;
+    }
+    #scene-06 .anno {
+      position: absolute;
+      left: 540px;
+      top: 728px;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    #scene-06 .tagline {
+      position: absolute;
+      left: 960px;
+      top: 850px;
+      transform: translateX(-50%);
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: var(--fs-body);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    #scene-06 .hide-y { opacity: 0; transform: translateY(12px); }
+    #scene-06 .anno.hide-y {
+      opacity: 0;
+      transform: translateX(-50%) translateY(12px);
+    }
+    #scene-06 .tagline.hide-y {
+      opacity: 0;
+      transform: translateX(-50%) translateY(12px);
+    }
+  </style>
+</head>
+<body>
+  <div id="scene-06" data-composition-id="scene-06"
+       data-width="1920" data-height="1080"
+       data-start="0" data-duration="33.49">
+    <div class="bug">PREREGISTERED MONEY · meta · sealed 2026-09-12 · 86140f92</div>
+    <div class="sc-title hide-y">the bar</div>
+    <div class="sc-def hide-y">a number to reach, after costs</div>
+
+    <svg class="chart" width="1920" height="1080" viewBox="0 0 1920 1080">
+      <!-- chart A frame + gridlines (frame+axes draw 600ms @ local 4.55;
+           gridlines fade with the frame group; no tick labels) -->
+      <g id="frameA" class="frameA">
+        <rect class="axis" x="120" y="240" width="840" height="460" fill="none"
+              stroke-dasharray="2600" stroke-dashoffset="2600"/>
+        <line class="gridline" x1="120" y1="356.7" x2="960" y2="356.7"/>
+        <line class="gridline" x1="120" y1="473.3" x2="960" y2="473.3"/>
+        <line class="gridline" x1="120" y1="590" x2="960" y2="590"/>
+      </g>
+      <!-- series A: cost-adjusted, --paper 3px, rising with one mid dip;
+           dasharray 886 = measured 885.84 (the draw must not leak the
+           tail — dasharray >= measured length); left→right 800ms @ 5.39 -->
+      <path id="sA" class="series-cost"
+            d="M120,660 C210,640 300,570 400,510 C450,485 480,555 545,548 C610,540 640,445 700,418 C760,391 820,386 900,380"
+            stroke-dasharray="886" stroke-dashoffset="886"/>
+      <!-- bar A: the ONLY amber in chart A (and the scene's series
+           region); pinned 400ms draw, after the series (§6.2) -->
+      <line id="bA" class="bar-line" x1="120" y1="480" x2="960" y2="480"
+            stroke-dasharray="840" stroke-dashoffset="840"/>
+
+      <!-- chart B frame + gridlines (same axis style, no tick labels) -->
+      <g id="frameB" class="frameB">
+        <rect class="axis" x="1160" y="320" width="680" height="320" fill="none"
+              stroke-dasharray="2000" stroke-dashoffset="2000"/>
+        <line class="gridline" x1="1160" y1="426.7" x2="1840" y2="426.7"/>
+        <line class="gridline" x1="1160" y1="533.3" x2="1840" y2="533.3"/>
+      </g>
+      <!-- series B: the same curve as A, translated down to the smaller
+           plot; dasharray 626 = measured 625.77; 600ms @ 24.07 -->
+      <path id="sB" class="series-cost"
+            d="M1160,615 C1231.5,611.1 1303.1,597.4 1382.6,585.6 C1422.3,580.7 1446.2,594.4 1497.8,593 C1549.5,591.5 1573.3,572.9 1621,567.6 C1668.7,562.3 1716.4,561.3 1780,560"
+            stroke-dasharray="626" stroke-dashoffset="626"/>
+      <!-- bar B: same amber line at the same screen height (y=480);
+           pinned 400ms, deferred to 24.73 to keep series-before-bar -->
+      <line id="bB" class="bar-line" x1="1160" y1="480" x2="1840" y2="480"
+            stroke-dasharray="680" stroke-dashoffset="680"/>
+    </svg>
+
+    <div class="lbl above hide-y">above</div>
+    <div class="ex hide-y">example</div>
+    <div class="tagA hide-y">bar: &ge; 6.0% OOS CAGR</div>
+    <div class="tagB hide-y">bar: &ge; 6.0% OOS CAGR</div>
+    <div class="lbl below hide-y">below</div>
+    <div class="anno hide-y">no results document exists yet</div>
+    <div class="tagline hide-y">and that is the story</div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    /* Cue times are LOCAL to the composition root (data-start=0):
+       master word-start from the spec Beat Timeline minus the window
+       offset 128.57s. e.g. spec 128.78 "bar," -> 0.21; spec 162.06
+       (cut) -> 33.49. Initial hidden states live in CSS (.hide-y,
+       .frameA/.frameB opacity:0) and in the dashoffset attributes
+       (series/bars/frame rects) so the render's first frame is ink +
+       corner bug only. */
+
+    // helper: reveal (250ms opacity + 12px slide-up, the system verb)
+    const reveal = (sel, t) =>
+      tl.to("#scene-06 " + sel, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }, t);
+    // helper: line/path draw — dashoffset length -> 0 (left->right for
+    // these paths; the point order IS the draw direction)
+    const draw = (sel, len, t, d) =>
+      tl.fromTo("#scene-06 " + sel, { strokeDashoffset: len },
+                           { strokeDashoffset: 0, duration: d, ease: "power2.out" }, t);
+
+    // 128.57 open: ink + corner bug only — CSS initial states (nothing
+    //   to set at t=0)
+
+    // 128.78 "bar,": title `the bar` (settles 0.46)
+    reveal(".sc-title", 0.21);
+
+    // 130.18 "number": definition `a number to reach, after costs`
+    //   (settles 1.86; bar: end of "number" 130.46)
+    reveal(".sc-def", 1.61);
+
+    // 133.12 "chart": chart A frame + axes draw (600ms; the frame, not
+    //   the data — gridlines fade with the frame group)
+    tl.fromTo("#scene-06 #frameA", { opacity: 0 },
+                         { opacity: 1, duration: 0.6, ease: "power2.out" }, 4.55);
+    draw("#frameA rect", 2600, 4.55, 0.6);
+
+    // 133.96 "cost-adjusted": series A draws left->right (800ms; lands
+    //   6.19 = 134.76 master — 8ms after the word ends, noted in spec)
+    draw("#sA", 886, 5.39, 0.8);
+
+    // 135.98 "bar,": bar A draws (400ms, pinned §5.2; lands 7.81 =
+    //   136.38 master — 140ms after the word ends, noted; the pinned
+    //   verb parameter overrides the <=250ms guideline)
+    draw("#bA", 840, 7.41, 0.4);
+
+    // 140.30 "tag": tag `bar: ≥ 6.0% OOS CAGR` above bar A's right end
+    //   (settles 11.98; bar: end of "tag" 140.64)
+    reveal(".tagA", 11.73);
+
+    // 140.90 "example": `example` box above the tag (settles 12.58;
+    //   bar: end of "example" 141.44)
+    reveal(".ex", 12.33);
+
+    // 145.46 "yet.": annotation `no results document exists yet`
+    //   (settles 17.14; bar: end of "yet." 145.78)
+    reveal(".anno", 16.89);
+
+    // 151.86 "chart,": chart B frame + axes draw (600ms; settles
+    //   23.89; bar: end of "chart," 152.14)
+    tl.fromTo("#scene-06 #frameB", { opacity: 0 },
+                         { opacity: 1, duration: 0.6, ease: "power2.out" }, 23.29);
+    draw("#frameB rect", 2000, 23.29, 0.6);
+
+    // 152.64 "same": series B — the same curve, translated down
+    //   (600ms, the verb minimum; lands 24.67 = 153.24 master —
+    //   330ms after the word start, noted in spec)
+    draw("#sB", 626, 24.07, 0.6);
+
+    // 152.96 "bar.": bar B — deferred to 24.73 (153.30 master) to keep
+    //   series-before-bar order (§6.2; the deferral is in the spec);
+    //   pinned 400ms; lands 25.13 = 153.70 master
+    draw("#bB", 680, 24.73, 0.4);
+
+    // 156.72 "ends": direct labels reveal as a unit — `above` at A's
+    //   endpoint, `below` at B's (settles 28.40; bar: end of "ends"
+    //   157.24)
+    reveal(".lbl.above", 28.15);
+    reveal(".lbl.below", 28.15);
+
+    // 160.40 "story.": tagline `and that is the story` (settles
+    //   32.08; bar: end of "story." 160.78)
+    reveal(".tagline", 31.83);
+
+    // 160.78 (speech ends) -> 162.06 cut: final hold — nothing moves
+    //   (earned hold, §5.1 rule 5; 32.21-33.49 local)
+    tl.set({}, {}, 33.49);
+
+    window.__timelines["scene-06"] = tl;
+  </script>
+</body>
+</html>
