@@ -39,6 +39,7 @@ The channel runs **two voices**: `Helen` (`XB0fDUnXU5powFXDhCwa`, professional, 
 
 - `voiceover.py` synthesizes the whole script with the default `voice_id` — **per-beat voice switching is not implemented**. When a script first needs both voices, add a `[voice: zane]` beat tag (parse: heading line `## beat-NN [voice: zane]`), per-beat `voice_id` override, and a build-log field listing which voice spoke which beat — that is a `docs(pipeline)`-sized change, logged.
 - Zane is energetic by profile; the channel's delivery is flat and calm — listen to his first real beat before leaning on him, and prefer a `stability` bump / `speed` trim over a different voice if he's peppy.
+- **Do not scan the stability range on Helen** (owner-verified: delivery and duration were indistinguishable across stability settings): v3's model varies her intonation naturally, so the slider barely moves her. Reserve stability tuning for Zane's peppy profile; on Helen, a pacing complaint is a `speed` or wording question, not a stability one.
 - Audition files for both (plus four premades) are in `videos/meta-preregistration-rules/audio/auditions/` (gitignored; regenerable from the pin).
 
 ## Voice Pin (`tts/voice_pin.json`)
@@ -68,11 +69,15 @@ done
 
 - `/tmp/audition.md` = a single `## beat-01` with the actual opening narration lines (never audition on sample prose that isn't in the script).
 - Deliver the wavs to the owner (TUI: state absolute paths). They pick; the pick goes into `voice_pin.json` + commit.
+- **Owner Web-GUI comparison run:** when the owner has auditioned in the ElevenLabs web UI (their own voice/stability/speed) and reports a duration, reproduce it with `--voice-id <id> --video-dir /tmp/<slug>-trial` (scratch dir — never point a trial at the real video dir while committed audio exists) and compare **speech-only** time (master duration − (beats−1)×gap, gaps differ between UI and pipeline). Expect a few seconds of drift: web-UI settings (e.g. stability cranked to creative) differ from the pin, and TTS is not bit-reproducible. The comparison validates the pipeline against the owner's reference; it is not evidence the pin is wrong.
 - Audition wavs/mp3s stay out of the repo (not part of the record; the pin + summary in the first real voiceover are). The one exception: first-time audition mp3s may live briefly in `videos/<slug>/audio/auditions/` (gitignored) for owner review.
 
 ## Generating the Narration
 
 1. **Script first:** `videos/<slug>/narration.md` — one `## beat-NN` heading per spec beat, narration text under each heading, in spec order. The script is the caption wording source too (captions skill). Any number that appears spoken must be one cited in the spec (or an on-screen-and-spoken labeled example).
+   - **Budget words before drafting:** the spec beat sheet's Duration column is the narration word budget. Convert each beat's seconds to a word target, sum the budget against the spec's target runtime, and draft to the per-beat targets. A draft written without the budget lands 20–30% over and costs repeated trim passes — the durations are a spec commitment, not an afterthought.
+   - **Measured pace (pilot, eleven_v3 speed 1.0):** ~132 wpm Helen, ~136 wpm Zane — plan at **~130 wpm**, not 150 (150 overestimates speech by ~10%: a 621-word draft measured 4:34 of speech, 4:08 at 150 wpm). Voice pace varies a few wpm between voices, so budget with the slower voice when a script may use the duo. Record the measured rate (total words ÷ (master duration − (beats−1)×gap)) in the build log. If the spec's own duration sum exceeds the target runtime, flag it for a spec amendment at review time, don't silently overshoot in the script.
+   - **Owner text review before synthesis:** hand the drafted `narration.md` to the owner for text review *before* running `voiceover.py` — re-synthesis during beat iteration costs TTS characters again (see Budget check), so wording is cheapest to fix on the page.
 2. **Run:**
    ```bash
    python3 videos/pipeline/tts/voiceover.py --script videos/<slug>/narration.md --video-dir videos/<slug>
