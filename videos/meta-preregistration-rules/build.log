@@ -265,6 +265,94 @@ scene's `--ink` background) need `--allow` — no scene-introduced drift.
   the known-risk glyphs and chain width before the full build (not
   committed — deleted before commit; re-derivable from the note above).
 
+#### scene-03 — preregistration fields (the fix) (DRAFT, 2026-09-13)
+
+- Window: 27.86–61.43s (beat-03; speech 27.94–60.14, hold 60.14–61.43),
+  1920×1080 @ 24fps, draft quality.
+- `composition/scene-03.html` sha256
+  `f6a33036ef52a792f91677ff46737c3d40f94dd6dcdba3053e98442790498568`.
+  Template family: Meta v1 (`meta:prereg-fields`). Three field rows
+  (faint 40% frame outlines at open → 70% on "three"; label + value type
+  in at 30ms/char; `SEALED: 2026-09-12` tags 200ms fade + 12px slide —
+  reveal verb, not stamp, which is reserved for scene-05); annotation +
+  Inter 600 title top-left; `append-only` boxed tag + diff annotation
+  under the rows; bottom band (`→ Git`, notary line) + tagline. Colors
+  `--paper` + `--paper-dim` only (no amber, no verdict colors — nothing
+  is judged, no run line anywhere in the scene).
+- Render: `pipeline/render.sh … render --composition
+  composition/scene-03.html --output renders/scene-03.mp4 --fps 24
+  --quality draft --workers 2` → 33.583s, 806 frames, 1920×1080 h264
+  yuv420p 24fps, no audio (scene audio is beat-03 at assembly); output
+  sha256 `e6e7233a545df1108346dda7fdd2fd0fd1e903701795c6ebac6a04fab95fc0c4`.
+- Data inputs: the scene's only number is the seal date `2026-09-12` =
+  commit date of the SHA in `data/spec-sha.txt`
+  (`git log -1 --format=%cs 86140f9…` = 2026-09-12; file sha256
+  `22580917…` per the Data inputs table above). No result values; no run
+  line.
+- Style inputs: tokens/setpieces per the snapshot table above (style
+  spec 1.1.1 pin; css byte-identical to 1.1.0), pipeline SHA `167133f`;
+  HyperFrames 0.8.35.
+- Verification: lint 0 errors/0 warnings; check passed (runtime 0,
+  layout 0/9 samples, motion 0, contrast 7/7); `scan_theme_colors.py
+  composition/scene-03.html` — 0 findings (all colors token-referenced).
+- Proof frames `snapshots/scene-03-proof/` (gitignored, re-derivable via
+  `extract_proof_frames.py`; times are MASTER = render-local + 27.86s
+  window offset; the composition timeline is local, root
+  `data-start="0"` — the global offset lives only on the index.html
+  mount, same convention as scenes 01–02):
+  - 27.86 first frame: ink + corner bug fading in + three 40% faint
+    field frames only (content outside the bug region: none — frame
+    outlines y320–591 are structure, not data, per spec §5.1 rule 2) ✓
+  - 28.90 annotation `the fix — borrowed from clinical trials` settled
+    (max lum 107 = `--paper-dim`) ✓
+  - 30.70 title `preregistration` settled (max lum 249 = `--paper`) ✓
+  - 34.80 frames brightened: row border lum 51 (open, ≈40% of dim on
+    ink) → 79 (≈70%) ✓
+  - 36.60 row 1 label `hypothesis:` typed in (11 chars, 30ms/char) ✓
+  - 38.30 row 1 value `one falsifiable sentence` settled (24 chars land
+    38.44; bar: by end of "sentence" 38.79) ✓
+  - 38.60 row 1 `SEALED: 2026-09-12` tag in (200ms fade + 12px slide,
+    settles 38.82) ✓
+  - 39.90 row 2 label `data:` typed + dim `·` placeholder ✓
+  - 40.90 row 2 SEALED tag in ✓
+  - 41.40 row 3 label `the bar:` typed ✓
+  - 42.80 row 3 value typing (29 chars, lands 43.13) ✓
+  - 43.50 row 3 SEALED tag in (settles 43.72) ✓
+  - 43.69 bar: row 3 value settled (43.13 ≤ 43.69) ✓
+  - 44.90 bottom line 1 `→ Git` revealed ✓
+  - 47.00 bottom line 2 `the commit is the seal · Git is the notary`
+    revealed (settles 47.32) ✓
+  - 52.70 `append-only` boxed tag revealed ✓
+  - 54.80 `anyone can diff it against the run config` revealed
+    (settles 55.12) ✓
+  - 58.80 tagline `the commitment is the point` revealed (settles
+    59.12) ✓
+  - 60.80 final frame: all three rows sealed + both bottom lines +
+    append-only + diff annotation + tagline (vision-checked: layout as
+    spec, no collisions — SEALED tags clear of values: row 3 value
+    ends x884, tag left edge x922); tagline bottom ≈916, 164px above
+    frame bottom ✓; caption band y948–1080: 0 non-ink pixels ✓
+  - 61.42 hold stable: render-locals 33.44 and 33.50 byte-identical
+    (final-state pixels), 24.31-style stability per scenes 01–02 ✓
+  - Pre-naming negatives (zone max lum = ink 11, i.e. absent): row 1
+    label @36.00 (cue 36.12), row 3 label+value @41.00 (cues 41.14 /
+    41.90), `→ Git` @44.50 (cue 44.68), notary line @46.46 (cue 46.72),
+    tagline @58.40 (cue 58.52), diff annotation @54.30 (cue 54.55) ✓
+- Audio-sync: `hypothesis:` visible by end of "hypothesis" (37.14 —
+  settled 36.57) ✓; row 3 value settled by end of "costs." (43.69 —
+  settled 43.13) ✓.
+- Pace note (spec known risk, closed without amendment): the spec's
+  Visual Direction says "typing (mono, ~90ms/char)" while its own cue
+  table pins the land bars (row 1 value "~38.4" from a 37.68 cue =
+  ≤74ms for 24 chars; row 3 value "by 43.20" from a 41.90 cue =
+  ≤44ms for 29 chars) — the two are mutually inconsistent. Built at
+  30ms/char: inside the spec's "keep ≤90ms/char" bound and it matches
+  both land bars (38.44 / 43.13). No spec amendment needed; no design
+  change.
+- Spec known risk (SEALED tag vs row 3 value collision): closed —
+  measured 38px clearance (value ends x884, tag left edge x922 at
+  22px mono).
+
 ## Pipeline versions at audio lock
 
 - Pipeline HEAD: `c14fac6` (includes gap re-pin `4fba18a` + concat
@@ -328,3 +416,9 @@ Scene-content DRAFT renders: scene-01 at 18:27:15Z, scene-02 at
 2026-09-13T19:04:43Z pipeline=hyperframes@0.8.35 repo=60399c7 cmd=hyperframes lint  exit=0
 2026-09-13T19:04:45Z pipeline=hyperframes@0.8.35 repo=60399c7 cmd=hyperframes check  exit=0
 2026-09-13T19:04:51Z pipeline=hyperframes@0.8.35 repo=60399c7 cmd=hyperframes render --composition composition/scene-02.html --output renders/scene-02.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T19:56:05Z pipeline=hyperframes@0.8.35 repo=3bb441c cmd=hyperframes lint  exit=0
+2026-09-13T19:56:06Z pipeline=hyperframes@0.8.35 repo=3bb441c cmd=hyperframes check  exit=0
+2026-09-13T19:56:14Z pipeline=hyperframes@0.8.35 repo=3bb441c cmd=hyperframes render --composition composition/scene-03.html --output renders/scene-03.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T19:58:51Z pipeline=hyperframes@0.8.35 repo=3bb441c cmd=hyperframes lint  exit=0
+2026-09-13T19:58:52Z pipeline=hyperframes@0.8.35 repo=3bb441c cmd=hyperframes check  exit=0
+2026-09-13T19:58:58Z pipeline=hyperframes@0.8.35 repo=3bb441c cmd=hyperframes render --composition composition/scene-03.html --output renders/scene-03.mp4 --fps 24 --quality draft --workers 2 exit=0

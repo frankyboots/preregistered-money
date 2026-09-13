@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>scene-03 — preregistration fields (the fix)</title>
+  <link rel="stylesheet" href="style/tokens.css" />
+  <link rel="stylesheet" href="style/setpieces.css" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    /* scene-03 — prereg fields (spec: scene-specs/scene-03.md)
+       Stack: corner bug (set piece) / annotation + title (top-left) /
+       three field rows (faint frame outlines -> 70% on "three"; label +
+       value type in; SEALED tag 200ms fade + 12px slide, right-anchored) /
+       append-only boxed tag + diff annotation under the rows / bottom band
+       (-> Git, notary line, tagline).
+       Colors: --paper + --paper-dim only (no amber, no verdict colors —
+       nothing is judged, no run line exists). Mono everywhere except the
+       Inter title (600, --fs-title) and tagline (400, --fs-body).
+       Caption band (bottom 132px, y>=948) stays clear: lowest element is
+       the tagline, top 880 -> bottom ~916, 164px above frame bottom.
+       Typing: 30ms/char (spec pace pin <=90ms/char; chosen so the row 1
+       value lands ~38.4 and row 3 by 43.20, the cue table's bars).
+       Layout (JetBrains Mono advance = 0.6em): labels/values 30px =
+       18px/char; rows left 80, width 1100 (spec ~1100px max), height 64;
+       label x104, value x344; SEALED tag 22px = 13.2px/char, 18 chars
+       = ~238px, right-anchored 24px in (right edge x1160, left x922) —
+       row 3 value (30 chars) ends x884, 38px clear (spec known risk).
+       Initial states: frames VISIBLE at 40% (structure, not data — spec
+       cold open); labels/values/tags/annotations/tagline hidden in CSS
+       (frame 0 = ink + bug + three faint frames). GSAP only animates in.
+       Cues are LOCAL (root data-start=0); window offset 27.86 lives only
+       on the index.html mount. */
+    #scene-03 {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    #scene-03 .anno {
+      position: absolute;
+      left: 80px;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    #scene-03 .sc-title {
+      position: absolute;
+      left: 80px;
+      top: 168px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: var(--fs-title);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    #scene-03 .row {
+      position: absolute;
+      left: 80px;
+      width: 1100px;
+      height: 64px;
+    }
+    /* the faint frame: border box, 40% at open, 70% after "three" */
+    #scene-03 .frame {
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--paper-dim);
+      opacity: 0.4;
+    }
+    #scene-03 .label,
+    #scene-03 .value {
+      position: absolute;
+      top: 17px;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: var(--fs-body);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    #scene-03 .label { left: 24px; }
+    #scene-03 .value { left: 264px; }
+    #scene-03 .ch { opacity: 0; } /* typed chars reveal one by one */
+    #scene-03 .dot { opacity: 0; color: var(--paper-dim); }
+    #scene-03 .seal-tag {
+      position: absolute;
+      right: 24px;
+      top: 21px;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    #scene-03 .ao-tag {
+      position: absolute;
+      left: 80px;
+      top: 640px;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      border: 1px solid var(--paper-dim);
+      padding: 4px 12px;
+      white-space: nowrap;
+    }
+    #scene-03 .bline {
+      position: absolute;
+      left: 80px;
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    #scene-03 .tagline {
+      position: absolute;
+      left: 80px;
+      top: 880px;
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: var(--fs-body);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    /* initial hidden states — the 12px slide is part of the reveal verb */
+    #scene-03 .hide-y { opacity: 0; transform: translateY(12px); }
+  </style>
+</head>
+<body>
+  <div id="scene-03" data-composition-id="scene-03"
+       data-width="1920" data-height="1080"
+       data-start="0" data-duration="33.57">
+    <div class="bug">PREREGISTERED MONEY · meta · sealed 2026-09-12 · 86140f92</div>
+    <div class="anno hide-y" id="an-fix" style="top:136px;">the fix — borrowed from clinical trials</div>
+    <div class="sc-title hide-y">preregistration</div>
+
+    <!-- three field rows: frame + label + value + SEALED tag
+         (date = commit date of data/spec-sha.txt, the scene's only number) -->
+    <div class="row" style="top:320px;">
+      <div class="frame"></div>
+      <div class="label" id="l1"><span class="ch">h</span><span class="ch">y</span><span class="ch">p</span><span class="ch">o</span><span class="ch">t</span><span class="ch">h</span><span class="ch">e</span><span class="ch">s</span><span class="ch">i</span><span class="ch">s</span><span class="ch">:</span></div>
+      <div class="value" id="v1"><span class="ch">o</span><span class="ch">n</span><span class="ch">e</span><span class="ch">&nbsp;</span><span class="ch">f</span><span class="ch">a</span><span class="ch">l</span><span class="ch">s</span><span class="ch">i</span><span class="ch">f</span><span class="ch">i</span><span class="ch">a</span><span class="ch">b</span><span class="ch">l</span><span class="ch">e</span><span class="ch">&nbsp;</span><span class="ch">s</span><span class="ch">e</span><span class="ch">n</span><span class="ch">t</span><span class="ch">e</span><span class="ch">n</span><span class="ch">c</span><span class="ch">e</span></div>
+      <div class="seal-tag hide-y" id="s1">SEALED: 2026-09-12</div>
+    </div>
+    <div class="row" style="top:424px;">
+      <div class="frame"></div>
+      <div class="label" id="l2"><span class="ch">d</span><span class="ch">a</span><span class="ch">t</span><span class="ch">a</span><span class="ch">:</span></div>
+      <div class="value" id="v2"><span class="dot">·</span></div>
+      <div class="seal-tag hide-y" id="s2">SEALED: 2026-09-12</div>
+    </div>
+    <div class="row" style="top:528px;">
+      <div class="frame"></div>
+      <div class="label" id="l3"><span class="ch">t</span><span class="ch">h</span><span class="ch">e</span><span class="ch">&nbsp;</span><span class="ch">b</span><span class="ch">a</span><span class="ch">r</span><span class="ch">:</span></div>
+      <div class="value" id="v3"><span class="ch">a</span><span class="ch">&nbsp;</span><span class="ch">n</span><span class="ch">u</span><span class="ch">m</span><span class="ch">b</span><span class="ch">e</span><span class="ch">r</span><span class="ch">&nbsp;</span><span class="ch">t</span><span class="ch">o</span><span class="ch">&nbsp;</span><span class="ch">c</span><span class="ch">l</span><span class="ch">e</span><span class="ch">a</span><span class="ch">r</span><span class="ch">,</span><span class="ch">&nbsp;</span><span class="ch">a</span><span class="ch">f</span><span class="ch">t</span><span class="ch">e</span><span class="ch">r</span><span class="ch">&nbsp;</span><span class="ch">c</span><span class="ch">o</span><span class="ch">s</span><span class="ch">t</span><span class="ch">s</span></div>
+      <div class="seal-tag hide-y" id="s3">SEALED: 2026-09-12</div>
+    </div>
+
+    <div class="ao-tag hide-y" id="ao">append-only</div>
+    <div class="anno hide-y" id="an-diff" style="top:704px;">anyone can diff it against the run config</div>
+    <div class="bline hide-y" id="b1" style="top:792px;">→ Git</div>
+    <div class="bline hide-y" id="b2" style="top:832px;">the commit is the seal · Git is the notary</div>
+    <div class="tagline hide-y" id="tl-tag">the commitment is the point</div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    /* Cue times are LOCAL to the composition root (data-start=0): master
+       word-start from the spec Beat Timeline minus the window offset
+       27.86s. e.g. spec 28.78 "from" -> 0.92; spec 58.52 "commitment"
+       -> 30.66. Initial hidden states live in CSS (.hide-y, .ch, .dot)
+       so the render's first frame is ink + bug + three 40% frames. */
+
+    // helper: type a label/value's chars (30ms/char — within the spec's
+    // <=90ms/char pin; chosen so row 1 lands ~38.4 and row 3 by 43.20,
+    // matching the cue table's land estimates, see build log)
+    const TYPE = 0.03;
+    const typeChars = (sel, t) => {
+      const n = document.querySelectorAll("#scene-03 " + sel + " .ch").length;
+      tl.fromTo("#scene-03 " + sel + " .ch", { opacity: 0 },
+                           { opacity: 1, duration: 0.08, stagger: TYPE, ease: "none" }, t);
+      return t + (n - 1) * TYPE + 0.08; // end of typing
+    };
+    // helper: reveal (250ms opacity + 12px slide-up, spec verb)
+    const reveal = (sel, t, d = 0.25) =>
+      tl.to("#scene-03 " + sel, { opacity: 1, y: 0, duration: d, ease: "power2.out" }, t);
+
+    // 28.78 "from": annotation the fix — borrowed from clinical trials
+    reveal("#an-fix", 0.92);
+
+    // 30.52 "preregistration.": title
+    reveal(".sc-title", 2.66);
+
+    // 34.58 "three": the three empty frames brighten (40% -> 70%)
+    tl.to("#scene-03 .frame", { opacity: 0.7, duration: 0.25, ease: "power2.out" }, 6.72);
+
+    // 36.12 "hypothesis": row 1 label types in (lands ~36.57)
+    typeChars("#l1", 8.26);
+
+    // 37.68 "falsifiable": row 1 value types in (lands ~38.65)
+    typeChars("#v1", 9.82);
+
+    // 38.38 (row 1 complete): SEALED tag — 200ms fade + 12px slide (reveal
+    //   verb at the fade duration; the stamp verb is reserved for scene-05)
+    reveal("#s1", 10.52, 0.2);
+
+    // 39.68 "data,": row 2 label types in + dim · placeholder fades
+    typeChars("#l2", 11.82);
+    tl.to("#scene-03 #v2 .dot", { opacity: 1, duration: 0.2, ease: "power2.out" }, 11.82);
+
+    // 40.84 (row 2 complete): SEALED tag 2
+    reveal("#s2", 12.98, 0.2);
+
+    // 41.14 "bar,": row 3 label types in (lands ~41.30)
+    typeChars("#l3", 13.28);
+
+    // 41.90 "number": row 3 value types in (lands ~43.11, bar: by 43.20)
+    typeChars("#v3", 14.04);
+
+    // 43.20 (row 3 complete): SEALED tag 3
+    reveal("#s3", 15.34, 0.2);
+
+    // 44.68 "document": bottom line 1 -> Git
+    reveal("#b1", 16.82);
+
+    // 46.72 "commit": bottom line 2 the commit is the seal · Git is the notary
+    reveal("#b2", 18.86);
+
+    // 52.46 "append": append-only boxed tag under the rows
+    reveal("#ao", 24.60);
+
+    // 54.55 "diff": anyone can diff it against the run config
+    reveal("#an-diff", 26.69);
+
+    // 58.52 "commitment": tagline the commitment is the point
+    reveal("#tl-tag", 30.66);
+
+    // 60.14–61.43 final hold: nothing moves; extend to the window end
+    tl.set({}, {}, 33.57);
+
+    window.__timelines["scene-03"] = tl;
+  </script>
+</body>
+</html>
