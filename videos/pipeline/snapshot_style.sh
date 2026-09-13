@@ -29,15 +29,23 @@ if [[ -e "$VIDEO_DIR/style" || -e "$VIDEO_DIR/fonts" ]]; then
   exit 1
 fi
 
-mkdir -p "$VIDEO_DIR/style" "$VIDEO_DIR/fonts"
+mkdir -p "$VIDEO_DIR/style" "$VIDEO_DIR/fonts" "$VIDEO_DIR/style/fonts"
 cp "$PIPELINE/style/tokens.css" "$PIPELINE/style/setpieces.css" "$PIPELINE/style/brand-mark.svg" "$VIDEO_DIR/style/"
 cp "$PIPELINE/fonts/"*.woff2 "$VIDEO_DIR/fonts/"
+cp "$PIPELINE/fonts/"*.woff2 "$VIDEO_DIR/style/fonts/"
 
-# Font paths stay ../fonts/ — NO rewrite: the css lands in <video>/style/ and
-# the fonts in <video>/fonts/, so ../fonts/ from the css resolves to
-# <video>/fonts/ (render workers resolve url() relative to the css file).
-# The old rewrite to fonts/ was wrong for this layout: style/fonts/* 404'd
-# at check time (found 2026-09-13, scene-01 build).
+# Font paths rewritten ../fonts/ -> fonts/ (no parent traversal; lint
+# forbids ../ in asset paths). The fonts live in TWO places so every
+# resolution strategy reaches them:
+#   - render workers + lint: project-root-relative -> <video>/fonts/
+#   - live browser (check/preview): relative to the css file in style/
+#     -> <video>/style/fonts/
+# (Verified 2026-09-13, scene-01 build: 'fonts/' alone 404'd in check at
+# style/fonts/*; '../fonts/' passed check but failed lint as
+# invalid_parent_traversal_in_asset_path. Both copies are byte-identical;
+# the build log pins one checksum table, same woff2 in both dirs.)
+
+sed -i 's|url("../fonts/|url("fonts/|g' "$VIDEO_DIR/style/tokens.css"
 
 # Guard: SVGs must be well-formed XML (no `--` inside comments — that
 # breaks strict viewers AND the render media preflight).
@@ -58,8 +66,9 @@ PY
 if ! grep -q 'SNAPSHOT — copied from pipeline/style/' "$VIDEO_DIR/style/tokens.css"; then
   {
     echo "/* SNAPSHOT — copied from pipeline/style/ by snapshot_style.sh on $(date -u +%Y-%m-%d) from pipeline SHA $PIPELINE_SHA. */"
-    echo "/* Font paths stay ../fonts/ (resolve from <video>/style/ to <video>/fonts/);"
-    echo "   the layout is pinned so a rewrite would 404 at check time."
+    echo "/* Font paths rewritten ../fonts/ -> fonts/ (lint: no parent traversal);"
+    echo "   fonts copied to <video>/fonts/ AND <video>/style/fonts/ so render"
+    echo "   workers (root-relative) and the live browser (css-relative) both load."
     echo "/* Version of record: the pipeline SHA in this video's build.log. */"
     cat "$VIDEO_DIR/style/tokens.css"
   } > "$VIDEO_DIR/style/tokens.css.tmp" && mv "$VIDEO_DIR/style/tokens.css.tmp" "$VIDEO_DIR/style/tokens.css"
