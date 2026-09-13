@@ -15,18 +15,23 @@ N = frame count (duration × fps; a 33.49s @24fps scene has 804 frames). The dum
 
 ```python
 import numpy as np, hashlib
-N = 804
+N = 1042  # = filesize / (1080*1920*3)
 raw = np.memmap("/tmp/sNN.rgb", dtype=np.uint8, mode="r", shape=(N, 1080, 1920, 3))
-L = raw.max(axis=3)  # (N, 1080, 1920) — luminance-ish max channel
-# zone: (x1, y1, x2, y2, cue_local)
-z = L[:, y1:y2, x1:x2]
-lit = (z > TH).sum(axis=(1,2))   # colored px per frame in the zone
-nz = np.nonzero(lit > 3)[0]      # first index with real content
-first_frame = nz[0] + 1          # 1-indexed; frame == floor(t × fps) + 1
-cue_frame = int(cue_local * fps) + 1
+
+# zone: (x1, y1, x2, y2, cue_local) — slice per zone, never materialize the
+# whole (N, 1080, 1920) luminance array: raw.max(axis=3) allocates ~2.2GB
+# for a 1000-frame dump and OOMs the analysis kernel mid-sweep.
+for x1, y1, x2, y2, cue in zones:
+    z = raw[:, y1:y2, x1:x2].max(axis=3)      # (N, zy, zx) — small
+    lit = (z > TH).sum(axis=(1, 2))           # lit px per frame in the zone
+    nz = np.nonzero(lit >= 3)[0]
+    first_frame = nz[0] + 1                   # 1-indexed; frame == floor(t × fps) + 1
+    cue_frame = int(cue * fps) + 1
 ```
 
-Rule per zone: nothing lit before the cue frame (hard bar); first lit at cue frame +0/+1, or within a few frames (the front-loaded `--ease-out` curve delays first visible frame slightly; the bar is never-visible-before-cue, not at-cue-visible). If a zone is contaminated by a pre-existing element (a gridline row, another series crossing the zone), split the zone or raise TH past that element's luminance — otherwise the zone "lights" at the wrong frame.
+Rule per zone: nothing lit before the cue frame (hard bar); first lit at cue frame +0/+1, or within a few frames (the front-loaded `--ease-out` curve delays first visible frame slightly; the bar is never-visible-before-cue, not at-cue-visible). If a zone is contaminated by a pre-existing element (a gridline row, another series crossing the zone), split the zone or raise TH past that element's luminance — otherwise the zone "lights" at the wrong frame. **A reveal sweep of one element contaminates its neighbors' zones**: a left-to-right clip wipe of a table sweeps its dim cell rules through every row band it passes, so a per-row zone reads a first-lit frame at the wipe start, not the row's cue. Clear each zone's band of the full-width/dim rule rows (measure the rule rows on a settled frame first) and/or raise TH past the dim token — then re-check the zone's pixel count at cue−1 (must be 0) before trusting the onset.
+
+When unsure which frames are real content, print the per-frame lit-pixel counts around the suspect window: a one-frame blip that decays is a passing sweep artifact; a step to a stable count is the real onset.
 
 ## 3. Thresholds are per-token, after yuv420p
 
@@ -34,6 +39,7 @@ Calibrate to the rendered token, not the CSS value — yuv420p 4:2:0 decode shif
 
 - bright paper/ink fills: peak ≈ 232–255 — any TH 100–150 works
 - mid dim (≈40–50% opacity paper): ≈ 58–70 depending on row — TH 80 excludes it; TH 50 includes it
+- 35%-dim cell rules (`.ledger` set piece): peak ≈ 49 — TH 60 separates them from the 255 cell text, so per-cell text zones can be swept cleanly without clearing the rule rows first
 - 1px `--paper-dim` frame/axis lines: 60–70 max even when fully drawn — never assert them with a high threshold; verify at a settled frame instead, with tolerance for the row they land on
 
 When unsure, trace a zone's pixel count per frame around the expected cue — the step from 0 to the settled count is the real onset, and its level is the element's rendered luminance.
