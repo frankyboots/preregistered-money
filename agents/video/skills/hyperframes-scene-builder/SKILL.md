@@ -207,6 +207,8 @@ Extract:
 - Final frame.
 - Next-scene carryover start if relevant.
 
+Ease curve gotcha: a `power2.out`-style ease is front-loaded — opacity is ~80% in at ~20–25% of the duration, so "mid-reveal" at an early proof timestamp is a misnomer; the frame reads nearly settled. Judge reveal proofs by measured opacity (max brightness in the element band, normalized against the ink/paper tokens), and keep the real bars: nothing visible before the cue, element fully in by the end of its naming word.
+
 ## Handoff Format
 
 Report:

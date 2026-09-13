@@ -80,6 +80,8 @@ python3 pipeline/tools/scan_theme_colors.py <composition or video-dir>  # token-
 
 Pass/fail per the spec's Acceptance line (lint 0 errors; final-frame proof matches the spec layout; `scan_theme_colors.py` clean). Check audio-sync: each key element fully visible by the end of its naming word. Check the bottom 132px caption band is clear of key text. If a proof fails, fix the composition and re-render — do not lower the bar to pass. `make_contact_sheet.py` for a quick multi-frame look.
 
+**Proof expectations for fast reveals: measure, don't guess.** The pinned `--ease-out` (power2.out) is front-loaded — a 250ms reveal is already ~83% opaque at 24% of its duration. "Mid-reveal at cue+60ms"-style cells written from a linear mental model fail against the rendered pixels; "not visible before the cue" and "fully in by the end of the naming word" are the hard bars. When a proof cell contradicts the pinned duration+ease, that is a spec defect: amend the cell to the measured curve (a few extra frames + pixel brightness, in its own commit) — never change the motion to pass a cell, and never hand-wave the mismatch in the build log.
+
 ## Step 6 — Build-log entry (same commit as the build)
 
 The build log is regenerated, not narrated. For this scene, the log carries:
