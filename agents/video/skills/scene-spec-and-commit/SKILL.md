@@ -66,7 +66,7 @@ video(video-<slug>): scene spec NN (<name>)
 
 Body: window + verification evidence (cue rows verified against words.json, change floor verified, citations / no on-screen numbers). **No build-log entry** — no render yet; build-log updates start in Phase C.
 
-Tracker update rides with the commit (scenes done, next scene number). Reference earlier scene commits by SHA, but never this commit's own SHA in the tracker (self-reference: the SHA only exists after the commit, so the tracker line breaks on any amend) — reference this scene by name and let git log carry the SHA.
+Tracker update rides with the commit (scenes done, next scene number). Reference earlier scene commits by SHA, but never this commit's own SHA in the tracker (self-reference: the SHA only exists after the commit, so the tracker line breaks on any amend) — reference this scene by name and let git log carry the SHA. The `memory` tool treats the whole tracker file as one entry: a `replace` swaps the ENTIRE entry, so `content` must always be the complete new tracker text — a partial `new_text` silently deletes the rest of the tracker.
 
 ## Stop conditions
 
