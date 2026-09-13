@@ -1,0 +1,87 @@
+/* SNAPSHOT — copied from pipeline/style/ by snapshot_style.sh on 2026-09-13 from pipeline SHA e08e974. */
+/* ../fonts/ paths rewritten to fonts/ (render workers resolve url() relative to the file;
+   ../ escapes the project root — lint: invalid_parent_traversal_in_asset_path).
+/* Version of record: the pipeline SHA in this video's build.log. */
+/* tokens.css — style spec v1.1.0 (videos/pipeline/style/style-spec.md)
+ *
+ * Single source of visual truth for all scenes. Scenes import this file and
+ * setpieces.css and consume custom properties; scenes NEVER define palette
+ * values or set-piece styles locally. A hex not in the palette below fails
+ * CI (tools/scan_theme_colors.py).
+ *
+ * Fonts: Inter + JetBrains Mono (SIL OFL), vendored WOFF2 in ../fonts/.
+ */
+
+/* --- Fonts ---------------------------------------------------------------- */
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/Inter-Regular.woff2") format("woff2");
+  font-weight: 400; font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/Inter-SemiBold.woff2") format("woff2");
+  font-weight: 600; font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/Inter-Bold.woff2") format("woff2");
+  font-weight: 700; font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 400; font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/JetBrainsMono-Medium.woff2") format("woff2");
+  font-weight: 500; font-display: swap;
+}
+
+:root {
+  /* Palette — style-spec §2. Do not add colors without a major bump. */
+  --ink:          #0B0E11;
+  --paper:        #E8E6E1;
+  --paper-dim:    #6B7078;
+  --seal-amber:   #C89B3C;
+  --confirmed:    #3FA46A;
+  --falsified:    #C4453C;
+  --inconclusive: #8A9099;
+
+  /* Type scale — §3: 3 prose + 2 data sizes, no other sizes */
+  --fs-hero:        144px;
+  --fs-title:        52px;
+  --fs-body:         30px;
+  --fs-table:        24px;
+  --fs-anno:         22px;
+
+  --font-sans: "Inter", -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Layout — §3: 1920x1080, 80px safe margin, 132px caption band */
+  --safe-margin: 80px;
+  --caption-band: 132px;
+
+  /* Motion — §5.2: the five verbs */
+  --dur-fade:   200ms;
+  --dur-reveal: 250ms;
+  --dur-row:    200ms;
+  --dur-draw:   900ms;
+  --dur-bar:    400ms;
+  --dur-roll:   600ms;
+  --dur-stamp:  150ms;
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1); /* power2.out */
+
+  /* Spacing */
+  --gap-sm: 16px;
+  --gap-md: 32px;
+  --gap-lg: 64px;
+}
+
+/* --- Data typography: the mono rule (§3) ---------------------------------- */
+.data, code, .mono,
+.ledger td, .ledger th, .bar-tag, .hero-number, .axis-label {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}

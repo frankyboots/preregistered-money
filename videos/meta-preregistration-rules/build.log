@@ -89,27 +89,84 @@ Verified after merge (2026-09-13T14:34Z): `hyperframes lint` 0 errors /
 0 warnings; `hyperframes check` (lint + runtime + layout + motion +
 contrast) passed — project boots.
 
-Scene compositions not yet built. Pending: wire `tokens.css` +
-`setpieces.css` into the composition; scene specs from the beat sheet +
-`words.json` cues; first DRAFT render. When scenes land, this section
-records the composition SHA, template family (Meta v1), style-spec
-version, and HF version used.
+### Style + fonts wiring (2026-09-13)
+
+`tokens.css` + `setpieces.css` + `brand-mark.svg` (style spec 1.1.0) and
+the vendored WOFF2 fonts are snapshotted into this dir via
+`pipeline/snapshot_style.sh` — a committed snapshot, not a live
+`../pipeline/` reference. Two findings drove the mechanism:
+
+- Render workers resolve CSS `url()` relative to the css file, and lint
+  errors on any asset path climbing above the project root
+  (`invalid_parent_traversal_in_asset_path`) — a `../pipeline/style/`
+  link cannot work from inside the project.
+- `<img src="….svg">` fails the render media preflight
+  (`media_load_failed`) — the brand mark must be **inlined** (SVG copy,
+  style spec §4.2 sanctions inline copy) or referenced from within the
+  project root. Phase B rule: no `<img>` for SVG assets.
+
+Scene files import `style/tokens.css` + `style/setpieces.css`
+(root-relative — base URL is the project root), e.g. the master
+`index.html` does; scenes may do the same or rely on the master.
+
+| Snapshot file (style spec 1.1.0, pipeline SHA `77f8791`) | sha256 |
+|---|---|
+| `style/tokens.css` | `eeafb9c397b06b7961c2933606907e413b42da0cf54c3e5185bd2cd0abd22339` (banner + `../fonts/`→`fonts/` rewrite vs. pipeline source) |
+| `style/setpieces.css` | `d1917403ca0205726b564edd98d6f171b95472018c4cd1f52b39130faf7986d1` (byte-identical to pipeline) |
+| `style/brand-mark.svg` | `99c39d1f2e7398e7dac9d582df29997f7ca6836b7d3eed35b0bb46b46392c3de` (byte-identical to pipeline) |
+| `fonts/Inter-Regular.woff2` | `8909904ab6c872eb994093482a88a28eca2cd95912d7b6fecd72103b0dc07edc` |
+| `fonts/Inter-SemiBold.woff2` | `f9a06e79cd3a2a20951c0f0e28f66dd0e6d3fda73911d640a2125c8fcb78f21a` |
+| `fonts/Inter-Bold.woff2` | `6f56409fd3d64bb85f7d070bce20749db2d66b6d63cec586cc22d1c761be2491` |
+| `fonts/JetBrainsMono-Regular.woff2` | `14425ba9c695763c1547f48a206b7aa60350a33ae23de09f0407877f3fcd89eb` |
+| `fonts/JetBrainsMono-Medium.woff2` | `cb182feeed4d798ff6961d3c79f7026279448fca0676438aaecb21f3fc39553a` |
+
+Wiring verified in a throwaway probe composition (not committed):
+corner bug, hero number, bar-tag amber, `SEALED` stamp, inline brand
+mark all render with the vendored fonts — proof frame
+`snapshots/_probe3/proof-01-probe.png` (gitignored, re-derivable by
+re-running the probe). `scan_theme_colors.py` over the project: only the
+pre-existing `setpieces.css` rgba(107,112,120,.35) row-rule (ledger
+border, pipeline-pinned) and the skeleton body `#000` (under every
+scene's `--ink` background) need `--allow` — no scene-introduced drift.
+
+Scene compositions not yet built. Pending: scene specs from the beat
+sheet + `words.json` cues; first DRAFT scene render. When scenes land,
+this section records the composition SHA, template family (Meta v1),
+style-spec version, and HF version used.
 
 ## Pipeline versions at audio lock
 
 - Pipeline HEAD: `c14fac6` (includes gap re-pin `4fba18a` + concat
   absolute-path fix in `voiceover.py`); scaffold merged at `6c21d46`
 - HyperFrames: 0.8.35 (`HF_VERSION` in `pipeline/render.sh`) — verified
-  via lint + check on the scaffold (2026-09-13); no renders yet
-- Style spec: 1.1.0 — not yet wired into the composition
+  via lint + check on the scaffold (2026-09-13); renders verified 2026-09-13
+- Style spec: 1.1.0 — wired (snapshot above; pipeline SHA `77f8791`)
+
+## Scene inputs (recorded at first render)
+
+- `docs/CONCEPT.md` sha256 `d51873a938b84c9ff8ef097c31956f635a075f5c7ab34c834ff3579a0a49a831` (rule text, read-only)
+- `docs/METHODOLOGY.md` sha256 `d9fecdfc90f9fa6279e900fe93c3dd7a6e94e7a3de16b238e88b788f68b04aa7` (rule text, read-only)
 
 ## Render history
 
-(empty — no renders yet; the first DRAFT render appends here: timestamp,
-composition SHA, output hash, encoder settings)
+(Probe + empty-master draft renders of 2026-09-13 verify wiring only; no
+scene content has rendered yet. The first DRAFT **scene** render appends
+here: timestamp, composition SHA, output hash, encoder settings.)
 
 ## Publish record
 
 (none — PUBLISH is a dated, manual owner act; recorded here afterwards)
 2026-09-13T14:34:17Z pipeline=hyperframes@0.8.35 repo=6c21d46 cmd=hyperframes lint  exit=0
 2026-09-13T14:34:20Z pipeline=hyperframes@0.8.35 repo=6c21d46 cmd=hyperframes check  exit=0
+2026-09-13T14:41:58Z pipeline=hyperframes@0.8.35 repo=e1ea349 cmd=hyperframes lint  exit=1
+2026-09-13T14:42:33Z pipeline=hyperframes@0.8.35 repo=e1ea349 cmd=hyperframes lint  exit=1
+2026-09-13T14:42:35Z pipeline=hyperframes@0.8.35 repo=e1ea349 cmd=hyperframes check  exit=1
+2026-09-13T14:44:38Z pipeline=hyperframes@0.8.35 repo=e1ea349 cmd=hyperframes render --composition composition/_probe-wiring.html --output renders/_probe.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T14:46:32Z pipeline=hyperframes@0.8.35 repo=e1ea349 cmd=hyperframes lint  exit=0
+2026-09-13T14:46:34Z pipeline=hyperframes@0.8.35 repo=e1ea349 cmd=hyperframes render --composition composition/_probe-wiring.html --output renders/_probe.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T14:47:09Z pipeline=hyperframes@0.8.35 repo=e1ea349 cmd=hyperframes render --composition composition/_probe-wiring.html --output renders/_probe.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T14:49:23Z pipeline=hyperframes@0.8.35 repo=e08e974 cmd=hyperframes lint  exit=0
+2026-09-13T14:49:24Z pipeline=hyperframes@0.8.35 repo=e08e974 cmd=hyperframes check  exit=0
+2026-09-13T14:49:30Z pipeline=hyperframes@0.8.35 repo=e08e974 cmd=hyperframes render --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T14:49:50Z pipeline=hyperframes@0.8.35 repo=e08e974 cmd=hyperframes render --output renders/master-draft-001.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T14:50:16Z pipeline=hyperframes@0.8.35 repo=e08e974 cmd=hyperframes render --fps 24 --quality draft --workers 2 exit=0
