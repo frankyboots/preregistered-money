@@ -353,6 +353,99 @@ scene's `--ink` background) need `--allow` — no scene-introduced drift.
   measured 38px clearance (value ends x884, tag left edge x922 at
   22px mono).
 
+#### scene-04 — the lifecycle diagram (DRAFT, 2026-09-13)
+
+- Window: 61.43–95.24s (beat-04; speech 61.50–93.94, hold
+  93.94–95.24), 1920×1080 @ 24fps, draft quality.
+- `composition/scene-04.html` sha256
+  `fcd290e7250d9e686c8ac956e2784c4fd2e820f7b133bda853428e2f0e5cb039`.
+  Template family: Meta v1 (`meta:life-cycle`). Four node boxes
+  (240×72, 1px `--paper` stroke, no fill) on one baseline — PREREG →
+  SEAL → VERDICT → SCOREBOARD — with mono sub-lines; the three verdict
+  branches under VERDICT in their tokens (the only colored elements);
+  900ms return arrow SCOREBOARD→PREREG along the lower rail +
+  postmortem annotation; Inter 600 title + tagline. Colors
+  `--paper` + `--paper-dim` + the three verdict tokens (no amber —
+  Meta runs neutral; the bar line is scene-06's).
+- Render: `pipeline/render.sh … render --composition
+  composition/scene-04.html --output renders/scene-04.mp4 --fps 24
+  --quality draft --workers 2` → 33.833s, 812 frames, 1920×1080 h264
+  yuv420p 24fps, no audio (scene audio is beat-04 at assembly); output
+  sha256 `8876f5c19380363dfc2bb21f32796fa73a665290b54151c25cc74c37f0b5cb6e`.
+- Data inputs: none — no number appears in this scene (spec Inputs).
+  The corner bug's short-sha field reads `86140f92` from
+  `data/spec-sha.txt` (set-piece format §4.1; file sha256 per the Data
+  inputs table above).
+- Style inputs: tokens/setpieces per the snapshot table above (style
+  spec 1.1.1 pin; css byte-identical to 1.1.0), pipeline SHA `167133f`;
+  HyperFrames 0.8.35.
+- Verification: lint 0 errors/0 warnings; check passed (runtime 0,
+  layout 0/9 samples, motion 0, contrast 7/7); `scan_theme_colors.py
+  composition/scene-04.html` — 0 findings (all colors
+  token-referenced, including the three verdict tokens).
+- Proof frames `snapshots/scene-04-proof/` (gitignored, re-derivable
+  via `extract_proof_frames.py`; times are MASTER = render-local +
+  61.43s window offset; composition timeline is local, root
+  `data-start="0"` — the global offset lives only on the index.html
+  mount, same convention as scenes 01–03):
+  - 61.43 first frame: ink + corner bug fading in + baseline rule
+    only (below-bug non-ink = exactly 1440 = the 1px rule; no nodes,
+    no labels — the spec's cold open) ✓
+  - 62.10 title `the lifecycle` settled (max lum 251 = `--paper`) ✓
+  - 63.73 node 1 `PREREG` box + label in (box stroke + label) ✓
+  - 64.20 PREREG sub-line 1 `hypothesis · data · bar` ✓
+  - 66.60 PREREG sub-line 2 `written before anything runs` ✓
+  - 69.40 SEAL node in by end of "seal," (box + label settled 7.80
+    local) ✓; connector 1→2 drawn
+  - 70.30 SEAL sub-line `the commit` ✓
+  - 73.10 VERDICT node in (box + label) ✓; connector 2→3 drawn
+  - 75.00 VERDICT sub-line `judged by the pre-registered criteria` ✓
+  - 79.04 branch `confirmed` (`--confirmed`) ✓
+  - 79.88 branch `falsified` (`--falsified`) ✓
+  - 80.98 branch `inconclusive` (`--inconclusive`) ✓ (all three in
+    their colors by the boundary proof)
+  - 83.20 SCOREBOARD node in by end of "scoreboard," (settled 22.10
+    local) ✓; connector 3→4 drawn
+  - 84.30 SCOREBOARD sub-line `every prereg in one public table` ✓
+  - 87.40 return arrow complete: rail x360–1560 full, both legs lit,
+    arrowhead at PREREG bottom (draw completes 25.97 local) ✓
+  - 88.70 annotation `postmortem → next prereg` ✓
+  - 91.50 tagline `every video on this channel lives inside this
+    diagram` settled (settles 30.19 local) ✓
+  - 94.60 final frame: full diagram — four nodes + sub-lines, three
+    colored branches, return arrow + annotation, tagline (vision-
+    checked: baseline at box bottoms, arrowheads touch the boxes, no
+    collisions) ✓
+  - 95.23 hold stable: render-locals 32.51 / 33.17 / 33.55
+    byte-identical (sha256 `614edac0…`) ✓
+  - Pre-naming negatives (zone max lum = ink 11, i.e. absent): title
+    @61.73 (cue 61.84), `PREREG` box+label @62.83 (cue 63.04),
+    `VERDICT` box+label @68.73 (cue 72.64), `SCOREBOARD` box+label
+    @75.00 (cue 82.78), branches @75.00 (cues 80.78+), return rail
+    @86.33 (cue 86.46, 0 non-ink), annotation @87.40 (cue 88.44),
+    tagline @88.70 (cue 91.14) ✓
+- Audio-sync: `PREREG` label in by end of "prereg," (63.52 — settled
+  63.30); each branch word in by its bar (confirmed 79.04, falsified
+  79.88, inconclusive 80.98); tagline settled by end of "diagram."
+  (93.94 — settled 91.62). ✓
+- Spec amendments in this commit (no design change): (1) return-arrow
+  boundary proof t=87.20 → **t=87.40** — the spec's pinned 900ms draw
+  completes at 86.46+0.90 = 87.36, so 87.20 sat 16ms *inside* the
+  draw; (2) baseline reading "40% through the node centers" → **rule
+  at the box bottoms** — the first render measured the 40%-down rule
+  cutting through the vertically centered labels (a strikethrough);
+  the nodes sit on the timeline, which is the spec's intent. Both are
+  the same amendment class as the measured-curve cells in scenes
+  01–03.
+- Probe record: a throwaway draw-direction probe (not committed —
+  deleted) caught a dasharray shorter than the measured path length
+  leaking the final up-leg pre-cue; the final path's dasharray = its
+  straight-line length (1576), offset 1576→0. Closed: pre-cue rail
+  band 0 non-ink; arrowhead absent pre-25.78, present at 25.97.
+- Arrow geometry: SCOREBOARD bottom (center 1560, y488) down 188 →
+  rail y676 → left 1200 → up 188 into PREREG bottom (center 360);
+  reveal SCOREBOARD→PREREG (right first).
+
 ## Pipeline versions at audio lock
 
 - Pipeline HEAD: `c14fac6` (includes gap re-pin `4fba18a` + concat
@@ -422,3 +515,12 @@ Scene-content DRAFT renders: scene-01 at 18:27:15Z, scene-02 at
 2026-09-13T19:58:51Z pipeline=hyperframes@0.8.35 repo=3bb441c cmd=hyperframes lint  exit=0
 2026-09-13T19:58:52Z pipeline=hyperframes@0.8.35 repo=3bb441c cmd=hyperframes check  exit=0
 2026-09-13T19:58:58Z pipeline=hyperframes@0.8.35 repo=3bb441c cmd=hyperframes render --composition composition/scene-03.html --output renders/scene-03.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T20:12:28Z pipeline=hyperframes@0.8.35 repo=3a10b0b cmd=hyperframes lint  exit=0
+2026-09-13T20:12:29Z pipeline=hyperframes@0.8.35 repo=3a10b0b cmd=hyperframes check  exit=0
+2026-09-13T20:12:36Z pipeline=hyperframes@0.8.35 repo=3a10b0b cmd=hyperframes render --composition composition/scene-04.html --output renders/scene-04.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T20:18:45Z pipeline=hyperframes@0.8.35 repo=3a10b0b cmd=hyperframes lint  exit=0
+2026-09-13T20:18:46Z pipeline=hyperframes@0.8.35 repo=3a10b0b cmd=hyperframes render --composition composition/scene-04.html --output renders/scene-04.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T20:19:23Z pipeline=hyperframes@0.8.35 repo=3a10b0b cmd=hyperframes check  exit=0
+2026-09-13T20:22:32Z pipeline=hyperframes@0.8.35 repo=3a10b0b cmd=hyperframes lint  exit=0
+2026-09-13T20:22:34Z pipeline=hyperframes@0.8.35 repo=3a10b0b cmd=hyperframes render --composition composition/scene-04.html --output renders/scene-04.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T20:23:39Z pipeline=hyperframes@0.8.35 repo=3a10b0b cmd=hyperframes check  exit=0

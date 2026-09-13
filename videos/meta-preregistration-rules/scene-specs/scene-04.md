@@ -37,8 +37,13 @@ Status: SPEC (Phase B). Template: `meta:life-cycle`.
   baseline, left→right: `PREREG`, `SEAL`, `VERDICT`, `SCOREBOARD`.
   - Node box: 240×72px, 1px `--paper` stroke, no fill; label JetBrains Mono
     500, `--fs-body`, `--paper`, letterspaced, centered in the box.
-  - Baseline: 1px `--paper-dim` rule at 40% through the node centers,
-    pre-existing at scene open (frame, per §5.1 rule 2).
+  - Baseline: 1px `--paper-dim` rule at the box bottoms (the nodes sit
+    on the timeline), pre-existing at scene open (frame, per §5.1 rule
+    2). (Amended from "40% through the node centers" at build: a rule
+    40% down the box height cuts through the vertically centered labels
+    — a strikethrough, measured in the first render; the rule-at-bottoms
+    reading is the spec's intent, same amendment class as the
+    measured-curve cells.)
   - Inter-node connectors: 1px `--paper` rules along the baseline, drawn
     left→right (draw verb, 700ms).
 - Node sub-lines (below each box, JetBrains Mono `--fs-anno`, `--paper-dim`):
@@ -90,7 +95,7 @@ Times are word starts from `words.json`.
 | 80.78 | `inconclusive.` | branch `inconclusive` (`--inconclusive`) reveals | t=80.98 |
 | 82.78 | `scoreboard,` | connector 3→4 draws (700ms, noted); node 4 `SCOREBOARD` box + label reveals on the word | t=83.20 |
 | 83.90 | `every` | SCOREBOARD sub-line `every prereg in one public table` reveals | t=84.30 |
-| 86.46 | `an` | return arrow draws (900ms, noted — draw verb §5.2), SCOREBOARD→PREREG along the lower rail | t=87.20 |
+| 86.46 | `an` | return arrow draws (900ms, noted — draw verb §5.2), SCOREBOARD→PREREG along the lower rail | t=87.40 (draw completes 87.36) |
 | 88.44 | `postmortem` | annotation `postmortem → next prereg` reveals under the arrow | t=88.70 |
 | 91.14 | `Every` | tagline `every video on this channel lives inside this diagram` reveals | t=91.50 |
 | 93.94 | (speech ends) | final hold — nothing moves | t=94.60 = final state |
@@ -122,7 +127,7 @@ No pre-naming ✓ (boxes on their words; only the baseline frame pre-exists).
 - Final-frame proof: **t=94.60** — full diagram, arrow, tagline, settled.
 - Boundary proofs: t=69.40 (SEAL node in by end of "seal,"), t=80.98 (all
   three branches in their colors), t=83.20 (SCOREBOARD node in by end of
-  "scoreboard,"), t=87.20 (return arrow complete), t=95.23 (hold stable to
+  "scoreboard,"), t=87.40 (return arrow complete), t=95.23 (hold stable to
   cut).
 - Caption proof: lowest elements (return-arrow rail, annotation, tagline)
   all clear the bottom 132px band — tagline baseline ≥140px above frame

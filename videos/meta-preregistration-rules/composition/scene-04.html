@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>scene-04 — the lifecycle (loop diagram)</title>
+  <link rel="stylesheet" href="style/tokens.css" />
+  <link rel="stylesheet" href="style/setpieces.css" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    /* scene-04 — the lifecycle (spec: scene-specs/scene-04.md)
+       Stack: corner bug (set piece, 200ms fade) / Inter 600 title
+       (top-left, the diagram's identity) / four node boxes on one
+       baseline (PREREG → SEAL → VERDICT → SCOREBOARD) with mono sub-lines /
+       900ms return arrow along the lower rail (SCOREBOARD → PREREG) +
+       postmortem annotation / tagline above the caption zone.
+       Colors: --paper + --paper-dim everywhere EXCEPT the three verdict
+       words (verdict tokens §2 — the only colored elements in the scene;
+       no amber: Meta runs neutral, the bar line is scene-06's).
+       Layout: node boxes 240×72, 1px --paper stroke, no fill, centers
+       x 360 / 760 / 1160 / 1560, box y 416–488. Baseline rule = 1px
+       --paper-dim at the box BOTTOMS (y=487), full span x240–1680
+       (pre-existing frame, §5.1 rule 2; the nodes sit on the timeline).
+       First render (baseline 40% down the box, y409) measured to cut
+       straight through the centered labels — strikethrough look — so
+       the baseline was moved to the box bottom; the spec's "40% through
+       the node centers" reads as the node row sitting on the rule, and
+       a rule through the label text is not the spec's intent.
+       Connectors = 1px --paper rules between boxes along the baseline
+       (left 480/880/1280, 160px each), draw 700ms left→right. Sub-lines
+       22px mono --paper-dim (13.2px/char) centered under each box;
+       VERDICT: judged line + three verdict branches, baselines
+       498/532/566/600. Return arrow: SCOREBOARD bottom (center 1560,
+       y488) down to rail y=676 (50px below the inconclusive baseline,
+       spec ≥40px) left to PREREG bottom (center 360), up; drawn
+       SCOREBOARD→PREREG (dasharray = path length 1576, offset 1576→0,
+       900ms) with the arrowhead last at PREREG; annotation centered on
+       the rail. SCOREBOARD box right edge x=1680 → 160px clear of the
+       1840 safe edge. Tagline y=820 → baseline ≈842, 238px above frame
+       bottom (spec: ≥140px), 106px above the 948 caption-band top;
+       annotation y=700 → bottom ≈724, 224px clear.
+       Node-label fit (30px mono-medium = 18px/char + 0.02em ≈ 0.6px/char):
+       SCOREBOARD 10 chars ≈ 186px < 240px box; PREREG 6 ≈ 111; SEAL 4 ≈
+       74; VERDICT 7 ≈ 128 — all fit (spec known risk, inconclusive
+       branch = 12 chars ≈ 159px centered under VERDICT, no box bound).
+       Initial states: only the baseline rule pre-exists (CSS, visible);
+       boxes/labels/sub-lines/branches/arrow/annotation/tagline hidden in
+       CSS (.hide-y, .ah) so frame 0 = ink + bug + baseline without a
+       t=0 tl.set. Cues are LOCAL (root data-start=0); the window offset
+       61.43s lives only on the index.html mount. */
+    #scene-04 {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    #scene-04 .sc-title {
+      position: absolute;
+      left: 80px;
+      top: 168px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: var(--fs-title);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    /* baseline rule — the only pre-existing element at scene open.
+       At 40% down the box height (box 380–452 → 380+0.4·72 ≈ 409),
+       threading through all four nodes (the timeline the boxes sit on). */
+    #scene-04 .baseline {
+      position: absolute;
+      left: 240px;
+      width: 1440px;
+      top: 487px;
+      height: 1px;
+      background: var(--paper-dim);
+    }
+    #scene-04 .node-box {
+      position: absolute;
+      top: 416px;
+      width: 240px;
+      height: 72px;
+      border: 1px solid var(--paper);
+    }
+    #scene-04 .node-label {
+      position: absolute;
+      top: 416px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: var(--fs-body);
+      letter-spacing: 0.02em;
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    /* inter-node connectors along the baseline (160px, draw 700ms
+         left→right) — paper rules over the dim baseline rule */
+    #scene-04 .conn { position: absolute; top: 487px; }
+    #scene-04 .conn svg { display: block; }
+    /* sub-lines: mono --fs-anno --paper-dim, centered under each box */
+    #scene-04 .sub {
+      position: absolute;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    #scene-04 .sub-v {
+      position: absolute;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      white-space: nowrap;
+    }
+    #scene-04 .sub-v.confirmed    { color: var(--confirmed); }
+    #scene-04 .sub-v.falsified    { color: var(--falsified); }
+    #scene-04 .sub-v.inconclusive { color: var(--inconclusive); }
+    /* return arrow: rail path drawn right→left (path order), head last */
+    #scene-04 .ret-arrow { position: absolute; }
+    #scene-04 .ret-arrow svg { display: block; }
+    #scene-04 .ret-arrow .rh { opacity: 0; }
+    #scene-04 .anno {
+      position: absolute;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: var(--fs-anno);
+      color: var(--paper-dim);
+      white-space: nowrap;
+    }
+    #scene-04 .tagline {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 820px;
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: var(--fs-body);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    /* initial hidden states — the 12px slide is part of the reveal verb */
+    #scene-04 .hide-y { opacity: 0; transform: translateY(12px); }
+    #scene-04 .sub.hide-y,
+    #scene-04 .sub-v.hide-y,
+    #scene-04 .anno.hide-y { transform: translateX(-50%) translateY(12px); }
+    #scene-04 .tagline.hide-y { transform: translateX(-50%) translateY(12px); }
+  </style>
+</head>
+<body>
+  <div id="scene-04" data-composition-id="scene-04"
+       data-width="1920" data-height="1080"
+       data-start="0" data-duration="33.81">
+    <div class="bug">PREREGISTERED MONEY · meta · sealed 2026-09-12 · 86140f92</div>
+    <div class="sc-title hide-y">the lifecycle</div>
+
+    <!-- baseline frame: the only pre-existing element at scene open -->
+    <div class="baseline"></div>
+
+    <!-- four nodes on one baseline, left→right (boxes + labels hidden) -->
+    <div class="node-box hide-y" id="box1" style="left:240px;"></div>
+    <div class="node-label hide-y" id="lbl1" style="left:240px;">PREREG</div>
+    <div class="node-box hide-y" id="box2" style="left:640px;"></div>
+    <div class="node-label hide-y" id="lbl2" style="left:640px;">SEAL</div>
+    <div class="node-box hide-y" id="box3" style="left:1040px;"></div>
+    <div class="node-label hide-y" id="lbl3" style="left:1040px;">VERDICT</div>
+    <div class="node-box hide-y" id="box4" style="left:1440px;"></div>
+    <div class="node-label hide-y" id="lbl4" style="left:1440px;">SCOREBOARD</div>
+
+    <!-- connectors 1→2 / 2→3 / 3→4 (160px, draw 700ms left→right) -->
+    <div class="conn" id="c1" style="left:480px; width:160px; height:1px;">
+      <svg width="160" height="1" viewBox="0 0 160 1"><line class="cl" x1="0" y1="0.5" x2="160" y2="0.5" stroke="var(--paper)" stroke-width="1" stroke-dasharray="160" stroke-dashoffset="160"/></svg>
+    </div>
+    <div class="conn" id="c2" style="left:880px; width:160px; height:1px;">
+      <svg width="160" height="1" viewBox="0 0 160 1"><line class="cl" x1="0" y1="0.5" x2="160" y2="0.5" stroke="var(--paper)" stroke-width="1" stroke-dasharray="160" stroke-dashoffset="160"/></svg>
+    </div>
+    <div class="conn" id="c3" style="left:1280px; width:160px; height:1px;">
+      <svg width="160" height="1" viewBox="0 0 160 1"><line class="cl" x1="0" y1="0.5" x2="160" y2="0.5" stroke="var(--paper)" stroke-width="1" stroke-dasharray="160" stroke-dashoffset="160"/></svg>
+    </div>
+
+    <!-- sub-lines (centers 360 / 760 / 1160 / 1560) -->
+    <div class="sub hide-y" id="s1a" style="left:360px; top:498px;">hypothesis · data · bar</div>
+    <div class="sub hide-y" id="s1b" style="left:360px; top:532px;">written before anything runs</div>
+    <div class="sub hide-y" id="s2a" style="left:760px; top:498px;">the commit</div>
+    <div class="sub hide-y" id="s3a" style="left:1160px; top:498px;">judged by the pre-registered criteria</div>
+    <div class="sub-v confirmed hide-y" id="v1" style="left:1160px; top:532px;">confirmed</div>
+    <div class="sub-v falsified hide-y" id="v2" style="left:1160px; top:566px;">falsified</div>
+    <div class="sub-v inconclusive hide-y" id="v3" style="left:1160px; top:600px;">inconclusive</div>
+    <div class="sub hide-y" id="s4a" style="left:1560px; top:498px;">every prereg in one public table</div>
+
+    <!-- return arrow: SCOREBOARD bottom (center x=1560, y=488) → rail
+         y=676 → up into PREREG bottom (center x=360). Path order starts
+         at SCOREBOARD (down 188 + rail 1200 + up 188 = 1576
+         straight-line units). Reveal is SCOREBOARD→PREREG = path
+         start→end: dasharray = length, offset animates 1576 → 0.
+         Arrowhead last, inside the viewBox (x 114–126) so it is not
+         clipped. (First probe: dasharray < path length leaked the
+         unhidden tail pre-cue — dasharray must equal the measured
+         length.) -->
+    <div class="ret-arrow" id="ret" style="left:240px; top:380px; width:1560px; height:316px;">
+      <svg width="1560" height="316" viewBox="0 0 1560 316">
+        <path class="rp" d="M1320,108 L1320,296 L120,296 L120,108"
+              stroke="var(--paper-dim)" stroke-width="1" fill="none"
+              stroke-dasharray="1576" stroke-dashoffset="1576"/>
+        <polygon class="rh" points="114,108 126,108 120,94" fill="var(--paper-dim)"/>
+      </svg>
+    </div>
+    <div class="anno hide-y" id="an-post" style="left:900px; top:700px;">postmortem → next prereg</div>
+
+    <!-- tagline (above the caption zone; baseline ≈842, ≥140px above bottom) -->
+    <div class="tagline hide-y" id="tl">every video on this channel lives inside this diagram</div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    /* Cue times are LOCAL to the composition root (data-start=0): master
+       word-start from the spec Beat Timeline minus the window offset
+       61.43s. e.g. spec 61.84 "states," -> 0.41; spec 91.14 "Every" ->
+       29.71. Initial hidden states live in CSS so the render's first
+       frame is ink + bug + baseline rule only. */
+
+    // helper: reveal (250ms opacity + 12px slide-up, spec verb)
+    const reveal = (sel, t, d = 0.25) =>
+      tl.to("#scene-04 " + sel, { opacity: 1, y: 0, duration: d, ease: "power2.out" }, t);
+    // helper: draw a connector (700ms line-draw, spec noted)
+    const drawConn = (sel, t) =>
+      tl.fromTo("#scene-04 " + sel + " .cl", { strokeDashoffset: 160 },
+                           { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" }, t);
+
+    // 61.84 "states,": title the lifecycle (the diagram's identity)
+    reveal(".sc-title", 0.41);
+
+    // 63.04 "prereg,": node 1 PREREG box + label
+    reveal("#box1", 1.61);
+    reveal("#lbl1", 1.61);
+
+    // 63.90 "hypothesis,": PREREG sub-line 1 (the three things, generalized)
+    reveal("#s1a", 2.47);
+
+    // 66.28 "written": PREREG sub-line 2
+    reveal("#s1b", 4.85);
+
+    // 68.98 "seal,": connector 1→2 draws (700ms) + node 2 SEAL reveals on
+    //   the word (in by 7.80; bar: t=69.40)
+    drawConn("#c1", 7.55);
+    reveal("#box2", 7.55);
+    reveal("#lbl2", 7.55);
+
+    // 70.04 "commit": SEAL sub-line
+    reveal("#s2a", 8.61);
+
+    // 72.64 "verdict,": connector 2→3 draws + node 3 VERDICT reveals
+    drawConn("#c2", 11.21);
+    reveal("#box3", 11.21);
+    reveal("#lbl3", 11.21);
+
+    // 74.60 "judged": VERDICT sub-line
+    reveal("#s3a", 13.17);
+
+    // 78.84 / 79.68 / 80.78: the three verdict branches, each in its token
+    reveal("#v1", 17.41);
+    reveal("#v2", 18.25);
+    reveal("#v3", 19.35);
+
+    // 82.78 "scoreboard,": connector 3→4 draws + node 4 SCOREBOARD reveals
+    //   (in by 22.10; bar: t=83.20)
+    drawConn("#c3", 21.35);
+    reveal("#box4", 21.35);
+    reveal("#lbl4", 21.35);
+
+    // 83.90 "every": SCOREBOARD sub-line
+    reveal("#s4a", 22.47);
+
+    // 86.46 "an": return arrow draws (900ms, right→left along the lower
+    //   rail), arrowhead last at the PREREG end; complete 26.36
+    //   (bar: t=87.40 — the spec cell amended from 87.20, which sat
+    //   16ms inside the pinned 900ms draw; measured-curve fix, no design
+    //   change)
+    tl.fromTo("#scene-04 #ret .rp", { strokeDashoffset: 1576 },
+                           { strokeDashoffset: 0, duration: 0.9, ease: "power2.out" }, 25.03);
+    tl.fromTo("#scene-04 #ret .rh", { opacity: 0 },
+                           { opacity: 1, duration: 0.15, ease: "power2.out" }, 25.78);
+
+    // 88.44 "postmortem": annotation under the rail
+    reveal("#an-post", 27.01);
+
+    // 91.14 "Every": tagline (settles 30.19; bar: by end of "diagram." 32.51)
+    reveal("#tl", 29.71);
+
+    // 93.94–95.24 final hold: nothing moves; extend to the window end
+    tl.set({}, {}, 33.81);
+
+    window.__timelines["scene-04"] = tl;
+  </script>
+</body>
+</html>
