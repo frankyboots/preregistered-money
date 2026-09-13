@@ -37,6 +37,21 @@ cp "$PIPELINE/fonts/"*.woff2 "$VIDEO_DIR/fonts/"
 # pipeline-relative font paths to video-dir-relative.
 sed -i 's|url("../fonts/|url("fonts/|g' "$VIDEO_DIR/style/tokens.css"
 
+# Guard: SVGs must be well-formed XML (no `--` inside comments — that
+# breaks strict viewers AND the render media preflight).
+python3 - "$VIDEO_DIR/style/"*.svg <<'PY'
+import sys, xml.etree.ElementTree as ET
+bad = False
+for f in sys.argv[1:]:
+    try:
+        ET.parse(f)
+    except Exception as e:
+        bad = True
+        print(f"refusing: {f} is not well-formed XML: {e}", file=sys.stderr)
+        print("fix: no '--' inside XML comments (CSS token names --x are illegal there)", file=sys.stderr)
+sys.exit(1 if bad else 0)
+PY
+
 # Stamp the snapshot banner (idempotent guard).
 if ! grep -q 'SNAPSHOT — copied from pipeline/style/' "$VIDEO_DIR/style/tokens.css"; then
   {

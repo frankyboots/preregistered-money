@@ -5,9 +5,10 @@
        a seal-amber horizontal — the line rises left→right and ends above
        the bar: alpha over benchmark, the mark reads as a pass. This is
        the channel's profile logo and the mark used in the seal scene.
-       Colors are the pinned tokens: --paper #E8E6E1, --seal-amber
-       #C89B3C. No other colors. Coordinates mirror seal_mark() in
-       brand/gen_concepts.py (viewBox -400..400 shifted +400). -->
+       Colors are the pinned tokens: paper (#E8E6E1), seal-amber
+       (#C89B3C). No other colors. Coordinates mirror seal_mark() in
+       brand/gen_concepts.py (viewBox -400..400 shifted +400).
+       NOTE: no double-hyphens inside this comment (XML comment rule). -->
   <circle cx="400" cy="400" r="330" fill="none" stroke="#E8E6E1" stroke-width="18"/>
   <circle cx="400" cy="400" r="282" fill="none" stroke="#E8E6E1" stroke-width="4"/>
   <line x1="230" y1="420" x2="570" y2="420" stroke="#C89B3C" stroke-width="7"/>
