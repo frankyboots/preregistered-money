@@ -50,6 +50,14 @@ Status: SPEC (Phase B). Template: pinned `disclaimer-card` (style spec §4.6).
      `--paper-dim`). Bullet line baselines: b1 y≈308; b2 y≈372/420 (wraps
      after `assumptions;`); b3 y≈468/516 (wraps after `choices,`);
      b4 y≈564/612 (wraps after `out-of-sample`). Card bottom y≈652.
+     **2.0.0 amendment (2026-09-13):** the pinned card now carries a
+     2ch hanging indent (style spec 2.0.0, owner decision — see the
+     build-log `scene-08 fix` entry): wrapped lines (b2/b3/b4 line 2)
+     start under the bullet's FIRST WORD (x≈240) instead of the ul
+     content edge (x≈204). Line-1 word positions and all three wrap
+     points are unchanged (probe-verified byte-identical wrap
+     right-edges); no y-geometry, cue, or timing change — the spec's
+     layout math above stands as-is for line 1 and card bottom.
   3. Card vertical center y≈416 ≈ frame center 540 minus margin — the card
      is top-anchored, not centered, so the bullet column reads downward
      from a comfortable top; nothing else in the scene.

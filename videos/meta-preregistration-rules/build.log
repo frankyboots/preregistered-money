@@ -941,6 +941,71 @@ master = local + 205.47):
   layout 0/9 samples, motion 0, contrast 7/7);
   `scan_theme_colors.py composition/scene-08.html` — 0 findings.
 
+##### scene-08 fix — bullet wrap-line alignment (DRAFT, 2026-09-14)
+
+Owner review of the committed scene-08 render flagged one nit: on the
+wrapped bullets the continuation line started at the card's left
+content edge (under the `·` marker) instead of under the bullet's
+first word. Fixed in the pinned set piece itself (not scene-local),
+since `.disclaimer-card` is the §4.6 integrity anchor — no timing
+changes: cues, reveal verbs, card geometry, and the 685 bottom are
+untouched. Spec amendment in `scene-specs/scene-08.md` (bullet list
+row). This is a pixel change to a pinned set piece, so style spec
+bumped **1.1.1 → 2.0.0** (major; owner decision 2026-09-13 — this
+review) and this video's style snapshot refreshed in the same commit.
+
+1. **Wrap line sat 36px left of the first word.** The `·  ` marker
+   (middot + one collapsed space = 2 chars = 2ch at the 30px mono
+   advance) pushed line 1's first word to x=240, while the `<ul>`'s
+   default padding dropped the wrapped line to x=204 (measured on the
+   committed proof frame: line 1 L=240, line 2 L=204, delta exactly 36px).
+   Fixed with a hanging indent on `.disclaimer-card ul li`:
+   `padding-left: 2ch; text-indent: -2ch`. `W=2ch` is font-anchored
+   (the marker is 2 chars in the monospace face) and pixel-identical
+   to 36px in this engine (probe-verified; a 3ch control over-indents
+   to 258). Line 1's width is provably unchanged — the negative
+   indent returns exactly the padding it adds — so there is no
+   reflow.
+
+- Composition: `composition/scene-08.html` sha256
+  `5f19ce9e01361f4c92cc2d054a2939515a68dd2dc54de87f705c7db7f636669b`
+  (unchanged — the fix is pure CSS in the pin; the scene's own html
+  is byte-identical to the DRAFT build).
+- Re-render: `renders/scene-08.mp4` sha256
+  `49551d7f5d784fac921faf6bfdd23133a437a0044c05f91c08a4416d787af2eb`
+  (1920×1080 yuv420p 24fps, draft, 724 frames, 30.167s — duration
+  unchanged; re-rendered after the pin bump, repo 0597267).
+- Style pin: `style/setpieces.css` sha256
+  `ab93351c0799512dd2d06179f81443ffd29d3c8a13af276b64c39355adb0907b`
+  (style spec 2.0.0 — the two `li` rules + the version header;
+  pipeline source `videos/pipeline/style/setpieces.css` is the
+  source of truth, committed at 0597267, this snapshot
+  byte-synced). `style/tokens.css` + `style/brand-mark.svg`
+  byte-identical to the DRAFT snapshot (sha
+  `f56f659f…` / `eccdc43f…`).
+- Proof (re-extracted `snapshots/scene-08-proof/`, render-local):
+  settled frame 22.46 — all seven bullet lines (b1 1 line, b2 2,
+  b3 2, b4 2) start at L=240, the left-edge set is {240} (was
+  {204, 240}); line-1 wrap right-edges 1638/1728/1706 vs the
+  committed 1.1.1 render's 1639/1729/1707 (1px yuv420p rounding,
+  byte-identical wrap points); the middot sits in the gutter at
+  x208–239 (dot ink, no collision with line 1's word at 240 nor the
+  wrap line, vision ✓ on the 3x crop). Caption band y948+ 0 lit
+  across the whole scene; hold frames from 28.87 — 31 frames, 1
+  unique sha256 (byte-identical plateau); open + 0.69 border + 0.98
+  title frames re-extracted, vision ✓.
+- Before/after crop:
+  `snapshots/scene-08-fix-check/wrap_indent_before_after.png`
+  (b2 region, 3x — BEFORE 1.1.1 pin vs AFTER 2.0.0 pin).
+- Lint 0 errors/0 warnings; check passed (runtime 0, layout 0/9
+  samples, motion 0, contrast 7/7); `scan_theme_colors.py` — 0
+  findings.
+- No design change: card rect, 40px padding, title, bullet strings,
+  cue times, and the window (master 205.47–235.60) are untouched.
+  Same amendment class as the scene-03/04/05 owner-nit fixes —
+  except those were scene-local; this one is the pin, per the
+  §4.6/§10 rules, and will align every future video's card.
+
 scene-09 DRAFT (2026-09-14, the outro, window master 235.60–246.96
 local 0–11.36 @24fps — proof-frame times below are render-local;
 master = local + 235.60; the master tail is the video's end at
@@ -1158,3 +1223,9 @@ log below.)
 2026-09-14T01:49:33Z pipeline=hyperframes@0.8.35 repo=4cffeda cmd=hyperframes lint  exit=0
 2026-09-14T01:49:36Z pipeline=hyperframes@0.8.35 repo=4cffeda cmd=hyperframes check  exit=0
 2026-09-14T01:49:45Z pipeline=hyperframes@0.8.35 repo=4cffeda cmd=hyperframes render --composition composition/scene-05.html --output renders/scene-05.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-14T02:16:09Z pipeline=hyperframes@0.8.35 repo=0c68ac8 cmd=hyperframes render --composition composition/_probe-s08indent.html --output renders/_probe-s08indent.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-14T02:28:02Z pipeline=hyperframes@0.8.35 repo=0c68ac8 cmd=hyperframes render --composition composition/_probe-s08indent.html --output renders/_probe-s08indent.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-14T02:38:55Z pipeline=hyperframes@0.8.35 repo=0597267 cmd=hyperframes render --composition composition/scene-08.html --output renders/scene-08.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-14T02:40:41Z pipeline=hyperframes@0.8.35 repo=0597267 cmd=hyperframes lint  exit=0
+2026-09-14T02:40:42Z pipeline=hyperframes@0.8.35 repo=0597267 cmd=hyperframes check  exit=0
+2026-09-14T02:42:04Z pipeline=hyperframes@0.8.35 repo=0597267 cmd=hyperframes check  exit=0

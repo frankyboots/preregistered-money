@@ -1,4 +1,4 @@
-/* setpieces.css — pinned set pieces, style spec v1.1.0
+/* setpieces.css — pinned set pieces, style spec v2.0.0
  *
  * These classes render identically in every video. Any pixel change is a
  * MAJOR style-spec version bump (disclaimer card: + owner decision).
@@ -70,6 +70,15 @@
   font-size: var(--fs-body);
   color: var(--paper);
   line-height: 1.6;
+}
+/* 2.0.0 — hanging indent: the "·  " marker is exactly 2ch wide
+   (middot + one collapsed space). Line 1 hangs into the gutter via
+   text-indent; every wrapped line starts under the bullet's FIRST
+   WORD, not the marker. Line 1's available width is unchanged, so the
+   four CONCEPT §10 bullets keep their wrap points. */
+.disclaimer-card li {
+  padding-left: 2ch;
+  text-indent: -2ch;
 }
 .disclaimer-card li::before { content: "·  "; color: var(--paper-dim); }
 

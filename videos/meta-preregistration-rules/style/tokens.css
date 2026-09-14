@@ -1,4 +1,4 @@
-/* SNAPSHOT — copied from pipeline/style/ by snapshot_style.sh on 2026-09-13 from pipeline SHA e9c70bd. */
+/* SNAPSHOT — copied from pipeline/style/ by snapshot_style.sh on 2026-09-14 from pipeline SHA 0597267. */
 /* Font paths rewritten ../fonts/ -> fonts/ (lint: no parent traversal);
    fonts copied to <video>/fonts/ AND <video>/style/fonts/ so render
    workers (root-relative) and the live browser (css-relative) both load.
