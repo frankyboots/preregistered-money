@@ -86,6 +86,7 @@
     #scene-04 .node-label {
       position: absolute;
       top: 416px;
+      width: 240px;
       height: 72px;
       display: flex;
       align-items: center;
@@ -190,7 +191,14 @@
     <div class="sub-v confirmed hide-y" id="v1" style="left:1160px; top:532px;">confirmed</div>
     <div class="sub-v falsified hide-y" id="v2" style="left:1160px; top:566px;">falsified</div>
     <div class="sub-v inconclusive hide-y" id="v3" style="left:1160px; top:600px;">inconclusive</div>
-    <div class="sub hide-y" id="s4a" style="left:1560px; top:498px;">every prereg in one public table</div>
+    <!-- sub-lines (centers 360 / 760 / 1160 / 1560). SCOREBOARD is two
+         lines (like PREREG): the single 32-char line at top:498 measured
+         1351–1742, colliding with the VERDICT line's 950–1348 (3px gap) —
+         400px of node spacing can't hold two ~390px lines side by side.
+         Split at the word boundary on the same reveal cue; line 2 at
+         532 clears the confirmed branch (1103–1217) by 247px. -->
+    <div class="sub hide-y" id="s4a" style="left:1560px; top:498px;">every prereg in</div>
+    <div class="sub hide-y" id="s4b" style="left:1560px; top:532px;">one public table</div>
 
     <!-- return arrow: SCOREBOARD bottom (center x=1560, y=488) → rail
          y=676 → up into PREREG bottom (center x=360). Path order starts
@@ -274,8 +282,11 @@
     reveal("#box4", 21.35);
     reveal("#lbl4", 21.35);
 
-    // 83.90 "every": SCOREBOARD sub-line
+    // 83.90 "every": SCOREBOARD sub-lines (two lines: the single line
+    //   measured colliding with the VERDICT line's right end — 3px gap;
+    //   both in on the same word)
     reveal("#s4a", 22.47);
+    reveal("#s4b", 22.47);
 
     // 86.46 "an": return arrow draws (900ms, right→left along the lower
     //   rail), arrowhead last at the PREREG end; complete 26.36

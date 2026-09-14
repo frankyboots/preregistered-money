@@ -55,6 +55,17 @@ Status: SPEC (Phase B). Template: `meta:life-cycle`.
     `confirmed` `--confirmed` / `falsified` `--falsified` /
     `inconclusive` `--inconclusive`
   - SCOREBOARD: `every prereg in one public table`
+    (SPEC AMENDMENT 2026-09-13 owner review: the single 32-char line,
+    centered under the SCOREBOARD box (center x=1560), measured at 22px
+    mono ≈390px wide — 1351–1742 in the rendered frame — colliding with
+    the VERDICT line `judged by the pre-registered criteria` (950–1348)
+    at a 3px gap; the two 400px-spaced node columns can't hold two
+    ~390px lines side by side on one row. The line is now two stacked
+    centered lines, like PREREG's: `every prereg in` (top 498) /
+    `one public table` (top 532), both revealed on the same `every`
+    cue (83.90). Line 2 at 532 clears the `confirmed` branch
+    (≈1103–1217) by 247px and the return-arrow rail (676) by ≥120px;
+    wording unchanged, no number, no data.)
 - Return arrow: 1px `--paper-dim` path from SCOREBOARD's bottom edge, down,
   left along a second rail below all sub-lines, up into PREREG's bottom
   edge; arrowhead at the PREREG end. Drawn left-arriving (draw verb, 900ms,
@@ -94,7 +105,7 @@ Times are word starts from `words.json`.
 | 79.68 | `falsified,` | branch `falsified` (`--falsified`) reveals | t=79.88 |
 | 80.78 | `inconclusive.` | branch `inconclusive` (`--inconclusive`) reveals | t=80.98 |
 | 82.78 | `scoreboard,` | connector 3→4 draws (700ms, noted); node 4 `SCOREBOARD` box + label reveals on the word | t=83.20 |
-| 83.90 | `every` | SCOREBOARD sub-line `every prereg in one public table` reveals | t=84.30 |
+| 83.90 | `every` | SCOREBOARD sub-lines `every prereg in` / `one public table` (two lines, amendment) reveal | t=84.30 |
 | 86.46 | `an` | return arrow draws (900ms, noted — draw verb §5.2), SCOREBOARD→PREREG along the lower rail | t=87.40 (draw completes 87.36) |
 | 88.44 | `postmortem` | annotation `postmortem → next prereg` reveals under the arrow | t=88.70 |
 | 91.14 | `Every` | tagline `every video on this channel lives inside this diagram` reveals | t=91.50 |

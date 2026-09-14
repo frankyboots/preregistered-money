@@ -491,6 +491,65 @@ checklist):
   rail y676 → left 1200 → up 188 into PREREG bottom (center 360);
   reveal SCOREBOARD→PREREG (right first).
 
+##### scene-04 fix — node-label centering + SCOREBOARD line collision (DRAFT, 2026-09-13)
+
+Owner review of the committed scene-04 render flagged two nits; both fixed
+in source (no timing changes — cues, reveal verbs, and draw durations
+untouched). Spec amendments in `scene-specs/scene-04.md` (append-only
+note on the SCOREBOARD sub-line and the Beat Timeline `every` row):
+
+1. **Node labels left-aligned.** PREREG/SEAL/VERDICT/SCOREBOARD rendered
+   flush against each box's left edge (measured: label text started 3px
+   inside the box, ~130px of empty space to the right). Root cause was a
+   shrink-to-fit flexbox no-op: `.node-label` had
+   `display:flex; justify-content:center` but **no `width`**, so the
+   absolute-positioned flex container collapsed to the text width and had
+   no spare space to center within — lint, check, and motion all passed.
+   Fix: give `.node-label` the box's explicit `width:240px`. Measured on
+   the re-render (final frame): every label within 0.5–1.0px of its box
+   center (PREREG 359.5/360, SEAL 759.5/760, VERDICT 1159.0/1160,
+   SCOREBOARD 1559.0/1560).
+2. **VERDICT/SCOREBOARD sub-line collision.** `judged by the pre-registered
+   criteria` (centered 1160) and `every prereg in one public table`
+   (centered 1560) were single lines on the same row (top 498) — ~390–400px
+   wide each in 400px of center-to-center spacing → a 3px gap, glyphs
+   kissing (measured 950–1348 vs 1351–1742). The two 400px-spaced columns
+   can't hold two ~390px lines side by side, and the VERDICT line is locked
+   in place by the three branch words stacked below it. The SCOREBOARD line
+   is now two stacked centered lines, matching the pattern PREREG already
+   uses: `every prereg in` (top 498) / `one public table` (top 532), both
+   revealed on the same `every` cue (83.90 → 22.47 local). Measured on the
+   re-render: clean 62–68px gap between `criteria` and `every prereg in`;
+   `one public table` clears the `confirmed` branch (1102–1216) by 240px
+   and the return-arrow rail (676) by 120px. Wording unchanged, no number,
+   no data.
+
+- `composition/scene-04.html` sha256
+  `9b103d1d87abcae3aa5a68e1300a936206905e42613d9e2c10981762ba894fcb`
+  (replaces `fcd290e7…`); `scene-specs/scene-04.md` sha256
+  `d7c6b17e72f31088f90466b59aaa6ba7b4948afe2474b10af7af3edb559a1f0a`.
+- Re-render (same command as the scene's build record): 33.833s,
+  812 frames, 1920×1080 h264 yuv420p 24fps, no audio; output sha256
+  `e75a472c58084db807c6232d0a14f3d6502027fd63e0d572f10f4d2139cb8a1b`
+  (replaces `8876f5c1…`). Lint 0/0; check passed (runtime 0, layout
+  0/9, motion 0, contrast 7/7); `scan_theme_colors.py` 0 findings.
+- Re-verified proofs (final-frame pixels, master = render-local + 61.43):
+  - Node labels centered: all four within 1.0px of box center ✓
+  - `criteria`→`every prereg in` gap 62–68px (was 3px, glyphs kissing) ✓
+  - `one public table` clears `confirmed` by 240px and the rail by
+    120px; no new collision ✓
+  - Unchanged elements undisturbed (title, branches, arrow, annotation,
+    tagline — final frame vision-checked) ✓
+- Proof frames `snapshots/scene-04-fix-proof/` (gitignored, re-derivable
+  via `extract_proof_frames.py`); before/after contact
+  `snapshots/scene-04-fix-check/before_after_lifecycle.png`.
+- Known open item (pre-existing, NOT addressed here): the return-arrow's
+  vertical legs (x=360 / x=1560, from rail y676 up into the PREREG and
+  SCOREBOARD box bottoms) pass down through the sub-line text under those
+  boxes — dim-on-dim, present in the committed build. Flagged for owner
+  review; a follow-up fix would reroute the legs to the box inner edges
+  rather than the centers.
+
 scene-05 DRAFT (2026-09-13, the seal scene, window master 95.24–128.57
 local 0–33.33 @24fps — proof-frame times below are render-local;
 master = local + 95.24):
@@ -1031,3 +1090,6 @@ log below.)
 2026-09-14T00:45:46Z pipeline=hyperframes@0.8.35 repo=607251b cmd=hyperframes lint  exit=0
 2026-09-14T00:46:27Z pipeline=hyperframes@0.8.35 repo=607251b cmd=hyperframes check  exit=0
 2026-09-14T00:47:47Z pipeline=hyperframes@0.8.35 repo=607251b cmd=hyperframes render --composition composition/scene-03.html --output renders/scene-03.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-14T01:18:54Z pipeline=hyperframes@0.8.35 repo=cb921c3 cmd=hyperframes lint  exit=0
+2026-09-14T01:18:56Z pipeline=hyperframes@0.8.35 repo=cb921c3 cmd=hyperframes check  exit=0
+2026-09-14T01:19:09Z pipeline=hyperframes@0.8.35 repo=cb921c3 cmd=hyperframes render --composition composition/scene-04.html --output renders/scene-04.mp4 --fps 24 --quality draft --workers 2 exit=0
