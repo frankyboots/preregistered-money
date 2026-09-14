@@ -1092,6 +1092,64 @@ master = local + 235.60; the master tail is the video's end at
   layout 0/9 samples, motion 0, contrast 7/7);
   `scan_theme_colors.py composition/scene-09.html` — 0 findings.
 
+### Phase D — master assembly (2026-09-14, `audio-sync-assembly`)
+
+All 9 scenes built (Phase C complete, owner-nit fixes committed: scene-03
+`cb921c3`, scene-04 `5fa4c1b`, scene-05 `a0053d3`, scene-08 `8a5bab4`).
+Assembly is a single master render of `index.html` — no per-scene retiming
+needed (compositions authored at 1:1 beat-map windows).
+
+- `index.html`: root `data-duration` 10 (scaffold placeholder) → **246.96**
+  (= `audio/timing/beat-map.json` `master_duration_s`); scene mounts moved
+  **inside** the root composition div — the skeleton left them as siblings
+  of the root, which the compiler resolves to the first mount's own
+  duration (first full render came back 2.69s/65 frames = scene-01's
+  window, before the fix; vendor reference `hyperframes-launch-video`
+  nests mounts in the root). Root duration 246.96 confirmed by the
+  compiler's `durationSeconds`/`totalFrames` (5,928) after the fix.
+- Timeline manifest committed: `timeline-manifest.json` (beat-map windows,
+  committed-wav sha256 `4cfb0cb0…`, no tempo changes, no inserted pauses,
+  soft-SRT pointer, proof timestamps).
+- Render: `pipeline/render.sh . render --output renders/master-full-001.mp4
+  --fps 24 --quality high --workers 2` → 246.96s, 5,928 frames, 1920×1080
+  h264 yuv420p 24fps, no audio; output sha256
+  `a75afdccb904d8e450837a1ad881383ba6b982d5835b6f0b8f80a499bf49b522`.
+  (`--quality final` is not a CLI value — draft/standard/high; high used.)
+- Audio mux (deterministic, inputs = render + committed wav):
+  `ffmpeg -i renders/master-full-001.mp4 -i audio/voiceover.wav
+  -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -b:a 192k
+  renders/master-full-001-audio.mp4` → 247.0s, aac 44100Hz mono,
+  video stream copied (frame-identical); output sha256
+  `ac621d69c2d845eab9112d9afe9fce6aad0ca07ad8e5de35e379375ad734b67d`.
+- Verification (proof frames `snapshots/master-full-001-proof/`,
+  `extract_proof_frames.py` on the audio master; contact sheet in dir):
+  - Every scene boundary (2.69/27.86/61.43/95.24/128.57/162.06/205.47/
+    235.6) frame-matches the corresponding standalone scene's first frame
+    (diff 0.165% — codec micro-block level; each scene's standalone first
+    frame is its intended open state, verified per-scene in Phase C).
+  - Seal scene in master: ring stamps in by 111.95 (scene-05 spec cue
+    111.80, settled), SHA inside the inner ring by 114.44 (cue 114.16) —
+    ring-zone brightness master-vs-standalone at both timestamps
+    11.23%/11.18% and 11.54%/11.48% (delta ≤0.1pt = codec level),
+    vision-confirmed (amber hash contained in the ring, no inner-ring
+    crossover — the `a0053d3` fix holds in master).
+  - Ledger at 190.0 (scene-07 settled): all 3 example rows + aggregate
+    rows + example labels, no overlap/clipping — vision ✓.
+  - Final frame 246.9: settled outro (mark + wordmark + "Same inputs,
+    same pixels." + determinism line + corner bug), nothing moving —
+    vision ✓.
+  - Probe: `probe_media.py` — 247.0s / 1920×1080 / 24fps / aac mono
+    (duration = 246.96 + encoder container rounding, 1 frame).
+- Captions: `audio/timing/captions.srt` (committed, soft-SRT per standing
+  decision; timing from the committed wav — already on this exact
+  timeline, no re-derivation needed).
+- Lint 0/0; check passed with 21 pre-existing contrast warnings
+  (paper-dim on the dim background, the sanctioned palette; unchanged by
+  this commit — no scene composition touched).
+- Render outputs are gitignored (regenerable per CONCEPT layout); the
+  committed record for this assembly is `index.html` +
+  `timeline-manifest.json` + this log entry.
+
 ## Pipeline versions at audio lock
 
 - Pipeline HEAD: `c14fac6` (includes gap re-pin `4fba18a` + concat
@@ -1229,3 +1287,9 @@ log below.)
 2026-09-14T02:40:41Z pipeline=hyperframes@0.8.35 repo=0597267 cmd=hyperframes lint  exit=0
 2026-09-14T02:40:42Z pipeline=hyperframes@0.8.35 repo=0597267 cmd=hyperframes check  exit=0
 2026-09-14T02:42:04Z pipeline=hyperframes@0.8.35 repo=0597267 cmd=hyperframes check  exit=0
+2026-09-14T13:28:30Z pipeline=hyperframes@0.8.35 repo=72d43da cmd=hyperframes lint  exit=0
+2026-09-14T13:28:32Z pipeline=hyperframes@0.8.35 repo=72d43da cmd=hyperframes check  exit=0
+2026-09-14T13:28:42Z pipeline=hyperframes@0.8.35 repo=72d43da cmd=hyperframes render --output renders/master-full-001.mp4 --fps 24 --quality final --workers 2 exit=1
+2026-09-14T13:29:08Z pipeline=hyperframes@0.8.35 repo=72d43da cmd=hyperframes render --output renders/master-full-001.mp4 --fps 24 --quality high --workers 2 exit=0
+2026-09-14T13:30:26Z pipeline=hyperframes@0.8.35 repo=72d43da cmd=hyperframes check  exit=0
+2026-09-14T13:30:41Z pipeline=hyperframes@0.8.35 repo=72d43da cmd=hyperframes render --output renders/master-full-001.mp4 --fps 24 --quality high --workers 2 exit=0

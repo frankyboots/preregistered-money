@@ -1,0 +1,57 @@
+{
+  "project": {
+    "name": "meta-preregistration-rules",
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "output": "renders/master-full-001.mp4",
+    "assembly_method": "single master render of index.html (all 9 scene compositions mounted at beat-map windows); audio = committed voiceover.wav muxed after render"
+  },
+  "audio": {
+    "file": "audio/voiceover.wav",
+    "sha256": "4cfb0cb026e06c6169fa56226fdf06b0aca8c42789000c737f6faf94f9254766",
+    "duration_s": 246.96,
+    "source": "ElevenLabs v3, voice Helen (professional, en-british) XB0fDUnXU5powFXDhCwa, gap 1.25s — see audio/timing/voiceover-summary.json"
+  },
+  "segments": [
+    { "id": "scene-01", "video": "renders/scene-01.mp4", "beat": "beat-01", "start_s": 0.0, "end_s": 2.69, "duration_s": 2.69 },
+    { "id": "scene-02", "video": "renders/scene-02.mp4", "beat": "beat-02", "start_s": 2.69, "end_s": 27.86, "duration_s": 25.17 },
+    { "id": "scene-03", "video": "renders/scene-03.mp4", "beat": "beat-03", "start_s": 27.86, "end_s": 61.43, "duration_s": 33.57 },
+    { "id": "scene-04", "video": "renders/scene-04.mp4", "beat": "beat-04", "start_s": 61.43, "end_s": 95.24, "duration_s": 33.81 },
+    { "id": "scene-05", "video": "renders/scene-05.mp4", "beat": "beat-05", "start_s": 95.24, "end_s": 128.57, "duration_s": 33.33 },
+    { "id": "scene-06", "video": "renders/scene-06.mp4", "beat": "beat-06", "start_s": 128.57, "end_s": 162.06, "duration_s": 33.49 },
+    { "id": "scene-07", "video": "renders/scene-07.mp4", "beat": "beat-07", "start_s": 162.06, "end_s": 205.47, "duration_s": 43.41 },
+    { "id": "scene-08", "video": "renders/scene-08.mp4", "beat": "beat-08", "start_s": 205.47, "end_s": 235.6, "duration_s": 30.13 },
+    { "id": "scene-09", "video": "renders/scene-09.mp4", "beat": "beat-09", "start_s": 235.6, "end_s": 246.96, "duration_s": 11.36 }
+  ],
+  "segments_note": "Scene durations in index.html match beat-map.json windows exactly (scene render durations are ±1 frame longer; the master render trims each mount to its window).",
+  "retiming": {
+    "strategy": "none",
+    "tempo_changes": 0,
+    "inserted_pauses": 0,
+    "note": "Compositions were built at 1:1 beat-map windows; no setpts or hold-frame intervention needed at assembly."
+  },
+  "captions": {
+    "model": "soft SRT, committed, uploaded with the video (VIDEO_CONCEPT §11)",
+    "file": "audio/timing/captions.srt",
+    "timing_source": "audio/timing/words.json (Scribe v2 word timings from the committed wav)",
+    "safe_band": "bottom 132px (style spec §3)"
+  },
+  "music": {
+    "file": null,
+    "note": "Standing decision: no music bed (VIDEO_CONCEPT §7)."
+  },
+  "proofs": [
+    { "time": 0.0, "label": "scene-01-start" },
+    { "time": 2.69, "label": "scene-01/02 boundary" },
+    { "time": 27.86, "label": "scene-02/03 boundary (SEALED stamps)" },
+    { "time": 61.43, "label": "scene-03/04 boundary (life-cycle draw)" },
+    { "time": 95.24, "label": "scene-04/05 boundary (seal scene start)" },
+    { "time": 111.65, "label": "seal SHA reveal" },
+    { "time": 128.57, "label": "scene-05/06 boundary (bar chart)" },
+    { "time": 162.06, "label": "scene-06/07 boundary (ledger)" },
+    { "time": 205.47, "label": "scene-07/08 boundary (disclaimer card)" },
+    { "time": 235.6, "label": "scene-08/09 boundary (outro)" },
+    { "time": 246.9, "label": "final frame (outro hold)" }
+  ]
+}
