@@ -1385,3 +1385,26 @@ log below.)
 2026-09-14T14:28:14Z pipeline=hyperframes@0.8.35 repo=15035d4 cmd=hyperframes render --composition composition/scene-04.html --output renders/scene-04.mp4 --fps 24 --quality draft --workers 2 exit=0
 2026-09-14T14:29:07Z pipeline=hyperframes@0.8.35 repo=15035d4 cmd=hyperframes render --output renders/master-full-002.mp4 --fps 24 --quality high --workers 2 exit=0
 2026-09-14T14:33:58Z pipeline=hyperframes@0.8.35 repo=15035d4 cmd=hyperframes lint  exit=0
+
+## Thumbnail (2026-09-14)
+
+Look: E "the seal, stamped" — one of the two pinned thumbnail looks
+(approved 2026-09-14; C2 verdict-chart + E seal, owner decision). Meta
+video → E look: the hero is the seal (a meta episode has no number; a
+chart would be a lie).
+
+- Source: `thumbnail.html` (sha256 b46d552a5f45927f4f8a2c402fb3a2c5b9eb50473ef40ebc9d70a558ea552dfe)
+- Generator: `videos/pipeline/brand/gen_thumbnails.py` (pinned two-look
+  generator; style spec v1.1.0 tokens + Inter/JetBrains Mono only)
+- Inputs: series tag `META · EP 01`; tagline `the rules that run the
+  channel` (owner wording 2026-09-14); full spec-commit SHA
+  86140f927343296bb2efc390288ac56b2c9865e2 from `data/spec-sha.txt`
+  (already checksummed in the Inputs section — the seal number, same
+  provenance as the seal scene). No other figures; no uncited numbers.
+- Render: google-chrome-stable headless, --force-device-scale-factor=1,
+  --virtual-time-budget=6000, window 1280x720 →
+  `renders/thumbnail.png` (sha256 2af79c22f14e05c3b740068cdb4cd7050d483f589eb04175d1939008c3b31f59)
+- QA: pixel-verified — SHA amber line x-extent 155..525 vs stamp ring
+  outer x-extent 154..525 (≤1px both ends); tagline center x=896 vs
+  right-region center 898 (2px); hex audit = 4 palette tokens only;
+  scan_theme_colors.py clean for the thumbnail; vision pass clean.
