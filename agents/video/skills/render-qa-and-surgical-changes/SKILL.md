@@ -42,6 +42,15 @@ Pinned-set-piece fix flow (2 commits, in order):
 3. **Commit 2 — the video**: refresh the snapshot — `rm -rf <video>/style <video>/fonts && bash videos/pipeline/snapshot_style.sh <video>` (run via `bash`; the script lacks the executable bit; refresh is one-shot delete+re-copy — never hand-edit the snapshot). The snapshot diff is the change (plus the copy-from line when the pipeline SHA moved; verify other snapshot files stayed byte-identical). Amend the scene spec's pinned-element row (append-only, measured values), re-render the affected scene, re-extract the spec-named proof frames, lint + check + theme scan, and save a before/after crop under `snapshots/scene-NN-fix-check/` (snapshots are gitignored — the build-log entry names the crop as evidence). Build-log: a `##### scene-NN fix —` section after the scene's DRAFT section, mirroring the scene-05 format (owner nit, root cause + measurement, fix + sha256 lines, re-proof, before/after crop, no-design-change line).
 4. **Verify the reflow invariant on the real render, not just the probe**: the changed property must leave the spec-pinned lines byte-identical (1px yuv420p rounding is acceptable; record the comparison) and change exactly the lines the fix targets — measure the left/right edge set across all affected lines and name both the old and the new set in the build log.
 
+## Proposing a Fix Without Implementing
+
+Owner flags a visual issue on a committed render and asks how it would be solved but does not request the change. Deliver a concrete, visual proposal — not a geometry argument from the spec:
+
+1. **Measure in the rendered frame, not the spec.** The owner decides on pixels, and spec clearance math has been wrong before (a ring chord, a 3px line kiss) — the render is the record of what the owner sees. Extract the settled proof frame from the standalone scene render: identical pixels to the master at the boundary, cheaper to pull.
+2. **Confirm the collision AND the clearance with PIL.** Per-zone ink extents (min/max x per line band; thresholds ~140 for `--paper`, ~85 for `--paper-dim` on the current palette) plus column scans at candidate re-route positions — a candidate leg/column with zero ink across the text band is a real gutter. Quote only measured extents in the proposal.
+3. **Mock the fix on the proof frame.** Erase the old element with the background color sampled from the frame, draw the proposed geometry in the token color, and vision-verify the mock before presenting it. The owner approves a mock, not prose — a before/after frame is what makes "how would you solve it" answerable.
+4. **State the implementation cost explicitly** — which file changes, which re-render scope, which re-proofs the change would force (a re-routed dash-draw path needs its pre-cue frame re-proven against the dasharray leak trap) — and do not implement until the owner approves. The proposal itself commits nothing.
+
 ## QA Sequence
 
 1. Probe the final render (`videos/pipeline/tools/probe_media.py`).
