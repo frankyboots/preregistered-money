@@ -52,16 +52,16 @@
        line). Ring outer stroke edge: x 631–1289, y 271–929 — bottom
        edge 19px above the caption band top y=948 (spec Caption proof:
        lowest element = the ring's bottom edge y=920, the band is
-       empty). The amber SHA: 40ch × 13.2 = 528px, top y=699 (line center
-       ≈711; spec "y≈700" amended — see the .seal-sha note) →
-       x696–1224; outer-ring chord at dy≈111 ≈ 600px → 72px total
-       slack. The thin inner ring (drawn r=273.5, 3.9px) crosses the
-       SHA line at x≈708/1212 — inside the string, accepted by the
-       spec (the SHA reads as visually inside the stamp). The mark's
-       own pinned amber bar (y≈619) and ascending paper line (endpoint
-       ≈(814,692), round-cap bottom ≈700) clear the glyph tops
-       (measured topmost amber y≈705) — the +10px SHA shift exists
-       for exactly this clearance.
+       empty). The amber SHA: 40ch at 18px mono (10.98px/char) ≈ 439px,
+       top y=699 (line center ≈711; spec "y≈700" amended — see the
+       .seal-sha note) → x740.5–1179.5; the thin inner ring's chord at
+       dy=111 (x709.6–1210.4, ≈501px) → ≈31px clearance per side — the
+       hash sits fully INSIDE the inner ring (owner nit 2026-09-14: at
+       22px it was 532px ink and its last ~13px per side crossed the
+       inner ring; closed by 18px). The mark's own pinned amber bar
+       (y≈619) and ascending paper line (endpoint ≈(814,692), round-cap
+       bottom ≈700) clear the glyph tops — the +10px SHA shift exists
+       for exactly this clearance (improved by the smaller ascenders).
        Motion: reveal (250ms, the system verb) for title + the four
        prose units; type for the command (pinned §4.3 cadence: 52
        visible chars, ~1.2s; the 50 typed .ch spans × 23ms = 1.15s,
@@ -145,7 +145,15 @@
        +10: the committed mark's ascending-line round cap (endpoint
        (814,692), cap bottom ≈700) intruded ~5px into the glyph tops at
        689 — measured collision, not design; 699 clears it, chord slack
-       grows 39→71px, still inside the ring) */
+       grows 39→71px, still inside the ring. Size: 18px (local override
+       of the 22px --fs-anno token) — owner nit 2026-09-14: at 22px the
+       rendered hash ink was 532px (x694–1225) while the inner ring's
+       chord at the line's depth (dy=111) is only ≈501px, so the last
+       ~13px per side crossed the inner ring and the hash read as NOT
+       fitting the stamp; 40ch × 10.98 ≈ 439px at 18px leaves ≈31px
+       per side of the inner ring (verified on the re-render). top 699
+       is unchanged — the smaller ascenders only improve the cap
+       clearance) */
     #scene-05 .seal-sha {
       position: absolute;
       left: 960px;
@@ -153,7 +161,7 @@
       transform: translateX(-50%);
       font-family: var(--font-mono);
       font-weight: 400;
-      font-size: var(--fs-anno);
+      font-size: 18px;
       color: var(--seal-amber);
       white-space: nowrap;
       letter-spacing: 0.01em;
