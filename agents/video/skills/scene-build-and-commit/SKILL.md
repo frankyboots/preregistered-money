@@ -38,6 +38,8 @@ From `scene-specs/scene-NN.md`, take, verbatim:
 
 The spec is the whole design brief. Do not invent layout, motion, or content the spec does not pin. If you find yourself wanting to change the design, that is a spec amendment — stop and flag it; do not silently redesign.
 
+**Attribute the spec's audio SHA pin to the file it actually is, before recording inputs.** A spec's "master sha256" pin is verified with `sha256sum` against the Phase A lock table (`spec.md` Inputs) — in this repo it pins the master `audio/voiceover.wav`, not `words.json`. Record both files' checksums with correct attribution in the build-log inputs line; an unverified guess misattributes the pin.
+
 ## Step 2 — Author the composition
 
 Build `composition/scene-NN.html` to the spec. Craft rules live in `hyperframes-scene-builder` (sub-composition authoring, GSAP timeline rules, root-relative asset paths, component patterns) — follow that skill; the rules below are the Phase C loop's non-negotiables:
@@ -47,6 +49,7 @@ Build `composition/scene-NN.html` to the spec. Craft rules live in `hyperframes-
 - Draw charts/tables from the `data/` input files — never type a number into markup.
 - **Data-injected strings: build script + template, verified by re-parse.** When an Inputs line says "read from the file at build time, never computed and never typed into markup" (a SHA, an exact command line), commit a small generator (`scripts/_build_sceneNN.py`) + template that checksums the data input, injects its characters as spans, and re-parses the generated markup to assert byte-identity with the file. Parse by span class, not regex char class — a command like `git commit <sha>` contains the same alphabet as hex, so `[0-9a-f]` matches the wrong spans. The script + template are committed provenance (same input → byte-identical output); the generated composition is derived from them.
 - **Verbatim doc strings: diff the markup against the source doc at build.** When a spec pins strings as byte-identical to a committed doc (a disclaimer card's bullets to CONCEPT §10), the composition is still hand-authored — so verify, don't trust: parse the rendered elements out of the composition, unescape HTML entities, and assert equality against the doc lines in a quick script. The check rides with the scene commit's build-log entry; a mismatch is a build defect, fix and re-verify.
+- **"No number appears" acceptance: scan rendered text, not raw markup.** When the spec's Inputs say no number appears (and the Acceptance line echoes it), the digit check must scan the rendered text nodes only (parse the composition root, `get_text()`); scanning the raw HTML false-positives on SVG coordinates and CSS px values, which are geometry, not on-screen numbers. Exclude the pinned corner bug from the text nodes — the set piece legally carries the standard date + seal SHA in every scene. The pass/fail line rides with the build-log entry.
 - SVG assets well-formed (no `--` inside XML comments).
 
 ## Step 3 — Mount + lint + check
@@ -88,6 +91,8 @@ python3 pipeline/tools/scan_theme_colors.py <composition or video-dir>  # token-
 
 `extract_proof_frames.py` takes the full MP4 path (not the video dir), one `--time` per frame (repeatable), and writes to `--output-dir` with `--prefix`-numbered filenames. The first frame must be blank ink + persistent set pieces (corner bug) — if it comes out white or shows content, suspect a double-offset (Step 3) or missing CSS initial hidden state before touching cues. For risky content (a font glyph you haven't rendered in this stack, a long text chain that must fit margins), draft a throwaway probe composition (an `_probe-` name, never committed, deleted before commit) and verify it in a render before authoring the full scene.
 
+**Geometry probe recipe (unrendered text against safe margins):** for a spec that pins widths/wrap/stack-bottom on text not yet rendered in this video, author the probe with ALL stack elements visible at t=0 (no hidden states) on a ~1s window, render draft (~3s), extract one PNG, and measure with PIL: each element's x-extent vs the 80px safe margins, lit-row runs per band (two runs = the line wrapped; the spec may demand one), and the lowest lit y vs the caption-band top 948. Author the full scene with the measured values recorded in its CSS comment and the build-log entry; the probe is deleted before commit.
+
 **Hold verification: hash the decoded frames, don't eyeball them.** Decode the hold window (same rawvideo dump) and hash every frame — the plateau must be byte-identical. If two plateau blocks differ, diff them element-wise, take the bbox and max channel diff, and judge: a few hundred px, max diff ≲10/255, confined to a text AA edge → codec micro-block, record bbox + max diff in the build log and it passes; anything wider or brighter → real motion, fails, fix the timeline. Extracted-frame holds (three spaced times, SHA-identical PNGs) are the quick check; the per-frame hash plateau is the strong one — use both when the spec's QA line names the hold.
 
 Pass/fail per the spec's Acceptance line (lint 0 errors; final-frame proof matches the spec layout; `scan_theme_colors.py` clean). Check audio-sync: each key element fully visible by the end of its naming word. Check the bottom 132px caption band is clear of key text. If a proof fails, fix the composition and re-render — do not lower the bar to pass. `make_contact_sheet.py` for a quick multi-frame look.
@@ -102,6 +107,7 @@ The build log is regenerated, not narrated. For this scene, the log carries:
 
 - The `render.sh` auto-line (one per render invocation, already appended).
 - A composition entry in the Phase C section: `composition/scene-NN.html` + sha256, `renders/scene-NN.mp4` (duration + fps), the style-spec version + pipeline SHA the snapshot came from, data inputs used (with checksums) or the "no number appears" note, and the render command. Same input → same pixels must be checkable from this file.
+- When the probe's measured geometry drifts from the spec's ≈ estimates (line-height placement vs pinned y-anchors, a margin risk that cleared without a fix), record both the measured values and the drift in the entry — with "no layout impact" when that is true. If the drift would change the layout, it is a spec amendment (Step 1), not a build-log note.
 
 If a shown number has no committed data input / `spec.md` citation → stop; the video never computes it (request a new prereg on the research side).
 

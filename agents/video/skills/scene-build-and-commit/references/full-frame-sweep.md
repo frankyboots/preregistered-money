@@ -39,6 +39,7 @@ Calibrate to the rendered token, not the CSS value — yuv420p 4:2:0 decode shif
 
 - bright paper/ink fills: peak ≈ 232–255 — any TH 100–150 works
 - mid dim (≈40–50% opacity paper): ≈ 58–70 depending on row — TH 80 excludes it; TH 50 includes it
+- full-opacity `--paper-dim` TEXT (e.g. a supporting line in `--paper-dim` on `--ink`): peak ≈ 141 (the ink field decodes at ≈11–16 — ~10× contrast) — TH 40 captures it with margin; do NOT apply the 1px-line threshold (below) to dim text — they are different elements at different levels. Measure the settled peak on a final frame and set the threshold from the measured level, never from the CSS value.
 - 35%-dim cell rules (`.ledger` set piece): peak ≈ 49 — TH 60 separates them from the 255 cell text, so per-cell text zones can be swept cleanly without clearing the rule rows first
 - 1px `--paper-dim` frame/axis lines: 60–70 max even when fully drawn — never assert them with a high threshold; verify at a settled frame instead, with tolerance for the row they land on
 
