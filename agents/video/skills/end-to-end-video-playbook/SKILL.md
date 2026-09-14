@@ -102,8 +102,10 @@ Phase map: A bootstrap (`video-bootstrap`) → B scene specs, one scene per comm
 9. Generate proof sheet and preview clips.
 10. Update build log; commit.
 11. Render the per-video thumbnail from the committed generator (`channel-art`);
-    verify it reads at list-view size (160 px); commit it with the build log
-    before publish.
+    verify it reads at list-view size (160 px); write the video description
+    (`channel-art`, "Thumbnails → Video description") as
+    `videos/<slug>/description.md`; commit both with the build log before
+    publish.
 
 ## Decision Checklist
 
@@ -141,6 +143,9 @@ Do not call a full video done until:
 - Captions are present if requested.
 - Thumbnail is rendered from the committed generator, reads at 160 px, and is
   committed with the build log.
+- Description is written at the thumbnail stage, committed as
+  `videos/<slug>/description.md` with the build log, and every figure in it
+  traces to the cited doc.
 - Scene boundary proofs exist.
 - Exact user-requested timestamp proofs exist.
 - Any subjective preview requested by the user was shown or explicitly skipped.

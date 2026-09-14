@@ -117,6 +117,16 @@ Living directory: `videos/pipeline/brand/` (generator + `concepts/<idea>/`).
   staging it, and re-running the emitter + render must reproduce the pixels.
   Render it LAST in the video lifecycle — after the final MP4 is committed,
   before publish — the upload needs it.
+- **Video description (per-video) — written at the thumbnail stage (owner
+  decision 2026-09-14).** The description is part of the upload package: it is
+  written during the thumbnail step (after the final MP4 is committed, before
+  publish) and committed as `videos/<slug>/description.md` in the same commit
+  as the build-log section that records it. Structure: one-line hook → what
+  the episode does → the record (prereg ID, seal SHA, results-doc path, repo
+  link) → the standing disclaimer ("Educational content, not investment
+  advice."). Same number-trace rule as the frames: every figure traces to the
+  cited results/prereg doc; a meta episode cites the seal SHA, not a number.
+  No hype — the description is metadata for the record, not a pitch.
 
 ## Procedure
 
@@ -147,7 +157,10 @@ Living directory: `videos/pipeline/brand/` (generator + `concepts/<idea>/`).
    `docs/**` or `research/**`).
 8. **Descriptions.** Deliver 1–2 short channel-description paragraphs with the
    art: method → what the archive is → honesty. End with the standing disclaimer:
-   "Educational content, not investment advice."
+   "Educational content, not investment advice." Commit it as
+   `videos/pipeline/brand/channel-description.md` (the channel-page text is a
+   brand artifact, like the banner). Per-video descriptions are written at the
+   thumbnail stage — see "Thumbnails → Video description".
 
 ## Pitfalls
 
