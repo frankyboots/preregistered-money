@@ -15,11 +15,20 @@
   </head>
   <body>
     <!--
-      Master assembly root. Mount scene compositions here in spec order, e.g.:
+      Master assembly root. Mount scene compositions INSIDE the root div,
+      in spec order, e.g.:
 
-      <div data-composition-id="scene-01" data-composition-src="composition/scene-01.html"
-           data-start="0" data-duration="10" data-track-index="1"></div>
+      <div id="root" data-composition-id="main" data-start="0"
+           data-duration="246.96" data-width="1920" data-height="1080">
+        <div data-composition-id="scene-01" data-composition-src="composition/scene-01.html"
+             data-start="0" data-duration="10" data-track-index="1"></div>
+      </div>
 
+      The mounts MUST be children of the root composition: as siblings the
+      compiler ignores the root's data-duration and resolves the render to
+      the first mount's own duration (observed v0.8.35, 2026-09-14: a 9-scene
+      master rendered 2.69s = scene-01's window). The root data-duration is
+      the render length — set it to the beat-map master duration.
       Scene files live in composition/ — one HTML per scene (CONCEPT §4).
       The style tokens for this video come from the pipeline style spec
       (versions pinned in build.log); don't hardcode palettes per scene.
