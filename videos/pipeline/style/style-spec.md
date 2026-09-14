@@ -1,9 +1,19 @@
 # Style Spec
 
-**Version: 1.1.1**
+**Version: 2.0.0**
 Status: v1 — approved at the branding session (2026-09-12).
 
 Changelog:
+- 2.0.0 (2026-09-13): §4.6 disclaimer card — bullet wrap lines now hang
+  under the bullet's first word (hanging indent: `li { padding-left: 2ch;
+  text-indent: -2ch }`). Pixel change to a pinned set piece → major bump;
+  owner decision 2026-09-13 (owner review of scene-08 in
+  meta-preregistration-rules: the wrapped second line started under the
+  `·` marker instead of the first word). Line 1's word position and the
+  four CONCEPT §10 bullets' wrap points are unchanged (probe-verified:
+  wrap right-edges byte-identical, continuation lines move ~2ch right);
+  future videos must re-snapshot their style dir to render the aligned
+  card (the card's pin is now the 2.0.0 layout).
 - 1.1.1 (2026-09-13): §4.7 prose clarification (no pixel change) —
   "rows reveal one at a time" is the default reveal unit; when the
   narration enumerates columns, the column is the reveal unit in the
@@ -167,7 +177,10 @@ every time. An integrity anchor, not a decoration.
 
 - Layout: ink field, 1px `--paper-dim` border, 40px padding, left-aligned.
 - Title `HONEST LIMITATIONS` (annotation, `--paper-dim`, letterspaced).
-- The four bullets, JetBrains Mono `--fs-body`, `--paper`, line-height 1.6:
+- The four bullets, JetBrains Mono `--fs-body`, `--paper`, line-height 1.6.
+  Wrapped lines hang under the bullet's first word: `li { padding-left: 2ch;
+  text-indent: -2ch }` (the `·  ` marker is 2ch — middot + collapsed space),
+  so continuation lines align with the first word, not the marker.
 
 > - Educational content, not investment advice.
 > - Backtest results are estimates under stated assumptions; live performance will differ, possibly badly.
