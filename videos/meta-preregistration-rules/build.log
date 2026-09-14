@@ -698,6 +698,83 @@ local + 162.06):
   layout 0/9 samples, motion 0, contrast 7/7);
   `scan_theme_colors.py composition/scene-07.html` — 0 findings.
 
+scene-08 DRAFT (2026-09-14, the disclaimer, window master 205.47–235.60
+local 0–30.13 @24fps — proof-frame times below are render-local;
+master = local + 205.47):
+- Composition: `composition/scene-08.html` sha256
+  `5f19ce9e01361f4c92cc2d054a2939515a68dd2dc54de87f705c7db7f636669b`
+  (hand-authored — no data injection: no number appears in this scene,
+  spec Inputs). Pinned `.disclaimer-card` set piece (§4.6) — ink field,
+  1px `--paper-dim` border, 40px padding, `.dc-title`, `ul`/`li` with
+  the `·  ` marker — scene-local CSS is positioning + reveal states
+  only (pinned pixels, no ad-hoc card CSS, no font/color overrides).
+  The four bullets are byte-identical to `docs/CONCEPT.md` §10
+  (verified by parse + diff at build; em-dash-free text, no glyph
+  risk). One throwaway probe (deleted) measured the pinned geometry:
+  title cap y228–242 (baseline ≈242 — the spec's ≈232 estimate is 10px
+  high, no layout impact); bullet line tops 294/342/390/438/486/532/
+  582 (48px pitch per the pinned line-height 1.6); wraps confirmed
+  exactly as specified — b2 after `assumptions;`, b3 after `choices,`,
+  b4 after `out-of-sample` (longest line ends x≤1729 < 1760 content
+  edge); card bottom y≈685 (content 611 + 40px padding + 1px border —
+  the spec's ≈652 estimate under-counted line-height; top-anchored
+  card, no layout impact). No measured-geometry amendments were needed
+  (layout math holds; only the spec's baseline/bottom estimates drift,
+  recorded here).
+- Render: `renders/scene-08.mp4` sha256
+  `7214bb137a93a930812b667ff0d559b2196a31424f511bf0e2e35c4fef9a2661`
+  (1920×1080 yuv420p 24fps, draft, 724 frames; duration 30.167s; last
+  extractable frame local 30.125, master 235.595, the t=235.59 cut
+  proof — stable, before the 235.60 cut). Note: the first render
+  invocation (23:56:23Z, `exit=?` in the machine log) was killed by a
+  tool timeout mid-encode; the entry above is the completed render.
+- Inputs at first render: `audio/timing/words.json` (cues, read-only,
+  spec-pinned sha256 `4cfb0cb0…`); style snapshot per the table above
+  (style spec 1.1.1; css byte-identical to 1.1.0, which this video
+  renders against). Data inputs: none — no number appears in this
+  scene (spec Inputs); the four bullet strings are the CONCEPT §10
+  text (spec.md Number citations row "Disclaimer bullets (beat 8)").
+- Beats (master): border draw @205.56 (0.09 local, 600ms, lands 0.69 =
+  206.16 — 230ms after end of "The", noted in spec), title @206.20
+  (0.73, settles 0.98 = 206.45 proof exact), bullet 1 @208.90 (3.43,
+  settles 3.68 = 209.15 proof exact), bullet 2 @212.50 (7.03, settles
+  7.28 = 212.75 proof exact), bullet 3 @219.09 (13.62, settles 13.87 =
+  219.34 proof exact), bullet 4 @227.68 (22.21, settles 22.46 =
+  227.93 proof exact) ✓
+- Audio-sync: title by end of "four" (206.36) ✓; bullet 1 by end of
+  "Educational" (209.45) ✓; bullet 2 by end of "Backtest" (212.96) ✓;
+  bullet 3 by end of "Preregistration" (219.98) ✓; bullet 4 by end of
+  "Past" (227.96) ✓. Border lands 206.16, 230ms after end of "The"
+  (205.86) — noted per spec.
+- Frame-exact onset sweep (all 724 frames decoded, one rawvideo dump +
+  numpy memmap; per-zone first lit frame — bullet zones thr>120 (text
+  peaks 255), border zones thr>50 (1px paper-dim peaks 60–70); 0 px
+  lit at cue−1 for every zone, first lit at cue frame +0/+1 — border
+  left 4 (3), border right 17 (17), title 20 (18), bullet 1 85 (83),
+  bullet 2 171 (169), bullet 3 329 (327), bullet 4 535 (534). The +1–2
+  offsets are the front-loaded --ease-out curve's first visible frame;
+  nothing is over-named by a frame.
+- Caption band: y948–1080 — 0 lit frames across all 724 frames
+  (cleanest possible; lowest element is bullet 4 line 2, descender
+  ≈621, 327px above the band top) ✓
+- Hold: raw frames 694–723 (28.917–30.125 local) — 1 unique sha256
+  (byte-identical plateau, stronger than the codec micro-block
+  allowed); extracted-frame hold 29.43/30.12 vision-identical ✓
+- Chroma audit: `scan_theme_colors.py composition/scene-08.html` —
+  0 findings (paper + paper-dim only; no amber, no verdict colors,
+  no accent — nothing is judged here); settled frame is grayscale
+  ink/paper/dim, verified by vision on the final proof frame ✓
+- Proof frames (`snapshots/scene-08-proof/`, render-local):
+  0.00 open (ink + corner bug only, vision ✓), 0.69 border complete
+  (closed rectangle, no interior text, vision ✓), 0.98 title in
+  (vision ✓), 3.68 / 7.28 / 13.87 / 22.46 bullets 1–4 (sweep + final
+  frame vision: all four bullets, 7 lines with the spec's wrap points,
+  no overflow) ✓, 29.43 + 30.12 final hold (full card settled,
+  nothing moves) ✓
+- Verification: lint 0 errors/0 warnings; check passed (runtime 0,
+  layout 0/9 samples, motion 0, contrast 7/7);
+  `scan_theme_colors.py composition/scene-08.html` — 0 findings.
+
 ## Pipeline versions at audio lock
 
 - Pipeline HEAD: `c14fac6` (includes gap re-pin `4fba18a` + concat
@@ -718,7 +795,8 @@ local + 162.06):
 
 (Probe + empty-master draft renders of 2026-09-13 verify wiring only.
 Scene-content DRAFT renders: scene-01 at 18:27:15Z, scene-02 at
-18:51:59Z — full machine-appended log below.)
+18:51:59Z, scene-08 at 00:03:29Z (2026-09-14) — full machine-appended
+log below.)
 
 ## Publish record
 
@@ -807,3 +885,8 @@ Scene-content DRAFT renders: scene-01 at 18:27:15Z, scene-02 at
 2026-09-13T23:33:58Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes lint  exit=0
 2026-09-13T23:34:00Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes check  exit=0
 2026-09-13T23:34:06Z pipeline=hyperframes@0.8.35 repo=2dfaa1c cmd=hyperframes render --composition composition/scene-07.html --output renders/scene-07.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T23:55:14Z pipeline=hyperframes@0.8.35 repo=67ea569 cmd=hyperframes render --composition composition/_probe-08.html --output renders/_probe-08.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-13T23:56:14Z pipeline=hyperframes@0.8.35 repo=67ea569 cmd=hyperframes lint  exit=0
+2026-09-13T23:56:16Z pipeline=hyperframes@0.8.35 repo=67ea569 cmd=hyperframes check  exit=0
+2026-09-13T23:56:23Z pipeline=hyperframes@0.8.35 repo=67ea569 cmd=hyperframes render --composition composition/scene-08.html --output renders/scene-08.mp4 --fps 24 --quality draft --workers 2 exit=?
+2026-09-14T00:03:29Z pipeline=hyperframes@0.8.35 repo=67ea569 cmd=hyperframes render --composition composition/scene-08.html --output renders/scene-08.mp4 --fps 24 --quality draft --workers 2 exit=0

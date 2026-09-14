@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>scene-08 — the disclaimer</title>
+  <link rel="stylesheet" href="style/tokens.css" />
+  <link rel="stylesheet" href="style/setpieces.css" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    /* scene-08 — the disclaimer (spec: scene-specs/scene-08.md)
+       Stack: corner bug (set piece, 200ms fade) / the pinned
+       `.disclaimer-card` set piece (style spec §4.6 — rendered
+       identically in every video; ONLY positioning is scene-local,
+       every size/color/font/marker is the pinned class) — title
+       `.dc-title` + the four bullets, each byte-identical to
+       docs/CONCEPT.md §10 (probe-verified).
+       Colors: --paper (bullets) + --paper-dim (border, title,
+       markers) only. No amber, no verdict colors, no accent —
+       nothing is judged here. No number appears in the scene
+       (spec Inputs).
+       Geometry (global px, probe-verified; JetBrains Mono 30px,
+       --fs-body, line-height 1.6 = 48px): card x=120–1800 (width
+       1680 incl. the pinned 1px border + 40px padding), top y=180;
+       title cap 228–242 (baseline ≈242); bullet line tops
+       294/342/390/438/486/532/582 (48px pitch); lowest element is
+       bullet 4 line 2 (band 582–611, descender ≈621 — 327px above
+       the caption band top 948); card bottom y≈685 (content 611 +
+       40px padding + 1px border — the spec's ≈652 estimate under-
+       count line-height; no layout impact, top-anchored card).
+       Bullet wraps confirmed in probe: b2 wraps after `assumptions;`
+       (line 1 x 240–1639, line 2 x 204–608), b3 after `choices,`
+       (240–1729 / 204–1040), b4 after `out-of-sample` (240–1707 /
+       204–842). Longest line ends x≤1729 < 1760 content edge —
+       nothing overflows; corner bug (x 40–≈330, y 40–65) clears
+       the card's x=120 left edge and y=180 top.
+       Motion (spec Visual Direction): card border draw 600ms
+       left→right (clip-path inset wipe; frame-level element, §5.1
+       rule 2 — the 1px border is the frame); title + each bullet
+       reveal 250ms (opacity + 12px slide-up, power2.out). No roll,
+       no stamp. Nothing after the last word (final hold, §5.1
+       rule 5). Cues are LOCAL (root data-start=0); the window
+       offset 205.47s lives only on the index.html mount. */
+    #scene-08 {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    /* the master's global reset — a standalone composition render has
+       no other stylesheet (box-sizing, scene-07 precedent) */
+    #scene-08 * { box-sizing: border-box; }
+    /* the pinned card — ALL card styling is the .disclaimer-card
+       set piece (ink field, 1px --paper-dim border, 40px padding,
+       .dc-title, ul/li, the · marker). Scene-local: position only. */
+    #scene-08 .disclaimer-card {
+      position: absolute;
+      left: 120px;
+      top: 180px;
+      width: 1680px;
+      clip-path: inset(0 100% 0 0); /* border draw, 600ms @ local 0.09 */
+    }
+    /* reveal units — title + one per bullet. The marker is a
+       li::before (pinned), so the whole li reveals together with
+       its text (one unit, pinned card). */
+    #scene-08 .dc-title,
+    #scene-08 .disclaimer-card li {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  </style>
+</head>
+<body>
+  <div id="scene-08" data-composition-id="scene-08"
+       data-width="1920" data-height="1080"
+       data-start="0" data-duration="30.13">
+    <div class="bug">PREREGISTERED MONEY · meta · sealed 2026-09-12 · 86140f92</div>
+    <div class="disclaimer-card">
+      <div class="dc-title">HONEST LIMITATIONS</div>
+      <ul>
+        <li>Educational content, not investment advice.</li>
+        <li>Backtest results are estimates under stated assumptions; live performance will differ, possibly badly.</li>
+        <li>Preregistration controls data snooping; it does not control overfitting in pre-seal choices, data quality, or market regime change.</li>
+        <li>Past performance (including preregistered, costed, out-of-sample past performance) is the weakest predictor in finance.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    /* Cue times are LOCAL to the composition root (data-start=0):
+       master word-start from the spec Beat Timeline minus the
+       window offset 205.47s. e.g. spec 205.56 "The" -> 0.09; spec
+       235.60 (cut) -> 30.13. Initial hidden states live in CSS
+       (card clip-path, title/li opacity) so the render's first
+       frame is ink + corner bug only (spec Open state). */
+
+    // helper: reveal — opacity + 12px slide-up, power2.out (system verb)
+    const reveal = (sel, t, d) =>
+      tl.to("#scene-08 " + sel,
+            { opacity: 1, y: 0, duration: d || 0.25, ease: "power2.out" }, t);
+
+    // 205.47 open: ink + corner bug only — CSS initial states (nothing
+    //   to set at t=0)
+
+    // 205.56 "The": card border draws left→right 600ms (frame-level
+    //   element — "The same four lines" names the whole card).
+    //   Lands 0.69 = 206.16 master, 230ms after word end (noted).
+    tl.to("#scene-08 .disclaimer-card",
+          { clipPath: "inset(0 0% 0 0)", duration: 0.6, ease: "power2.out" },
+          0.09);
+
+    // 206.20 "four": title `HONEST LIMITATIONS` (settles 0.98 =
+    //   206.45 master, the proof time, exact)
+    reveal(".dc-title", 0.73);
+
+    // 208.90 "Educational": bullet 1 (settles 3.68 = 209.15 master,
+    //   exact; bar: end of "Educational" 209.45)
+    reveal("li:nth-child(1)", 3.43);
+
+    // 212.50 "Backtest": bullet 2 (settles 7.28 = 212.75 master,
+    //   exact; bar: end of "Backtest" 212.96)
+    reveal("li:nth-child(2)", 7.03);
+
+    // 219.09 "Preregistration": bullet 3 (settles 13.87 = 219.34
+    //   master, exact; bar: end of "Preregistration" 219.98)
+    reveal("li:nth-child(3)", 13.62);
+
+    // 227.68 "Past": bullet 4 (settles 22.46 = 227.93 master, exact;
+    //   bar: end of "Past" 227.96)
+    reveal("li:nth-child(4)", 22.21);
+
+    // 234.34 (speech ends) -> 235.60 cut: final hold — nothing moves
+    //   (earned hold, §5.1 rule 5; 28.87–30.13 local)
+    tl.set({}, {}, 30.13);
+
+    window.__timelines["scene-08"] = tl;
+  </script>
+</body>
+</html>
