@@ -1408,3 +1408,15 @@ chart would be a lie).
   outer x-extent 154..525 (≤1px both ends); tagline center x=896 vs
   right-region center 898 (2px); hex audit = 4 palette tokens only;
   scan_theme_colors.py clean for the thumbnail; vision pass clean.
+
+## Publish kit (2026-09-14)
+
+- `description.md` — per-video YouTube description written at the
+  thumbnail stage per channel-art → "Video description" (process added
+  2026-09-14, commit 07a80c3). Cites the spec seal SHA from
+  `data/spec-sha.txt` (same provenance as the seal scene); no other
+  figures — a meta episode has no number to cite. Repo link is a
+  placeholder pending the first GitHub push. Paste at publish.
+- Channel description (YouTube channel page):
+  `videos/pipeline/brand/channel-description.md` (790/1000 chars).
+
