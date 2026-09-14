@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>scene-09 — outro</title>
+  <link rel="stylesheet" href="style/tokens.css" />
+  <link rel="stylesheet" href="style/setpieces.css" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    /* scene-09 — outro (spec: scene-specs/scene-09.md)
+       The cold open's mirror: one centered vertical stack, dead-center
+       on x=960 — brand mark (160px, top 200) / wordmark (Inter 600,
+       --fs-title) / headline (Inter 400, --fs-body, --paper) /
+       determinism line (Inter 400, --fs-body, --paper-dim).
+       Colors: --paper + --paper-dim + the mark's pinned --seal-amber
+       bar only (probe-verified mark tokens). No verdict colors, no
+       accent — nothing is judged in an outro. No number appears in
+       the scene (spec Inputs). Geometry (global px, _probe-09
+       wordmark x 649–1272 (623px wide, 489px clear of the 80px safe
+       margins on each side — no tracking needed);
+       determinism line x 442–1476 on ONE line (73 chars @ 30px, spec
+       estimate ≈1100px — measured 1034px), lit band y 564–592
+       (descender ≈591); stack bottom ≈591 — 357px above the caption
+       band top y=948. The spec's ≈575/≈584 estimates drift 11–7px
+       (line-height placement); no layout impact, recorded in
+       build.log. Motion (spec Visual Direction): reveal 250ms
+       (opacity + 12px slide-up, power2.out) for the identity unit,
+       the headline, and the determinism line; the pinned 200ms corner
+       bug fade at open. No draw, no stamp (the stamp verb is reserved
+       for the seal scene, §5.2), no scale, no rotation, no ambient.
+       Open state: ink + corner bug only — the identity unit reveals
+       on the first word ("Same"). Nothing after the last word (final
+       hold, §5.1 rule 5). Cues are LOCAL (root data-start=0); the
+       window offset 235.60s lives only on the index.html mount. */
+    #scene-09 {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    /* the master's global reset — a standalone composition render has
+       no other stylesheet (box-sizing, scene-07 precedent) */
+    #scene-09 * { box-sizing: border-box; }
+    #scene-09 .outro-stack {
+      position: absolute;
+      inset: 0;
+    }
+    /* identity unit — mark + wordmark reveal as ONE unit (the mark
+       *is* the name; same unit as scene-01's title card) */
+    #scene-09 .outro-unit {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    #scene-09 .outro-mark {
+      position: absolute;
+      top: 200px;
+      left: 880px;
+      width: 160px;
+      height: 160px;
+    }
+    #scene-09 .outro-mark svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    #scene-09 .outro-wordmark {
+      position: absolute;
+      top: 391px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: var(--fs-title);
+      line-height: 1;
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    #scene-09 .outro-headline {
+      position: absolute;
+      top: 487px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: var(--fs-body);
+      line-height: 1.4;
+      color: var(--paper);
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    #scene-09 .outro-determinism {
+      position: absolute;
+      top: 552px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: var(--fs-body);
+      line-height: 1.6;
+      color: var(--paper-dim);
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  </style>
+</head>
+<body>
+  <div id="scene-09" data-composition-id="scene-09"
+       data-width="1920" data-height="1080"
+       data-start="0" data-duration="11.36">
+    <div class="bug">PREREGISTERED MONEY · meta · sealed 2026-09-12 · 86140f92</div>
+    <div class="outro-stack">
+      <div class="outro-unit">
+        <div class="outro-mark">
+          <!-- brand mark, inline-embedded (spec: never &lt;img&gt; for SVG);
+               copy of style/brand-mark.svg, style spec v1.1.0 section 4.2
+               (paper strokes + one seal-amber bar — pinned mark pixels) -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" aria-label="brand mark">
+            <circle cx="400" cy="400" r="330" fill="none" stroke="#E8E6E1" stroke-width="18"/>
+            <circle cx="400" cy="400" r="282" fill="none" stroke="#E8E6E1" stroke-width="4"/>
+            <line x1="230" y1="420" x2="570" y2="420" stroke="#C89B3C" stroke-width="7"/>
+            <polyline points="250,495 385,410 550,295" fill="none" stroke="#E8E6E1"
+                      stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="outro-wordmark">PREREGISTERED MONEY</div>
+      </div>
+      <div class="outro-headline">Same inputs, same pixels.</div>
+      <div class="outro-determinism">The video pipeline is held to the same reproducibility bar as the research.</div>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    /* Cue times are LOCAL to the composition root (data-start=0):
+       master word-start from the spec Beat Timeline minus the
+       window offset 235.60s. e.g. spec 235.72 "Same" -> 0.12; spec
+       246.96 (end of video) -> 11.36. Initial hidden states live in
+       CSS (outro-unit / outro-headline / outro-determinism opacity)
+       so the render's first frame is ink + corner bug only (spec
+       Open state). */
+
+    // helper: reveal — opacity + 12px slide-up, power2.out (system verb)
+    const reveal = (sel, t, d) =>
+      tl.to("#scene-09 " + sel,
+            { opacity: 1, y: 0, duration: d || 0.25, ease: "power2.out" }, t);
+
+    // 235.60 open: ink + corner bug only — the .bug set piece's pinned
+    //   200ms fade (CSS animation, same as every scene); nothing else
+    //   to set at t=0
+
+    // 235.72 "Same": identity unit (brand mark + wordmark) reveals as
+    //   one unit (250ms; settles 0.37 = 235.97 master, 7ms after word
+    //   end — frame-level element, noted in spec)
+    reveal(".outro-unit", 0.12);
+
+    // 235.94 "inputs,": headline `Same inputs, same pixels.` (250ms;
+    //   settles 0.72 = 236.36 master, 22ms before end of "inputs,"
+    //   236.38 — audio-sync bar met)
+    reveal(".outro-headline", 0.47);
+
+    // 239.10 "pipeline": determinism line (250ms; settles 3.88 =
+    //   239.48 master, 100ms before end of "pipeline" 239.58 —
+    //   audio-sync bar met)
+    reveal(".outro-determinism", 3.63);
+
+    // 246.86 (speech ends) -> 246.96 end of video: final hold —
+    //   nothing moves (earned hold, §5.1 rule 5; 11.26–11.36 local).
+    //   Transition out: none — this is the last scene of the video.
+    tl.set({}, {}, 11.36);
+
+    window.__timelines["scene-09"] = tl;
+  </script>
+</body>
+</html>

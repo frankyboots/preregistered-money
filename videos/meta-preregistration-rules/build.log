@@ -775,6 +775,92 @@ master = local + 205.47):
   layout 0/9 samples, motion 0, contrast 7/7);
   `scan_theme_colors.py composition/scene-08.html` — 0 findings.
 
+scene-09 DRAFT (2026-09-14, the outro, window master 235.60–246.96
+local 0–11.36 @24fps — proof-frame times below are render-local;
+master = local + 235.60; the master tail is the video's end at
+246.96, no scene 10):
+- Composition: `composition/scene-09.html` sha256
+  `5e787ebe68561fc07f4862881942d14582cbb9d57388d89ae1805c3c562a62da`
+  (hand-authored — no data injection: no number appears in this scene,
+  spec Inputs). The cold open's mirror (scene-01): one centered
+  vertical stack, dead-center x=960 — brand mark (160px, top 200,
+  inline-embedded per the never-`<img>`-for-SVG rule; copy of
+  `style/brand-mark.svg` §4.2, paper strokes + one `--seal-amber`
+  bar) / wordmark `PREREGISTERED MONEY` (Inter 600, `--fs-title`,
+  `--paper`) / headline `Same inputs, same pixels.` (Inter 400,
+  `--fs-body`, `--paper`) / determinism line `The video pipeline is
+  held to the same reproducibility bar as the research.` (Inter 400,
+  `--fs-body`, `--paper-dim`). Colors: `--paper` + `--paper-dim` +
+  the mark's pinned `--seal-amber` bar only — no verdict colors, no
+  accent (nothing is judged in an outro). The headline and
+  determinism line are byte-identical to `narration.md` beat-09
+  sentences 1–2 (verified by parse + diff at build; punctuation
+  included). One throwaway probe (deleted) measured the geometry:
+  wordmark x 649–1272 (623px, 489px clear of the 80px safe margins —
+  risk 1 cleared, no tracking needed); determinism line x 442–1476
+  on ONE line (1034px, spec estimate ≈1100px — risk 2 cleared);
+  headline x 778–1141 (one line); mark x 892–1027 y 212–347; stack
+  bottom ≈591 — 357px above the caption band top y=948 (spec's
+  ≈590 estimate holds; the ≈575/≈584 line estimates drift 11–7px
+  with line-height placement, no layout impact, recorded here).
+- Render: `renders/scene-09.mp4` sha256
+  `95de4d897a84a51d063a0defbf84454808449eb23983d31c47397b838230a776`
+  (1920×1080 yuv420p 24fps, draft, 273 frames; duration 11.375s;
+  last extractable frame local 11.35, master 246.95, the t=246.95
+  "stable to the end" proof).
+- Inputs at first render: `audio/timing/words.json` (cues, read-only,
+  sha256 `4adc49d66720d1066dda5ea97e4ba8b3aec91f1ac8f598c90cc4ea0da94df471`);
+  master audio `audio/voiceover.wav` sha256 `4cfb0cb0…` (the spec's
+  "master sha256" pin — 246.96s); `narration.md` (beat-09 text,
+  read-only, sha256
+  `62c78731c4b77ae58ef70bacb4ee7d0f0d19998c5b56cffc547922039dfdd5a9`);
+  style snapshot per the table above (style spec 1.1.1; css
+  byte-identical to 1.1.0, which this video renders against). Data
+  inputs: none — no number appears in this scene (spec Inputs); the
+  two text strings are the narration.md beat-09 text (spec.md
+  storyboard row 9, `meta:outro`; the Number-citations table has no
+  outro row — no figure appears).
+- Beats (master): identity unit @235.72 (0.12 local, settles 0.37 =
+  235.97 proof exact — 7ms after end of "Same" 235.90, frame-level
+  element, noted in spec), headline @235.94 (0.47, settles 0.72 =
+  236.36 — 22ms BEFORE end of "inputs," 236.38), determinism @239.10
+  (3.63, settles 3.88 = 239.48 — 100ms before end of "pipeline"
+  239.58) ✓
+- Audio-sync: headline by end of "inputs," (236.38) ✓; determinism
+  line by end of "pipeline" (239.58) ✓. Identity unit lands 235.97,
+  7ms after end of "Same" — noted per spec.
+- Frame-exact onset sweep (all 273 frames decoded, one rawvideo dump
+  + numpy memmap; per-zone first lit frame — mark/wordmark/headline
+  zones thr>100 (text peaks 255), determinism zone thr>40 (paper-dim
+  blended peak 141, 2× ink 11); 0 px lit at cue−1 for every zone,
+  first lit — mark 5 (3), wordmark 5 (3), headline 14 (12),
+  determinism 89 (88). The +1–2 offsets are the front-loaded
+  --ease-out curve's first visible frame; nothing is over-named by a
+  frame.
+- Caption band: y948–1080 — 0 lit frames across all 273 frames
+  (cleanest possible; lowest element is the determinism line,
+  descender ≈591, 357px above the band top) ✓
+- Hold: raw frames 271–273 (11.25–11.354 local; speech ends local
+  11.26 = master 246.86) — 1 unique sha256 (byte-identical plateau,
+  stronger than the codec micro-block allowed); extracted-frame hold
+  11.30/11.35 vision-identical ✓
+- Chroma audit: `scan_theme_colors.py composition/scene-09.html` —
+  0 findings (paper + paper-dim in CSS; the mark's pinned
+  seal-amber bar is the §4.2 mark pixel, same as scene-01; no
+  verdict colors, no accent — nothing is judged here); settled frame
+  verified by vision: ink/paper/dim + amber bar only ✓
+- Proof frames (`snapshots/scene-09-proof/`, render-local): 0.00 open
+  (ink + corner bug only — the bug mid its pinned 200ms fade, sweep
+  confirms 0 px in any element zone at frame 1) ✓, 0.37 identity
+  settled (mark + wordmark fully opaque, no headline — sweep +
+  vision ✓), 0.59 headline in (mark + wordmark + headline, no
+  determinism line — sweep + vision ✓), 11.30 final (full stack
+  settled, dead-center, nothing moves — vision ✓), 11.35 stable to
+  the end (t=246.95, vision ✓)
+- Verification: lint 0 errors/0 warnings; check passed (runtime 0,
+  layout 0/9 samples, motion 0, contrast 7/7);
+  `scan_theme_colors.py composition/scene-09.html` — 0 findings.
+
 ## Pipeline versions at audio lock
 
 - Pipeline HEAD: `c14fac6` (includes gap re-pin `4fba18a` + concat
@@ -890,3 +976,7 @@ log below.)
 2026-09-13T23:56:16Z pipeline=hyperframes@0.8.35 repo=67ea569 cmd=hyperframes check  exit=0
 2026-09-13T23:56:23Z pipeline=hyperframes@0.8.35 repo=67ea569 cmd=hyperframes render --composition composition/scene-08.html --output renders/scene-08.mp4 --fps 24 --quality draft --workers 2 exit=?
 2026-09-14T00:03:29Z pipeline=hyperframes@0.8.35 repo=67ea569 cmd=hyperframes render --composition composition/scene-08.html --output renders/scene-08.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-14T00:22:15Z pipeline=hyperframes@0.8.35 repo=1a3f79d cmd=hyperframes render --composition composition/_probe-09.html --output renders/_probe-09.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-14T00:25:37Z pipeline=hyperframes@0.8.35 repo=1a3f79d cmd=hyperframes lint  exit=0
+2026-09-14T00:25:39Z pipeline=hyperframes@0.8.35 repo=1a3f79d cmd=hyperframes check  exit=0
+2026-09-14T00:25:48Z pipeline=hyperframes@0.8.35 repo=1a3f79d cmd=hyperframes render --composition composition/scene-09.html --output renders/scene-09.mp4 --fps 24 --quality draft --workers 2 exit=0
