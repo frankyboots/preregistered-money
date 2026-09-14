@@ -548,7 +548,93 @@ note on the SCOREBOARD sub-line and the Beat Timeline `every` row):
   SCOREBOARD box bottoms) pass down through the sub-line text under those
   boxes — dim-on-dim, present in the committed build. Flagged for owner
   review; a follow-up fix would reroute the legs to the box inner edges
-  rather than the centers.
+  rather than the centers. (Closed by the fix below, 2026-09-14.)
+
+##### scene-04 fix 2 — return arrow rerouted around the outside (DRAFT, 2026-09-14)
+
+Owner asked how the open item above would be solved; a mock on the settled
+frame (`/tmp/s4-after.png`, PIL: old legs erased, candidate side-elbow
+drawn) was approved ("I like it, let's implement this"). Fixed in source
+(no timing changes — cue 86.46 `an`, 900ms draw, SCOREBOARD→PREREG
+direction, and the arrowhead's last-in reveal are untouched). Spec
+amendment in `scene-specs/scene-04.md` (return-arrow bullet rewritten +
+append-only amendment note with the measured collision/clearance).
+
+1. **Legs ran through the sub-text.** Measured in the settled frame
+   (threshold ~85 on the dark background): PREREG sub-lines span
+   x 211–509 (row 1) / 177–542 (row 2) and SCOREBOARD sub-lines
+   x 1353–1656 / 1456–1662 — both pairs centered on their node's center
+   x (360 / 1560), i.e. exactly on the old legs' lines. Column scans at
+   the candidate re-route positions: x=1680 (SCOREBOARD right edge) has
+   zero ink in the text band y 490–560 (row-1 right edge 1656, row-2
+   right edge 1662), and x=150 is 27px left of PREREG row-2's left edge
+   (177). The loop now leaves SCOREBOARD's output side (right edge,
+   center y=452) and enters PREREG's input side (left edge, center
+   y=452) — the arrowhead points right, into the box.
+2. **New geometry.** Side-elbow: (1680,452) → (1760,452) → (1760,676)
+   → (150,676) → (150,452) → (240,452); rail y=676 unchanged (50px below
+   the `inconclusive` baseline, spec ≥40px); x=1760 is 80px right of the
+   box edge and 80px inside the 1840 safe edge. Path length = 80 + 224
+   + 1610 + 224 + 90 = **2228** units; dasharray = dashoffset = 2228.
+   SVG container widened to full frame (left:0, width:1920) so both
+   side columns sit inside the viewBox.
+   Dasharray slip, caught before commit: the first re-render carried
+   dasharray/offset 2152 (the rail mis-measured as 1686 instead of 1610
+   — 76 units short of the true length). `dasharray < path length`
+   wraps the dash pattern, so the final 76 units (the top-left stub
+   entering PREREG) rendered at full offset: the pre-cue region scan
+   (threshold 50, the dim `--paper-dim` ink sits at ~50–116 on the dark
+   background — a >90 threshold would have missed it) showed 148 ink
+   pixels in that zone at t=24.9, pre-cue. Fixed to 2228; re-proved
+   below. (The original build's dasharray<length leak trap, in
+   scene-05's memory, applies here twice — keep dasharray = the
+   measured length, and scan at the dim threshold.)
+
+- `composition/scene-04.html` sha256
+  `ecc5b7abb0938662182846647909f61ca69665ccb6c245d03d57c999129f3447`
+  (replaces `9b103d1d…` as committed at `5fa4c1b`); `scene-specs/scene-04.md`
+  sha256 `9021e0cbf8974b6ae1a763116ec04cab54cff33d3c171b442dd35e798604822b`
+  (replaces `d7c6b17e…`).
+- Re-render (same command as the scene's build record): 33.81s,
+  812 frames, 1920×1080 h264 yuv420p 24fps, no audio; output sha256
+  `593adbd004311f38300c31a24a94c54ddad30768cadad8197354ef5f3642d99d`.
+  Lint/check: `render.sh . check` passed (runtime 0, layout, motion 0,
+  contrast unchanged).
+- Re-verified proofs (render-local; `snapshots/scene-04-fix-check/`
+  s4fix-*, gitignored — re-derivable via `extract_proof_frames.py`;
+  region scan at threshold 50, the `--paper-dim` level on the dark
+  background):
+  - Pre-cue 24.9s (before the 25.03 cue): **zero arrow ink in every
+    arrow zone** (rail, both legs, both stubs, arrowhead) — the
+    2152→2228 fix removed the top-left-stub leak (148 px → 0), and
+    vision confirms no arrow line anywhere.
+  - Mid-draw 25.4s: visible portion on the SCOREBOARD/right side (stubR
+    + Rleg + rail in progress), left stub/leg still 0 — draw direction
+    SCOREBOARD→PREREG intact; by 25.7s the left leg and final stub fill
+    in, arrowhead last (224 px in the stubL zone at complete).
+  - Complete 26.36s + final 33.17s: full side-elbow path, both legs
+    clear of all sub-text, arrowhead at PREREG's left edge (vision ✓).
+- Master rebuilt from the same source: `renders/master-full-002.mp4`
+  (246.96s, 5,928 frames, high quality; sha256
+  `335669334e59ccd76e6ff0527e4b673c1d8baba827312b1d8d10e1d545b8cf90`) +
+  voiceover mux `renders/master-full-002-audio.mp4`
+  (ffmpeg `-c:v copy -c:a aac -b:a 192k`; sha256
+  `c8ff6fc3f16ce01f432530ab0e5075f9333fbceef30142bd438682a5fe4993ff`;
+  probe 247.0s / 1920×1080 / 24fps / aac 44.1kHz mono). master-full-001
+  retained on disk for A/B; 002 is the current candidate (and the
+  `timeline-manifest.json` output pointer now names it).
+- Master-level re-proof (the render that ships): pre-cue 86.30
+  (master time of the 24.87 local frame) — **zero arrow ink in every
+  arrow zone** (rail/legs/stubs/head, threshold 50); 87.40 — full path
+  (rail 3000, legs 368 each, stubs 154/224). The 2152 leak is gone from
+  the master.
+- Regression check (001 vs 002, frame diffs at matched timestamps,
+  threshold 16): outside scene-04's window — 15.0s (scene-02),
+  111.95s (seal ring), 190.0s (ledger), 246.9s (outro) — all
+  **0.0000%**; inside the window (90.0s) 0.1363% = the arrow's new
+  pixels only. No unrelated scene changed.
+- No design change beyond the approved re-route: cue times, verbs,
+  durations, colors, wording, and all other elements untouched.
 
 scene-05 DRAFT (2026-09-13, the seal scene, window master 95.24–128.57
 local 0–33.33 @24fps — proof-frame times below are render-local;
@@ -1293,3 +1379,9 @@ log below.)
 2026-09-14T13:29:08Z pipeline=hyperframes@0.8.35 repo=72d43da cmd=hyperframes render --output renders/master-full-001.mp4 --fps 24 --quality high --workers 2 exit=0
 2026-09-14T13:30:26Z pipeline=hyperframes@0.8.35 repo=72d43da cmd=hyperframes check  exit=0
 2026-09-14T13:30:41Z pipeline=hyperframes@0.8.35 repo=72d43da cmd=hyperframes render --output renders/master-full-001.mp4 --fps 24 --quality high --workers 2 exit=0
+2026-09-14T14:14:45Z pipeline=hyperframes@0.8.35 repo=15035d4 cmd=hyperframes check  exit=0
+2026-09-14T14:14:59Z pipeline=hyperframes@0.8.35 repo=15035d4 cmd=hyperframes render --composition composition/scene-04.html --output renders/scene-04.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-14T14:17:19Z pipeline=hyperframes@0.8.35 repo=15035d4 cmd=hyperframes render --output renders/master-full-002.mp4 --fps 24 --quality high --workers 2 exit=0
+2026-09-14T14:28:14Z pipeline=hyperframes@0.8.35 repo=15035d4 cmd=hyperframes render --composition composition/scene-04.html --output renders/scene-04.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-14T14:29:07Z pipeline=hyperframes@0.8.35 repo=15035d4 cmd=hyperframes render --output renders/master-full-002.mp4 --fps 24 --quality high --workers 2 exit=0
+2026-09-14T14:33:58Z pipeline=hyperframes@0.8.35 repo=15035d4 cmd=hyperframes lint  exit=0

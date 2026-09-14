@@ -66,11 +66,28 @@ Status: SPEC (Phase B). Template: `meta:life-cycle`.
     cue (83.90). Line 2 at 532 clears the `confirmed` branch
     (≈1103–1217) by 247px and the return-arrow rail (676) by ≥120px;
     wording unchanged, no number, no data.)
-- Return arrow: 1px `--paper-dim` path from SCOREBOARD's bottom edge, down,
-  left along a second rail below all sub-lines, up into PREREG's bottom
-  edge; arrowhead at the PREREG end. Drawn left-arriving (draw verb, 900ms,
-  right→left) on its word. Below it, centered: annotation
-  `postmortem → next prereg` (mono `--fs-anno`, `--paper-dim`).
+- Return arrow: 1px `--paper-dim` side-elbow path around the outside of
+  the diagram: from SCOREBOARD's right edge (center y=452, x=1680), out to
+  x=1760, down to a rail at y=676 (below all sub-lines), left to x=150, up
+  into PREREG's left edge (center y=452, x=240); arrowhead at the PREREG
+  end, pointing in. Drawn SCOREBOARD→PREREG (draw verb, 900ms — path
+  start→end; dasharray = measured length 2152, offset 2152→0) on its word.
+  Below it, centered: annotation `postmortem → next prereg` (mono
+  `--fs-anno`, `--paper-dim`).
+  (SPEC AMENDMENT 2026-09-14, owner-approved mock: the original routing —
+  SCOREBOARD bottom center 1560 down, rail, up into PREREG bottom center
+  360 — ran its two vertical legs THROUGH the sub-line text. Measured in
+  the settled frame: PREREG rows span x 211–509 / 177–542 (rows 1/2) and
+  SCOREBOARD rows x 1353–1656 / 1456–1662 — both centered on their node's
+  center x, i.e. exactly on the leg's line. The side columns are clear:
+  col x=1680 has zero ink in the text band y 490–560 (row-1 right edge
+  1656, row-2 right edge 1662), and x=150 clears PREREG row-2's left edge
+  (177) by 27px. Rail y=676, annotation, tagline, cue timing (86.46
+  `an`, 900ms), and draw direction (SCOREBOARD→PREREG) unchanged — only
+  the path geometry re-routed, and the loop now enters PREREG's input
+  side and leaves SCOREBOARD's output side, which matches the
+  postmortem→next-prereg semantics. Wording, colors, and all other
+  elements untouched.)
 - Title zone (top-left under the bug): `the lifecycle` (Inter 600,
   `--fs-title`, `--paper`) — the diagram's identity, keyed to the word that
   names it, `states,`.

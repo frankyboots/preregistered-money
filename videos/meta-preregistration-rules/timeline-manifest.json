@@ -4,7 +4,7 @@
     "width": 1920,
     "height": 1080,
     "fps": 24,
-    "output": "renders/master-full-001.mp4",
+    "output": "renders/master-full-002.mp4",
     "assembly_method": "single master render of index.html (all 9 scene compositions mounted at beat-map windows); audio = committed voiceover.wav muxed after render"
   },
   "audio": {
