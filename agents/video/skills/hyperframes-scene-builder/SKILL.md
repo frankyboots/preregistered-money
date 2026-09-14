@@ -82,6 +82,14 @@ Lint is strict about mount elements: every `data-composition-src` host needs **b
 - Framework version is pinned in exactly one place (the pipeline render script / skeleton package.json). All hyperframes commands run through npx with that pinned version; never leave them bare in committed scripts or notes.
 - `npx hyperframes skills update` installs vendor skill docs into the home agent dirs (`~/.claude/skills`, `~/.agents/skills`) — this repo's agent stack reads only its own repo skills, so never run it here. The only opt-out env var is `HYPERFRAMES_SKIP_SKILLS=1`; set it in the render script as defense in case a future version makes the check mandatory. If vendor skill dirs or symlinks appear under `agents/video/skills/` in git status, they are vendor-install pollution (the repo skills dir is one of the vendor's install targets, so it symlinks into `~/.claude/skills`): remove the repo symlinks and the home-dir entries — they are never repo content and never get committed. If one specific framework detail is missing from the repo skills, pull that one reference file into the repo skill library with an Apache-2.0 provenance note — never bulk-install vendor skills.
 
+## Master Assembly (index.html, verified v0.8.35, 2026-09-14)
+
+- **Mount scene compositions as CHILDREN of the root composition div, not siblings.** As siblings, the compiler ignores the root's `data-duration` and resolves the render to the first mount's own duration — observed: a 9-scene master rendered 2.69s (65 frames = scene-01's window) with zero lint/check warnings. Confirmed by the vendor reference `hyperframes-launch-video` (mounts nested in the root div) and the HTML schema ("an explicit root data-duration is the render length").
+- Root `data-duration` = the beat-map `master_duration_s` (scene windows sum exactly to it). Verify after render that the compiler log's `durationSeconds`/`totalFrames` match — a wrong duration is silent in lint/check.
+- `--quality` takes `draft|standard|high` — `final` is rejected at render start. Use `high` for full renders.
+- Assembly of the narration master = single master render of `index.html` (scenes authored at 1:1 beat-map windows) + `ffmpeg -c:v copy -c:a aac` mux of the committed wav. No per-scene retiming when windows match the beat map. Commit the `timeline-manifest.json` (beat-map windows, wav sha256, proof timestamps) with the assembly commit; the muxed MP4 is gitignored like all renders.
+- Boundary QA: a scene's first frame in the master must frame-match its standalone render's first frame (~0.1–0.2% pixel diff = codec micro-block level) — catches mis-mounted or shifted scenes at every cut.
+
 ## Render Loop
 
 Typical commands (the repo's render script in `videos/pipeline/` wraps these): the video directory is the positional argument to every command.
