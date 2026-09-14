@@ -353,6 +353,51 @@ scene's `--ink` background) need `--allow` — no scene-introduced drift.
   measured 38px clearance (value ends x884, tag left edge x922 at
   22px mono).
 
+##### scene-03 fix — row alignment + data-row value (DRAFT, 2026-09-14)
+
+Owner review of the committed scene-03 render flagged two nits; both fixed
+in source (no timing changes — cues, typing cadence, and reveal verbs
+untouched). Spec amendments in `scene-specs/scene-03.md` (append-only
+notes on the `data:` value line, the Beat Timeline row, and the QA
+checklist):
+
+1. **Row text too low.** Label/value `top` 17px → 14px. Measured on the
+   re-render (final frame): row text optical center now within 1.0–1.5px
+   of the `SEALED:` tag's 22px box center on all three rows (was ~10px
+   below at top 17 — the 30px cap height vs 22px line-height mismatch).
+   All three rows rise 3px; the data row's text now sits even with its
+   tag on the same line as the other rows.
+2. **Blank data row.** The dim `·` placeholder (and its `.dot` CSS +
+   fade cue) is gone; row 2's value is now `named, not shown` — typed in
+   at the same 39.68 cue as the label (30ms/char, lands 40.24 master,
+   0.6s before the SEALED tag — same rhythm as rows 1 and 3). The value
+   states the row's pre-existing design intent (the dataset is named,
+   never its contents); no data, no number, no new input.
+
+- `composition/scene-03.html` sha256
+  `6013fe390d298f17c964c372ce91d9eabe60d658bcf88b0cc6fde20426402a3c`
+  (replaces `f6a33036…`); `scene-specs/scene-03.md` sha256
+  `57c1da65ccabc16507c8f7e8f74c0433b69a3f39f9d99a6deb23639964b93dbe`.
+- Re-render (same command as the scene's build record): 33.583s,
+  806 frames, 1920×1080 h264 yuv420p 24fps, no audio; output sha256
+  `29f50e1d2785df190ff0f0550fa85ea26ed96c95faa87fd607333653a62987e5`
+  (replaces `e6e7233a…`). Lint 0/0; check passed (runtime 0, layout
+  0/9, motion 0, contrast 7/7); `scan_theme_colors.py` 0 findings.
+- Re-verified proofs (final-frame pixels, master = render-local + 27.86):
+  - Open frame (render-local 0.2s): only the corner bug is bright
+    (bbox x42–744 y46–59; 0 bright px outside it) — cold structure
+    unchanged ✓
+  - All three rows: text centers within 1.5px of tag centers
+    (row1 355.5/354.5, row2 460.0/458.5, row3 564.0/562.5) ✓
+  - Row 2 value `named, not shown` settled by 40.24 (lands before the
+    40.84 SEALED-tag cue; 291px clearance to the tag left edge x920) ✓
+  - Row 3 value/tag clearance unchanged (38px); tagline, bottom lines,
+    append-only, diff annotation all undisturbed (final frame
+    vision-checked) ✓
+  - Final-state stability: render-locals 33.50 across both the
+    alignment-fix render and the comment-only re-render are
+    pixel-identical ✓
+
 #### scene-04 — the lifecycle diagram (DRAFT, 2026-09-13)
 
 - Window: 61.43–95.24s (beat-04; speech 61.50–93.94, hold
@@ -980,3 +1025,9 @@ log below.)
 2026-09-14T00:25:37Z pipeline=hyperframes@0.8.35 repo=1a3f79d cmd=hyperframes lint  exit=0
 2026-09-14T00:25:39Z pipeline=hyperframes@0.8.35 repo=1a3f79d cmd=hyperframes check  exit=0
 2026-09-14T00:25:48Z pipeline=hyperframes@0.8.35 repo=1a3f79d cmd=hyperframes render --composition composition/scene-09.html --output renders/scene-09.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-14T00:43:32Z pipeline=hyperframes@0.8.35 repo=607251b cmd=hyperframes lint  exit=0
+2026-09-14T00:43:34Z pipeline=hyperframes@0.8.35 repo=607251b cmd=hyperframes check  exit=0
+2026-09-14T00:43:43Z pipeline=hyperframes@0.8.35 repo=607251b cmd=hyperframes render --composition composition/scene-03.html --output renders/scene-03.mp4 --fps 24 --quality draft --workers 2 exit=0
+2026-09-14T00:45:46Z pipeline=hyperframes@0.8.35 repo=607251b cmd=hyperframes lint  exit=0
+2026-09-14T00:46:27Z pipeline=hyperframes@0.8.35 repo=607251b cmd=hyperframes check  exit=0
+2026-09-14T00:47:47Z pipeline=hyperframes@0.8.35 repo=607251b cmd=hyperframes render --composition composition/scene-03.html --output renders/scene-03.mp4 --fps 24 --quality draft --workers 2 exit=0

@@ -40,8 +40,11 @@ Status: SPEC (Phase B). Template: `meta:prereg-fields`.
   (mono `--fs-anno`, `--paper-dim`) on the row's right.
   - `hypothesis:` — value `one falsifiable sentence` (value types in with the
     narration)
-  - `data:` — value blank: a dim `·` placeholder (the dataset is named, never
-    its contents — nothing to show)
+  - `data:` — value `named, not shown` (typed in with the narration —
+    SPEC AMENDMENT 2026-09-14: originally a blank field with a dim `·`
+    placeholder; the owner found the field too empty. The value states the
+    row's existing design intent — the dataset is named, never its
+    contents — so it adds no data and no number)
   - `the bar:` — value `a number to clear, after costs`
 - Title zone (top-left under the bug): `preregistration` (Inter 600,
   `--fs-title`, `--paper`); above it a small annotation `the fix — borrowed
@@ -74,7 +77,7 @@ Times are word starts from `words.json`.
 | 36.12 | `hypothesis` | row 1 label `hypothesis:` types in | t=36.60 |
 | 37.68 | `falsifiable` | row 1 value `one falsifiable sentence` types in (lands ~38.4) | t=38.30 |
 | 38.38 | (row 1 complete) | row 1 `SEALED: 2026-09-12` tag fades in | t=38.60 |
-| 39.68 | `data,` | row 2 label `data:` types in; value: dim `·` placeholder | t=39.90 |
+| 39.68 | `data,` | row 2 label `data:` types in; value `named, not shown` types in (lands ~40.2) | t=39.90 |
 | 40.84 | (row 2 complete) | row 2 `SEALED: 2026-09-12` tag fades in | t=40.90 |
 | 41.14 | `bar,` | row 3 label `the bar:` types in | t=41.40 |
 | 41.90 | `number` | row 3 value `a number to clear, after costs` types in (lands ~43.2) | t=42.80 |
@@ -111,6 +114,10 @@ is carried by the SEALED tags + the hold.
   132px band (tagline sits ≥140px above frame bottom).
 - Audio sync: `hypothesis:` visible by end of "hypothesis" (37.14); row 3
   value settled by end of "costs." (43.69).
+- Alignment proof (amendment 2026-09-14): the row label/value text sits even
+  with the gray `SEALED:` date (row text optical center ≈ the tag's 22px box
+  center, both ~y32 within the row); row 2's value `named, not shown` is
+  filled (no blank field / no `·` placeholder).
 - Known risk: typing cadence vs word duration — value "a number to clear,
   after costs" must land by 43.20 (19 chars + label; keep ≤90ms/char, verify
   in probe). `SEALED:` tag width at 22px mono — check it doesn't collide with
