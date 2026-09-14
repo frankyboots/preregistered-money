@@ -1,6 +1,6 @@
 ---
 name: channel-art
-description: "Use when creating channel art: banner, logo, description."
+description: "Use when creating channel art: banner, logo, description, or a per-video thumbnail."
 version: 1.0.0
 author: Preregistered Money
 license: MIT
@@ -14,9 +14,10 @@ metadata:
 
 # Channel Art
 
-Channel art = banner (channel art), profile logo, channel description. Like every
-published frame it is a **deterministic artifact of the style system** — art is
-never hand-made pixels; it is HTML/SVG rendered from committed source.
+Channel art = banner (channel art), profile logo, channel description, and each
+video's thumbnail. Like every published frame it is a **deterministic artifact of
+the style system** — art is never hand-made pixels; it is HTML/SVG rendered from
+committed source.
 
 Living directory: `videos/pipeline/brand/` (generator + `concepts/<idea>/`).
 
@@ -27,7 +28,12 @@ Living directory: `videos/pipeline/brand/` (generator + `concepts/<idea>/`).
    (`grep -rhoE '#[0-9A-Fa-f]{6}' ... | sort | uniq -c`) and run
    `videos/pipeline/tools/scan_theme_colors.py` over the concept dir — the brand
    claim is that the art is generated from the system, and one off-palette hex
-   breaks it.
+   breaks it. The scanner takes ONE root and needs the full palette as
+   `--allow` (quote the hexes — an unquoted `#` dies as a shell comment):
+   `scan_theme_colors.py concepts --allow '#0B0E11' --allow '#E8E6E1'
+   --allow '#6B7078' --allow '#C89B3C' --allow '#3FA46A' --allow '#C4453C'
+   --allow '#8A9099'` — exit 0 is clean. Without `--allow` it flags every color
+   as "review" and exits 1; that is unconfigured, not a violation.
 2. **No numbers on the art.** The number-trace rule applies to art too: every
    figure must exist in a published doc, and brand art has no results doc to cite.
    Allowed text: the name/tagline and identifiers declared in `docs/CONCEPT.md`
@@ -57,7 +63,47 @@ Living directory: `videos/pipeline/brand/` (generator + `concepts/<idea>/`).
   the hero text).
 - **Profile logo:** 800×800, all content inside the central circle — YouTube
   crops avatars to a circle.
+- **Thumbnail:** 1280×720.
 - Max file size 6 MB; these renders are ~50–150 KB.
+
+## Thumbnails (per-video)
+
+- **Design bar: a dominant object, not a poster.** A thumbnail earns the click
+  with a visual object that fills the frame — the verdict chart (thick curve +
+  amber pre-registered bar + huge number), the scoreboard, or the stamp. A small
+  hero token on empty ink reads as a brand specimen, not a video: the owner
+  rejected the minimal centered-poster and thin-ledger-row looks as "nobody
+  will click on these." No hype (no stock, no glow, no exclamation) — richness
+  comes from the set piece's density, not from ornament. A dense-text wall
+  (full ledger) reads as substance at full size but smears at list size —
+  density without a dominant object is not a click.
+- **Two house looks (owner decision 2026-09-14).** C2 "verdict chart" for
+  verdict episodes — full-bleed chart, amber bar, verdict-colored OOS number,
+  a seal stamp certifying the corner; E "stamped" for meta / pre-verdict
+  episodes — big brand-mark stamp, full spec-commit SHA line beneath it aligned
+  to the stamp's edges, tagline (meta) or verdict word + number in the open
+  space to the right. Shared chassis: 12px-inset dim border, series tag
+  top-left mono uppercase, wordmark bottom-right, palette-only. Source of truth:
+  style spec §8 + the thumbnail generator under `videos/pipeline/brand/`;
+  per-video thumbnails render from the committed generator — never hand-made per
+  video.
+- **Per-video hero (owner decision 2026-09-14).** The hero varies by video — the
+  OOS number (verdict color) on a C2 frame, the seal on an E frame. The seal is
+  NOT a constant hero across the channel, and a meta episode has no number, so
+  its frame must not fake one.
+- **Type scale.** 1080p token scale × 2/3 at 1280×720 — no new sizes.
+- **List view is the acceptance bar.** The YouTube shelf shows thumbnails at
+  ~160–320 px wide; the hero must read at 160 px. Every concept review sheet
+  carries a "shelf" row with each sample at 320/240/160 px, and the vision QA
+  pass judges the shelf row, not just the full-size frames.
+- **Mockup numbers.** Concept sheets may show sample numbers under the
+  `PR-0000-000` placeholder convention, labeled "(example)" in the SHEET label
+  (never inside the asset). A committed thumbnail asset uses only values that
+  trace to the results doc (rule 2).
+- **Asset location + lifecycle.** The per-video thumbnail commits inside the
+  video directory (one video = one dir, `video-commit` rule 1); the build log
+  records generator version + inputs. Render it LAST in the video lifecycle —
+  after the final MP4 is committed, before publish — the upload needs it.
 
 ## Procedure
 
@@ -104,8 +150,22 @@ Living directory: `videos/pipeline/brand/` (generator + `concepts/<idea>/`).
   title's baseline or they touch. Re-verify with a vision pass after moving
   any text.
 - **f-string templates double their CSS braces** (`{{ }}` in `.format()`
-  templates) — an unbalanced `@font-face` block raises KeyError. Lint the
-  generator before the first run.
+  templates) — an unbalanced `@font-face` block raises KeyError — and a CSS unit
+  inside the expression is a SyntaxError (`top:{y + 34px}`; the unit goes
+  outside the braces). Lint the generator before the first run.
 - **Design the banner in zone-local coordinates:** position the container at
   (507, 509) and lay out inside 1546×423 — it's easier to keep the safe zone
   than to audit global coordinates.
+- **SVG width/height must match the viewBox aspect ratio:** a mismatched pair
+  (e.g. 720×660 over a `0 0 720 540` viewBox) stretches the coordinate space
+  non-uniformly and distorts stroke weights. Set width/height equal to the
+  viewBox (1:1) for true pixel weights.
+- **Right-aligning positioned divs:** a left-anchored div with
+  `text-align:right` just left-aligns its content — anchor with `right:` (or give
+  the div an explicit width) to actually right-align.
+- **Text fitted to a shape is pixel-verified, not font-mathed.** Mono advance
+  width × char count mispredicts the rendered width once letter-spacing and
+  anti-aliasing enter. Render, then measure the 2D ink bbox of the text over its
+  full row range (PIL scan for the token color) — a single scanline misses thin
+  or low-contrast glyphs — and tune font-size/letter-spacing until the bbox
+  edges line up with the target (e.g. the stamp ring's outer edge).

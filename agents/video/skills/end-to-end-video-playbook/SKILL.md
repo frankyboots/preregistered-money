@@ -46,12 +46,17 @@ Use this skill to coordinate a complete video project from rough request to veri
    - `audio-sync-assembly` for narration timing, segment retiming, and assembly.
    - `captions` for subtitle timing and wording.
    - `render-qa-and-surgical-changes` for proof frames, exact-timestamp checks, and safe final edits.
+   - `channel-art` for the per-video thumbnail (house look + per-video hero).
 
 4. Build in layers.
    - Draft scene renders first.
    - Assemble the narration-only master before anything else.
    - Add captions after the visual/audio timeline is stable.
    - Music: standing decision is none (VIDEO_CONCEPT §7). Do not add a music bed.
+   - **Thumbnail last** (`channel-art`, "Thumbnails" section): render the per-video
+     thumbnail from the committed house generator after the final MP4 is
+     committed, before publish — the upload needs it. Never hand-make per-video
+     art.
 
 5. Verify before reporting completion.
    - Probe final outputs with `videos/pipeline/tools/probe_media.py`.
@@ -79,11 +84,12 @@ Use this skill to coordinate a complete video project from rough request to veri
 - User says captions are late or wrong: use `captions`.
 - User says narration changed: use `audio-sync-assembly`.
 - User says "everything is perfect except": use `render-qa-and-surgical-changes`.
+- User wants banner/logo/description or a video thumbnail (new look or per-video): `channel-art` — 3 distinct concepts → owner pick → committed generator.
 - Owner ratifies or rejects a "Flagged for REVIEW" reading (style-spec / scene-spec): `scene-spec-and-commit` → "Resolving a flagged reading".
 
 ## Implementation Order
 
-Phase map: A bootstrap (`video-bootstrap`) → B scene specs, one scene per commit (`scene-spec-and-commit`) → C scene builds, one scene per commit (`scene-build-and-commit`) → D assembly/final.
+Phase map: A bootstrap (`video-bootstrap`) → B scene specs, one scene per commit (`scene-spec-and-commit`) → C scene builds, one scene per commit (`scene-build-and-commit`) → D assembly/final → thumbnail.
 
 1. Lock approved scenes.
 2. Phase B: one scene spec + commit at a time (`scene-spec-and-commit`) — never batch.
@@ -95,6 +101,9 @@ Phase map: A bootstrap (`video-bootstrap`) → B scene specs, one scene per comm
 8. Export final MP4.
 9. Generate proof sheet and preview clips.
 10. Update build log; commit.
+11. Render the per-video thumbnail from the committed generator (`channel-art`);
+    verify it reads at list-view size (160 px); commit it with the build log
+    before publish.
 
 ## Decision Checklist
 
@@ -130,6 +139,8 @@ Do not call a full video done until:
 - Final resolution and FPS are known.
 - Audio stream exists.
 - Captions are present if requested.
+- Thumbnail is rendered from the committed generator, reads at 160 px, and is
+  committed with the build log.
 - Scene boundary proofs exist.
 - Exact user-requested timestamp proofs exist.
 - Any subjective preview requested by the user was shown or explicitly skipped.
