@@ -46,6 +46,7 @@ Build `composition/scene-NN.html` to the spec. Craft rules live in `hyperframes-
 - Import `style/tokens.css` + `style/setpieces.css` root-relative (base URL is the project root) — never `../`. Colors from tokens only; motion verbs from style spec §5.2 only. No P&L red/green where nothing is judged.
 - Draw charts/tables from the `data/` input files — never type a number into markup.
 - **Data-injected strings: build script + template, verified by re-parse.** When an Inputs line says "read from the file at build time, never computed and never typed into markup" (a SHA, an exact command line), commit a small generator (`scripts/_build_sceneNN.py`) + template that checksums the data input, injects its characters as spans, and re-parses the generated markup to assert byte-identity with the file. Parse by span class, not regex char class — a command like `git commit <sha>` contains the same alphabet as hex, so `[0-9a-f]` matches the wrong spans. The script + template are committed provenance (same input → byte-identical output); the generated composition is derived from them.
+- **Verbatim doc strings: diff the markup against the source doc at build.** When a spec pins strings as byte-identical to a committed doc (a disclaimer card's bullets to CONCEPT §10), the composition is still hand-authored — so verify, don't trust: parse the rendered elements out of the composition, unescape HTML entities, and assert equality against the doc lines in a quick script. The check rides with the scene commit's build-log entry; a mismatch is a build defect, fix and re-verify.
 - SVG assets well-formed (no `--` inside XML comments).
 
 ## Step 3 — Mount + lint + check
@@ -68,6 +69,8 @@ pipeline/render.sh <video-dir> render --composition composition/scene-NN.html --
 ```
 
 `render.sh` re-anchors relative `--output` to the video dir (landed MP4 must sit under `videos/<slug>/renders/`, gitignored) and appends a build.log line per invocation automatically. Higher fps/quality only when the scene is approved or testing fps-specific motion. Draft first; final render is Phase D's job.
+
+**Run scene renders as a background terminal session with completion notification, then wait on the session — never a bare foreground call.** A 30s-scene draft render takes real wall time; when the foreground tool call times out it kills the process mid-encode, leaving a partial MP4 and a build.log line stuck at `exit=?` (the script rewrites only the exit code, a killed run keeps the placeholder). A killed invocation is not a failed render: re-run in the background, verify the new line lands `exit=0` before extracting proofs, and note in the build-log entry which line is the aborted invocation so the record stays honest.
 
 ## Step 5 — Proof frames against the spec's QA checklist
 

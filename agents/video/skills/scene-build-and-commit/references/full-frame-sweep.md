@@ -1,6 +1,6 @@
 # Full-frame vectorized sweep (onset, negatives, hold)
 
-Use when the QA checklist asks for frame-exact proof — "first lit frame = cue frame", pre-naming negatives across many elements, or hold stability over hundreds of frames. Never loop over pixels in pure Python per frame; dump the whole MP4 once and work in numpy (a pure-Python per-pixel loop over hundreds of full-res frames OOMs the execution kernel mid-sweep).
+Use when the QA checklist asks for frame-exact proof — "first lit frame = cue frame", pre-naming negatives across many elements, or hold stability over hundreds of frames. Never loop over pixels in pure Python per frame; dump the whole MP4 once and work in numpy (a pure-Python per-pixel loop over hundreds of full-res frames OOMs the execution kernel mid-sweep). Interpreter: the analysis host's bare `python3` usually lacks numpy/PIL — run the sweep script with `uv run --with numpy --with pillow python3` (first use installs into the uv cache in seconds); the same pattern works for PIL-based geometry probes on proof PNGs.
 
 ## 1. Decode once
 
