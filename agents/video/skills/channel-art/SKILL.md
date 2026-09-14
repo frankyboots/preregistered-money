@@ -91,6 +91,15 @@ Living directory: `videos/pipeline/brand/` (generator + `concepts/<idea>/`).
   OOS number (verdict color) on a C2 frame, the seal on an E frame. The seal is
   NOT a constant hero across the channel, and a meta episode has no number, so
   its frame must not fake one.
+- **Emitter (pinned).**
+  `python3 videos/pipeline/brand/gen_thumbnails.py <slug> <mode> [series_tag]
+  [hero] [subline] [spec_sha]` — mode `meta` or `pre-verdict` renders the E
+  look, `verdict:confirmed|verdict:falsified|verdict:inconclusive` the C2
+  look. It emits `videos/<slug>/thumbnail.html`; headless chrome (window
+  1280,720) renders it to `videos/<slug>/renders/thumbnail.png`. `spec_sha` is
+  the video's own sealed spec commit from `data/spec-sha.txt`. The C2 curve
+  shape is illustrative only — the verdict read is relative to the bar; the
+  number and bar text must trace to the prereg/results doc.
 - **Type scale.** 1080p token scale × 2/3 at 1280×720 — no new sizes.
 - **List view is the acceptance bar.** The YouTube shelf shows thumbnails at
   ~160–320 px wide; the hero must read at 160 px. Every concept review sheet
@@ -102,8 +111,12 @@ Living directory: `videos/pipeline/brand/` (generator + `concepts/<idea>/`).
   trace to the results doc (rule 2).
 - **Asset location + lifecycle.** The per-video thumbnail commits inside the
   video directory (one video = one dir, `video-commit` rule 1); the build log
-  records generator version + inputs. Render it LAST in the video lifecycle —
-  after the final MP4 is committed, before publish — the upload needs it.
+  records generator version + inputs. The committed artifacts are
+  `thumbnail.html` + the build-log section — `renders/` is gitignored
+  (`videos/*/renders/`), so record the PNG's sha256 in the build log instead of
+  staging it, and re-running the emitter + render must reproduce the pixels.
+  Render it LAST in the video lifecycle — after the final MP4 is committed,
+  before publish — the upload needs it.
 
 ## Procedure
 
