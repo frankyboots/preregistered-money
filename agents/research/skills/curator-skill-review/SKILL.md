@@ -16,7 +16,7 @@ metadata:
 
 The repo's `agents/research/skills/` is the **live research profile's skills directory** (bind-mounted — same inodes; check with `stat -c '%i'` on a file in both paths). The Hermes **curator** (self-improvement process) patches and creates skills outside user sessions, so its work lands in the working tree as pending git changes. **Pending skill changes in `git status` are curator-made until the user says otherwise** — review them, don't assume.
 
-Commits follow the `research-commit` skill (boundary gate, message format, atomicity) — this skill only adds the review half.
+Commits follow the `research-commit` skill (boundary gate, message format, atomicity, push policy) — this skill only adds the review half. Authoring skills yourself (vs. accepting curator edits) is the `project-skill-authoring` skill.
 
 ## Procedure
 
