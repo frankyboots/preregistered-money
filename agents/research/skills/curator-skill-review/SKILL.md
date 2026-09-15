@@ -1,7 +1,7 @@
 ---
 name: curator-skill-review
 description: "Review curator's pending skill changes in git status."
-version: 1.0.0
+version: 1.1.0
 author: Preregistered Money
 license: MIT
 platforms: [linux, macos, windows]
@@ -29,17 +29,23 @@ Commits follow the `research-commit` skill (boundary gate, message format, atomi
 5. **Decide per file: accept / edit / reject.**
    - Rejecting: untracked → delete the file; modified → `git restore <path>`. Report the rejection and why to the user (do not append to the curator's ledger — that file is the curator's).
    - Accepting with edits: patch the working-tree file before staging.
-6. **Commit atomically, one message per commit:** stage *per commit* and commit *per commit* — a `.gitignore` fix and the skill acceptance are two commits, not one. The message must describe exactly the files in that commit (see Pitfall 1). Cite the curator session ID in the skill-acceptance commit body (the permanent audit record, since the ledger is gitignored).
+6. **Commit atomically and push, one message per commit:** stage *per commit* and commit *per commit* — a `.gitignore` fix and the skill acceptance are two commits, not one. The message must describe exactly the files in that commit (see Pitfall 1). Cite the curator session ID in the skill-acceptance commit body (the permanent audit record, since the ledger is gitignored). Push after each commit per the `research-commit` Push policy.
 7. **Verify:** `git status --porcelain=v1` → clean; then prove the committed content is exactly what the curator wrote: `git show HEAD:<path> | sha256sum` must equal the ledger's final `after` hash for that file (only when accepted as-is; edited files won't match, and that's expected).
 
 ## Pitfalls
 
 - **Commit message must match commit contents.** Staging everything then committing with a message that describes only part of it produces a commit whose message lies — and the message is audit trail. Stage per commit, commit per commit. (Real incident: one commit intended for a `.gitignore` fix swallowed two skill files; fixed by `git reset --mixed HEAD~1` and re-committing split, while the commit was still local.)
 - **`git reset --mixed HEAD~1` unstages everything.** After it, re-stage deliberately per commit; do not `git add -A` blindly.
-- **Diagnostic `&&` chains die on expected non-zero exits.** `git remote -v` with no remotes exits 128; a grep that finds nothing exits 1 — either one silently kills a `&&` chain partway, and the *last* command's output is what you actually see. Use `;` separators (or `|| echo …`) for multi-check diagnostics.
+- **Diagnostic `&&` chains die on expected non-zero exits.** A grep that finds nothing exits 1; a `git show` of a missing path exits 1 — either one silently kills an `&&` chain partway, and *the last command's output* is what you actually see. Use `;` separators (or `|| echo …`) for multi-check diagnostics.
 - **Hash verification is the acceptance proof.** `git show HEAD:<path> | sha256sum` vs the ledger `after` hash proves the committed bytes equal the curator's. Do it per file, per commit.
 - **No sync step exists.** The repo skills dir *is* the profile skills dir. `skill_manage` edits hit both; there is nothing to push or re-sync. (Verify the bind with `stat -c '%i'` if in doubt — identical inodes.)
-- **History-rewrite boundary:** this repo may have no remote configured (check `git remote -v` — expect exit 128). While a commit is local-only, a botched commit can be fixed with `git reset --mixed HEAD~1`. Once pushed, or for any `seal` commit, never rewrite — fix forward (research-commit checklist item 5).
+- **Push immediately — the local-only window is gone.** The remote `origin`
+  is public (added 2026-09-14) and the `research-commit` Push policy says a
+  commit is not done until pushed, after *each* commit. So a botched commit
+  is public almost as soon as it exists: `git reset --mixed HEAD~1` on a
+  pushed commit is a rewrite of public history and is banned (it was a
+  pre-remote escape hatch; it is no longer available in practice). Fix
+  forward with a new commit, per research-commit checklist item 5.
 - **A skill created during the review becomes a new pending change** (the skills dir is the repo). Commit it in the same pass (type `chore(repo)`, body noting it codifies the workflow) so the tree ends clean — don't leave the process's own artifact as untracked noise for the next cycle.
 
 ## Message templates
