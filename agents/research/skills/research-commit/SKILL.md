@@ -1,7 +1,7 @@
 ---
 name: research-commit
 description: "Use when committing on the research side of the preregistered-money repo. Conventional commits with scope, the seal ceremony, and the agents/video + videos boundary."
-version: 1.0.0
+version: 1.1.0
 author: Preregistered Money
 license: MIT
 platforms: [linux, macos, windows]
@@ -16,7 +16,7 @@ metadata:
 
 Commit conventions for the **research** side of `preregistered-money`. This skill exists in the research agent's skills tree only — the video agent never loads it and never commits here.
 
-The brand is an immutable, timestamped, public record. Git is the notary: **the commit message is part of the audit trail.** Messages must be greppable (CI and `scoreboard/build.py` recover the seal SHA from `git log`) and the commit must be clean (exactly the change it claims to be).
+The brand is an immutable, timestamped, **public** record. Git is the notary: **the commit message is part of the audit trail.** Messages must be greppable (CI and `scoreboard/build.py` recover the seal SHA from `git log`) and the commit must be clean (exactly the change it claims to be). The remote is `origin` (GitHub, public since 2026-09-14): a commit is not done until it is pushed — the seal SHA, the scoreboard, and the video side's citations all reference the remote, and "local only" is where records quietly die.
 
 **Commits are atomic.** One commit = one coherent change you could describe in a single conventional-commit line. Do not bundle unrelated edits (a fix plus a refactor, a feature plus a chore, a doc tweak plus a code change) — split them into separate commits. This holds for *every* commit, not just seals; the seal ceremony's one-prereg-per-commit rule is the strictest instance of the same principle.
 
@@ -97,9 +97,38 @@ A sealed prereg's **commit SHA is the seal** (CONCEPT §2–§3). Therefore:
    ```
    Body must carry the justification. The git history is the audit trail; the amendment is never folded into the seal commit.
 
+## Push policy
+
+**A commit is not done until it is pushed.** The repo is public; the seal
+SHA, the scoreboard, and the video side's citations all point at the
+remote. Therefore:
+
+1. **Push after each commit, not in batches.** `git push origin main`
+   right after the commit (and after verifying the checklist). Batched
+   pushes let a bad commit go public with the good ones — and you cannot
+   quietly remove it from a public history.
+2. **Never force-push `main`.** Ever. `--force` / `+refs` are banned
+   regardless of how clean the local branch looks. If main is in a state
+   that needs rewriting, that is an owner-level incident, published — not
+   a `--force` (checklist item 5 already bans rewriting pushed/seal
+   commits; this is the push-side form of the same rule).
+3. **On non-fast-forward** (the video agent pushed, or the remote moved):
+   `git fetch` and inspect what landed — `git log --oneline HEAD..origin/main`
+   and each commit's `--stat` against the boundary. Integrate with
+   `git pull --no-rebase` (merge commit) or by re-committing your pending
+   work on top, re-running the full pre-commit checklist, and pushing
+   again. Do not resolve a divergence by force.
+4. **Verify after pushing:** `git status -sb` shows no ahead/behind
+   marker. If the push failed (auth, network), the commit stays local —
+   report it; do not move on as if it landed, and do not start the next
+   commit on top of an unpushed one without saying so.
+5. **Ordering with the seal ceremony:** seal commits are pushed like any
+   other, immediately — the seal SHA only exists for the world once it is
+   on the remote. A seal commit that sits unpushed is a dangling seal.
+
 ## Pre-commit integrity checklist
 
-Run all seven before every commit. On failure: fix or stop and tell the user — do not commit with a violation noted.
+Run all eight before every commit, and item 9 after. On failure: fix or stop and tell the user — do not commit with a violation noted.
 
 1. **Boundary clean** — no `agents/video/` or `videos/` path staged (see Hard boundary).
 2. **Sealed doc touched?** — must be an append-only amendment (ceremony rule 4); if the intended change is not an amendment, stop and flag it for a new PR instead.
@@ -109,6 +138,7 @@ Run all seven before every commit. On failure: fix or stop and tell the user —
 6. **Scoreboard is generated** — `SCOREBOARD.md` changes come from `scoreboard/build.py`, never hand-edits (commit type `chore(scoreboard)`).
 7. **Format valid** — type and scope both in the allowed sets above; subject ≤ 72 chars, imperative, no trailing period.
 8. **Concurrent writer** — the video agent commits to the same working tree while you work. Re-run `git status --short` immediately before committing: a path that was pending minutes ago may already be committed (by the other agent), and new commits can land between your check and yours. After committing, confirm with `git log --oneline` that your commit is at the tip; if a foreign commit interleaved, `git show <sha> --stat` and confirm it stayed on the other side of the boundary.
+9. **Pushed** (post-commit, after the commit lands) — `git push origin main`, then verify `git status -sb` shows no ahead/behind marker. Full rules: the Push policy section. A commit that is not pushed is reported as such, never treated as done.
 
 ## Templates (the common cases)
 
