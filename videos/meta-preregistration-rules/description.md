@@ -15,6 +15,6 @@ why a falsified strategy gets the same production value as a confirmed one.
 
 The record:
 - Spec seal (this video): 86140f927343296bb2efc390288ac56b2c9865e2
-- Repo: <github.com/<owner>/preregistered-money — fill at publish>
+- Repo: https://github.com/frankyboots/preregistered-money
 
 Educational content, not investment advice.

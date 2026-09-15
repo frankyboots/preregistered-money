@@ -1420,3 +1420,15 @@ chart would be a lie).
 - Channel description (YouTube channel page):
   `videos/pipeline/brand/channel-description.md` (790/1000 chars).
 
+## Published (2026-09-15)
+
+- Uploaded to YouTube (owner, 2026-09-15): final MP4
+  (`renders/master-full-002-audio.mp4`), soft captions
+  (`audio/timing/captions.srt`), thumbnail (`renders/thumbnail.png`),
+  and the per-video description from `description.md` (repo link
+  filled: https://github.com/frankyboots/preregistered-money).
+- GitHub: repo made public at `origin/main` = 8fd3d2c (all publish-kit
+  commits included). Channel description from
+  `videos/pipeline/brand/channel-description.md` set on the channel page.
+- Lifecycle: PUBLISH (final stage). Video 1 complete.
+
