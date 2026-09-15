@@ -127,6 +127,10 @@ Living directory: `videos/pipeline/brand/` (generator + `concepts/<idea>/`).
   advice."). Same number-trace rule as the frames: every figure traces to the
   cited results/prereg doc; a meta episode cites the seal SHA, not a number.
   No hype — the description is metadata for the record, not a pitch.
+  **Caps:** the YouTube video-description field allows 5,000 chars but only the
+  first ~150 are visible before "Show more" — the one-line hook must stand
+  there. The channel "about" field is hard-capped at 1,000 chars — measure the
+  pasted text (chars, not bytes) and trim, never silently overflow.
 
 ## Procedure
 
@@ -157,7 +161,8 @@ Living directory: `videos/pipeline/brand/` (generator + `concepts/<idea>/`).
    `docs/**` or `research/**`).
 8. **Descriptions.** Deliver 1–2 short channel-description paragraphs with the
    art: method → what the archive is → honesty. End with the standing disclaimer:
-   "Educational content, not investment advice." Commit it as
+   "Educational content, not investment advice." Keep it ≤1,000 chars (YouTube's
+   hard cap for the channel "about" field). Commit it as
    `videos/pipeline/brand/channel-description.md` (the channel-page text is a
    brand artifact, like the banner). Per-video descriptions are written at the
    thumbnail stage — see "Thumbnails → Video description".
