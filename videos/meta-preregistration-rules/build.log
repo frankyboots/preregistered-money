@@ -1428,7 +1428,9 @@ chart would be a lie).
   and the per-video description from `description.md` (repo link
   filled: https://github.com/frankyboots/preregistered-money).
 - GitHub: repo made public at `origin/main` = 8fd3d2c (all publish-kit
-  commits included). Channel description from
-  `videos/pipeline/brand/channel-description.md` set on the channel page.
+  commits included). Channel "about" text:
+  `videos/pipeline/brand/channel-description.md` is the pinned source;
+  owner did not confirm setting it on the channel page at publish —
+  set in Studio if not yet done.
 - Lifecycle: PUBLISH (final stage). Video 1 complete.
 
