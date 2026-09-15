@@ -85,3 +85,12 @@ check and yours (research-commit checklist item 8).
   the committed record diverged — the exact drift the brand exists to prevent.
 - **One `§`-delimited entry per job.** Multi-paragraph blobs in one entry
   inflate the budget and blur the scratchpad into a log.
+- **`memory` `replace` targets one entry, via `old_text`.** It is not a
+  whole-file swap: `action=replace` takes `old_text` (a short unique substring
+  identifying the target entry) plus `content` = the complete new text for that
+  one entry. If a `replace` fails with "needs old_text", re-issue it with
+  `old_text` set rather than restructuring into a full-file rewrite, then verify
+  all three entries remain and the usage is within budget. (Note: the SOUL.md
+  "memory-tool guard" still describes a single-entry whole-file model — verify
+  the live tool behavior against this rule when it disagrees, and re-sync SOUL.md
+  from the profile home if the guard has gone stale.)
