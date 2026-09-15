@@ -42,7 +42,9 @@ symlinks and real files into the repo (`~/preregistered-money`):
    message, no restart).
 2. `cp` it over the repo copy so the git record matches:
    `cp ~/.hermes/profiles/research/SOUL.md ~/preregistered-money/agents/research/SOUL.md`
-3. Commit under the `chore(repo)` scope (see the `research-commit` skill).
+3. Commit under the `agents` scope (see the Commit section below:
+   `docs(agents)` for substantive content, `chore(agents)` for routine
+   state).
 
 ## Seed or edit MEMORY.md
 
@@ -66,8 +68,10 @@ symlinks and real files into the repo (`~/preregistered-money`):
 
 `SOUL.md`, `MEMORY.md`, and the `memories/` docs (e.g. `README.md`) all live
 under `agents/research/` — inside the research-commit boundary, never a seal,
-no raw data. Scratchpad state commits as `chore(repo)`; the memories README
-commits as `docs(agents)`. Runtime lock files under `memories/` are
+no raw data. Scope is `agents` (per the research-commit scope map: SOUL.md,
+MEMORY.md, skills, memories/README.md all live there) with type per the change
+(`chore(agents)` for routine scratchpad state, `docs(agents)` for substantive
+content). Runtime lock files under `memories/` are
 gitignored — never stage one. The scratchpad's evolution is part of the
 public record, so commit the changes rather than leaving them untracked.
 Re-check `git status --short` immediately before committing — the video agent
@@ -81,16 +85,24 @@ check and yours (research-commit checklist item 8).
   holds the current handoff: what landed, what's queued, what to pick up next
   session — and points at the repo, never duplicates it. When memory and the
   repo disagree, the repo wins.
-- **SOUL.md has two copies.** Forgetting the `cp` leaves the live persona and
-  the committed record diverged — the exact drift the brand exists to prevent.
+- **SOUL.md has two copies — whichever you edit, verify the pair.** The
+  documented procedure is live→repo, but a repo-side edit (one-line patch) is
+  equally real, and it leaves the live file stale because the persona reloads
+  from the *live* copy each message. After any SOUL.md edit from either side:
+  `diff ~/.hermes/profiles/research/SOUL.md ~/preregistered-money/agents/research/SOUL.md`
+  must be clean (propagating repo→live is fine — the live copy reloads without
+  restart). A repo-only commit of a SOUL.md change is a known bad state.
 - **One `§`-delimited entry per job.** Multi-paragraph blobs in one entry
   inflate the budget and blur the scratchpad into a log.
 - **`memory` `replace` targets one entry, via `old_text`.** It is not a
   whole-file swap: `action=replace` takes `old_text` (a short unique substring
   identifying the target entry) plus `content` = the complete new text for that
-  one entry. If a `replace` fails with "needs old_text", re-issue it with
-  `old_text` set rather than restructuring into a full-file rewrite, then verify
-  all three entries remain and the usage is within budget. (Note: the SOUL.md
-  "memory-tool guard" still describes a single-entry whole-file model — verify
-  the live tool behavior against this rule when it disagrees, and re-sync SOUL.md
-  from the profile home if the guard has gone stale.)
+  one entry. Two failure shapes: a missing/wrong `old_text` fails loudly (re-issue
+  with `old_text` set); and `content` containing a `\n§\n` separator is split into
+  multiple entries on write — passing whole-scratchpad content into a
+  single-entry replace swaps one entry for three while the other old entries
+  survive, leaving a five-entry file with duplicates. To rewrite the entire
+  scratchpad, either replace each entry individually (three ops) or write the
+  file directly and run the round-trip parse check above. After any op: confirm
+  `entry_count` is exactly 3 — a sudden count change means entries were added or
+  lost, and the fix is the direct file write, not more tool ops.
