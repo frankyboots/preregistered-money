@@ -127,6 +127,10 @@ Living directory: `videos/pipeline/brand/` (generator + `concepts/<idea>/`).
   advice."). Same number-trace rule as the frames: every figure traces to the
   cited results/prereg doc; a meta episode cites the seal SHA, not a number.
   No hype — the description is metadata for the record, not a pitch.
+  **Placeholder rule:** a repo-link placeholder is legal in the committed
+  `description.md` at thumbnail stage (the repo may not be public yet); it must
+  be resolved to the real URL at publish (playbook Workflow step 7) — the
+  committed description ends in its final form.
   **Caps:** the YouTube video-description field allows 5,000 chars but only the
   first ~150 are visible before "Show more" — the one-line hook must stand
   there. The channel "about" field is hard-capped at 1,000 chars — measure the

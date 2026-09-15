@@ -66,6 +66,27 @@ Use this skill to coordinate a complete video project from rough request to veri
 
 6. Commit via `video-commit` — spec, composition, and build log as one coherent commit; refused boundary paths aborted.
 
+7. Publish (owner uploads; the agent records).
+   - The upload itself is owner-side (YouTube Studio): final MP4, soft captions
+     SRT, thumbnail PNG, the description from `videos/<slug>/description.md`,
+     plus the channel "about" text from
+     `videos/pipeline/brand/channel-description.md` (first publish only).
+   - When the owner reports published, the agent closes the loop:
+     - Resolve placeholders in `description.md` (repo URL) so the committed
+       description matches what is live — the record ends in final form.
+     - Append a `## Published (<UTC date>)` section to the build log: what was
+       uploaded (mp4 / captions / thumbnail / description), repo URL, remote
+       tip SHA (`git ls-remote origin main`), channel-description status,
+       "Lifecycle: PUBLISH (final stage). <slug> complete."
+     - Flip the tracker entry: status → PUBLISHED, NEXT → the next milestone
+       (e.g. the next video's blocker).
+     - Commit as `video(video-<slug>): published <date>` — build log +
+       description + tracker flip are one coherent change — then push and
+       verify the remote tip moved.
+   - Record only what the owner confirmed; if a step is unconfirmed (e.g. the
+     channel "about" text), flag it to the owner instead of asserting it in the
+     log.
+
 ## Production Rules
 
 - Never patch an old final MP4 when source scenes and assembly scripts exist.
@@ -86,10 +107,11 @@ Use this skill to coordinate a complete video project from rough request to veri
 - User says "everything is perfect except": use `render-qa-and-surgical-changes`.
 - User wants banner/logo/description or a video thumbnail (new look or per-video): `channel-art` — 3 distinct concepts → owner pick → committed generator.
 - Owner ratifies or rejects a "Flagged for REVIEW" reading (style-spec / scene-spec): `scene-spec-and-commit` → "Resolving a flagged reading".
+- Owner reports the video is published on YouTube: Workflow step 7 — resolve description placeholders, build log `## Published`, flip tracker to PUBLISH, commit, push.
 
 ## Implementation Order
 
-Phase map: A bootstrap (`video-bootstrap`) → B scene specs, one scene per commit (`scene-spec-and-commit`) → C scene builds, one scene per commit (`scene-build-and-commit`) → D assembly/final → thumbnail.
+Phase map: A bootstrap (`video-bootstrap`) → B scene specs, one scene per commit (`scene-spec-and-commit`) → C scene builds, one scene per commit (`scene-build-and-commit`) → D assembly/final → thumbnail → publish (owner uploads; agent records per Workflow step 7).
 
 1. Lock approved scenes.
 2. Phase B: one scene spec + commit at a time (`scene-spec-and-commit`) — never batch.
@@ -106,6 +128,10 @@ Phase map: A bootstrap (`video-bootstrap`) → B scene specs, one scene per comm
     (`channel-art`, "Thumbnails → Video description") as
     `videos/<slug>/description.md`; commit both with the build log before
     publish.
+12. Publish: owner uploads (mp4, soft captions, thumbnail, description); agent
+    resolves description placeholders, appends the build log `## Published`
+    section, flips the tracker to PUBLISH, commits
+    `video(video-<slug>): published <date>`, pushes (Workflow step 7).
 
 ## Decision Checklist
 
@@ -146,6 +172,9 @@ Do not call a full video done until:
 - Description is written at the thumbnail stage, committed as
   `videos/<slug>/description.md` with the build log, and every figure in it
   traces to the cited doc.
+- For a PUBLISHED video: the build log carries the `## Published` section,
+  `description.md` has the real repo URL (no placeholders), the tracker shows
+  PUBLISH, and the remote tip SHA is recorded in the log.
 - Scene boundary proofs exist.
 - Exact user-requested timestamp proofs exist.
 - Any subjective preview requested by the user was shown or explicitly skipped.

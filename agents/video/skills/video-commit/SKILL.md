@@ -68,7 +68,7 @@ Standard conventional set, plus one project type:
 | `ci` | video-render workflow changes |
 | `build` | build/dependency tooling changes (FFmpeg, hyperframes deps) |
 | `revert` | reverting a prior commit |
-| `video` | **composition content** — one per video slug: new compositions, episode cuts, data-input updates, and their build-log updates |
+| `video` | **composition content + publish record** — one per video slug: new compositions, episode cuts, data-input updates, and their build-log updates; the publish record is `video(video-<slug>): published <date>` — build log `## Published` section + final `description.md` + tracker flip, one coherent commit |
 
 ### Scopes (mapped to paths)
 
@@ -116,4 +116,8 @@ ci: video-render workflow — render on merge for videos/ changes
 build: pin FFmpeg 7.x for deterministic encodes
 video(video-benchmark-study): scene spec 04 (life-cycle)
 (window from beat-map.json; cue rows verified against words.json; change floor >=1/10s)
+
+video(video-meta-preregistration-rules): published 2026-09-15
+(build log '## Published' record; description.md repo link resolved;
+tracker → PUBLISH; remote tip verified via git ls-remote)
 ```
